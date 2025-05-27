@@ -1,0 +1,5 @@
+Title: Rshiny
+Author: Aude Valade
+DisplayMode: Showcase
+Type: Shiny
+Run the script setup to use the raw data and generate data ready for the application.
