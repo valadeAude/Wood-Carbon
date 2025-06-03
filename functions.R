@@ -1,3 +1,32 @@
+library(cluster)    # clustering algorithms
+library(corrplot)
+library(data.table)
+library(dplyr)
+library(DT)
+library(EnvStats)
+library(factoextra)
+library(ggcorrplot)
+library(ggplot2)
+library(ggridges)
+library(ggsignif)
+library(ggthemes)
+library(gridExtra)
+library(heatmaply)
+library(mapproj)
+library(Matrix)
+library(meta)
+library(metafor)
+library(multcompView)
+library(plotly)
+library(RColorBrewer)                           
+library(readxl)
+library(reshape2)
+library(rmarkdown)
+library(scales)
+library(shinyBS)
+library(stringr)
+library(viridis)
+library(waiter)
 #----------- Data processing ----------- 
 
 # Function Read data synthesis of global carbon fluxes
@@ -288,7 +317,7 @@ t.test2 <- function(m1,m2,s1,s2,n1,n2,m0=0,equal.variance=FALSE)
 
 
 modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
-  
+
   #xlistCriteria<-c("PaperID","singleProduct","time_horizon")
   formulaRHS<-paste0(paste(listCriteria, collapse="+"),"+get(compartment)")
   formulaShort<-""
@@ -397,6 +426,21 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
   print("AggVarMelt")
   print(dim(tTestPairsSignifAggVarMelt))
   colnames(tTestPairsSignifAggVarMelt)<-c("process","variable","value")
+  
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="live_biomass_C","process"]<-"Live biomass"
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="soilC","process"]<-"Soil carbon"
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="harv_residues","process"]<-"Harvest residues"
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="eol_biogenic","process"]<-"End-of-life emiss."
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="maintenance_emiss","process"]<-"Maintenance emiss."
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="manufacturing_emiss","process"]<-"Manufacturing emiss."
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="products_storage_C","process"]<-"C storage in products"
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="off_product_biogenic","process"]<-"Avoided emiss."
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="forestry_emiss","process"]<-"Forestry emiss."
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="biogenic_dyn","process"]<-"Dyn. of biogenic emiss."
+  tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="fossil_dyn","process"]<-"Dyn. of fossil emiss."
+
+    
+    
   return(tTestPairsSignifAggVarMelt)
 }
 
@@ -739,7 +783,7 @@ create_forest_plot<-function(plotData,forestPlotData,wrapSplit2){
 
 plotModelComponentsC<-function(tTestPairsSignifAggVarMelt){
   print("Entering function : plotModelComponentsC")
-  
+
   p<-ggplot(  tTestPairsSignifAggVarMelt,aes(x=process,y=variable,fill=value))+
     geom_tile()+
     theme_bw()+
@@ -787,6 +831,7 @@ plotDriverC<-function(data_expt_approach,filters){
  
 }
 
+
 plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,splitName){
   print("Entering function : plotDataFunc")
   
@@ -820,7 +865,7 @@ plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,split
     )
     
     
-  }else if(split=="modelApproach"){
+  }else if(splitName=="modelApproach"){
     plotData$split<-factor(plotData$split)
   }
   

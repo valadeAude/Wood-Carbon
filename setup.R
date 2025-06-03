@@ -1,11 +1,10 @@
-setwd("/Users/valade/Documents/GitHub/RShiny/RShiny")
 source("./functions.R")
-
 ## This script reads all raw data and creates R workspace that will be called by the application
 rawDataPath<-"./rawData/"
 initDataPath<-"./initData/"
 
-database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.init.xlsx")
+#database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.init.xlsx")
+database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.ALL.xlsx")
 
 #database.file <-"/Users/valade/EcoSols_Nextcloud2/Substitution/Metaanalysis/Data_extraction/v6_extraction/database_substitution_metaanalysis.v5.v6.ALL.xlsx"
 #For FAO and Bais data on country production of wood

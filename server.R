@@ -239,10 +239,7 @@ server <- function(input, output, session) {
       plotData<-read.csv(paste0(initDataPath,"plotData.approachC.csv"))
       forestPlotData<-read.csv(paste0(initDataPath,"forestPlotData.approachC.csv"))
     }
-   
-    
     create_forest_plot(plotData,forestPlotData,FALSE)
-    
   })
   
   output$modelComponentsC<-renderPlotly({
@@ -267,13 +264,10 @@ server <- function(input, output, session) {
       plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1")
       forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1",TRUE)
     }else{
-      plotData.driverC<-read.csv("/Users/valade/Documents/GitHub/RShiny/RShiny/plotData.test.csv")
-      forestPlotData.driverC<-read.csv("/Users/valade/Documents/GitHub/RShiny/RShiny/forestPlotData.test.csv")
+      plotData.driverC<-read.csv(paste0(initDataPath,"plotData.driverC.csv"))
+      forestPlotData.driverC<-read.csv(paste0(initDataPath,"forestPlotData.driverC.csv"))
      }
-
-    
     create_forest_plot(plotData.driverC,forestPlotData.driverC,TRUE)
-    
   })
   
   
