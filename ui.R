@@ -2,7 +2,9 @@ library(shinyWidgets)
 library(shinydashboard)
 library(shiny)
 library(slider)
+library(bslib)
 library(htmltools)
+library(mathjaxr)
 sidebar <- dashboardSidebar(
   width = 150,
   hr(),
@@ -49,6 +51,9 @@ body <- dashboardBody(
             fluidPage(
               fluidRow(
                 column(width = 4, 
+                       box(width = NULL,
+                           actionButton("reset", "Reset filters",style='padding:10px; font-size:100%;  border-color: #00a98e'),
+                           br(),
                        tabBox(width = NULL,
                               tabPanel(
                                 
@@ -156,13 +161,15 @@ body <- dashboardBody(
                                       min = minValSub,
                                       max = maxValSub,
                                       value = c(minValSub, maxValSub),
-                                    )
+                                    )#end sliderInput
+                                    
                                   )#end column
                                 )#end fluidrow 
                                 
                               )#end tabpanel
                               
                        )#end tabbox
+                       )#end box
                        ,
                        DTOutput('filtered_db_table')
                        
@@ -175,7 +182,8 @@ body <- dashboardBody(
                     # Clicking this will increment the progress amount
                     box(width = 4, 
                         actionButton("submit", "Submit filters",style='padding:10px; font-size:100%;  background-color: #e27a3a'),
-                        actionButton("reset", "Reset filters",style='padding:10px; font-size:100%;  background-color: #f3eada')),
+                        actionButton("resetExp", "Ignore filters",style='padding:10px; font-size:100%;  background-color: #f3eada')
+                    ),
                     infoBoxOutput("summaryExptBox"),
                     infoBoxOutput("summaryStudyBox")
                     

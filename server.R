@@ -54,8 +54,8 @@ server <- function(input, output, session) {
     updateSelectInput(session, "select_countries",selected = countries)
     updateCheckboxGroupInput(session, "select_single_product", selected = products)
     updateSelectInput( session,"select_time_horizon",selected = timeHorizon)
-    updateSelectInput( session, "select_processes",selected=NULL )
-    updateSelectInput(session, "select_dynamics", selected = NULL)
+    updateSelectInput( session, "select_processes",selected=character(0) )
+    updateSelectInput(session, "select_dynamics", selected = character(0))
     updateSelectInput(session,"select_driver1Cat",selected = driver1Cat)
     updateSelectInput(session,"select_driver1", selected = driver1)
     updateSliderInput(session,
@@ -65,25 +65,8 @@ server <- function(input, output, session) {
                       max = maxValSub,
                       value = c(minValSub, maxValSub),
     )#end sliderInput
-    updateCheckboxGroupInput(session,inputId="select_NA_substitution", selected = "NA")    
-  },ignoreNULL=FALSE )
-  
-  observeEvent(input$reset, {
-
-    updateSelectInput( session, "select_processes",selected=NULL )
-    updateSelectInput(session, "select_dynamics", selected = NULL)
-    updateSelectInput(session,"select_driver1Cat",selected = driver1Cat)
-    updateSelectInput(session,"select_driver1", selected = driver1)
-    updateSliderInput(session,
-                      inputId = "select_substitution",
-                      label = "Substitution",
-                      min = minValSub,
-                      max = maxValSub,
-                      value = c(minValSub, maxValSub),
-    )#end sliderInput
-    updateCheckboxGroupInput(session,inputId="select_NA_substitution", selected = "NA")
-
-  },ignoreNULL=FALSE ) #https://github.com/rstudio/shiny/issues/2097
+},ignoreNULL=FALSE )
+ 
 
   data_unfltr <- eventReactive(input$submit, {
     unfiltered_data <- data[!(data$scaleAgg %in% input$select_scale)|
@@ -95,13 +78,13 @@ server <- function(input, output, session) {
                               !(data$driver1 %in% input$select_driver1)|
                               !(data$driver1Cat %in% input$select_driver1Cat),]
     
-    if (is.null(input$select_NA_substitution)) {
-      unfiltered_data <- unfiltered_data[is.na(filtered_data$substitution), ]
-    }
-    else{
-      unfiltered_data <- unfiltered_data
-      
-    }
+    # if (is.null(input$select_NA_substitution)) {
+    #   unfiltered_data <- unfiltered_data[is.na(filtered_data$substitution), ]
+    # }
+    # else{
+    #   unfiltered_data <- unfiltered_data
+    #   
+    # }
     
     #lost_data<-data[!(data$DOI %in% filtered_data),]
   }, ignoreNULL = FALSE)     
@@ -152,6 +135,7 @@ server <- function(input, output, session) {
     unique(data_fltr()[,c("PaperID")]), options = list(lengthChange = FALSE))
   
   output$barplotYear<- renderPlotly({
+    #plotBarplotYear(data_bibliom_select())
     plotBarplotYear(data_bibliom_select())
   })
   
@@ -213,7 +197,7 @@ server <- function(input, output, session) {
     res$filterResults<-"filter"
   })
   
-  observeEvent(input$resetResults, {
+  observeEvent(c(input$resetResults,input$ignore), {
     res$data_expt <- data_expt
     res$data_expt_approach <- data_expt_approach
     res$data_bibliom <- data_bibliom

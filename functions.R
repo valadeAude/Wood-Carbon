@@ -296,7 +296,7 @@ country<-function(data){
   return(countryData)
 }
 
-
+df<-data_expt
 funcFreq<-function(df,categoriesdf){
   dfShort<-subset(df,select=-c(Exclusion,DOI))
   
@@ -328,6 +328,25 @@ funcFreq<-function(df,categoriesdf){
   Freq[Freq$variable=="EnergyInput",'nSingleProduct']<-nEnergyInput
   Freq[Freq$variable=="mixedProduct",'nSingleProduct']<-nMixedProduct
   
+  Freq$longName<-str_to_title(Freq$names)
+  Freq[Freq$names=="live_biomass_C","longName"]<-"Live biomass"
+  Freq[Freq$names=="soilC","longName"]<-"Soil carbon"
+  Freq[Freq$names=="harv_residues","longName"]<-"Harvest residues"
+  Freq[Freq$names=="eol_biogenic","longName"]<-"End-of-life biogenic emiss."
+  Freq[Freq$names=="eol_fossil","longName"]<-"End-of-life fossil emiss."
+  Freq[Freq$names=="maintenance_emiss","longName"]<-"Maintenance emiss."
+  Freq[Freq$names=="manufacturing_emiss","longName"]<-"Manufacturing emiss."
+  Freq[Freq$names=="products_storage_C","longName"]<-"C storage in products"
+  Freq[Freq$names=="off_product_biogenic","longName"]<-"Avoided emiss."
+  Freq[Freq$names=="forestry_emiss","longName"]<-"Forestry emiss."
+  Freq[Freq$names=="LUC_dyn","longName"]<-"Dyn. of LUC"
+  Freq[Freq$names=="rebound_dyn","longName"]<-"Dyn. of econ. feedbacks"
+  Freq[Freq$names=="biogenic_dyn","longName"]<-"Dyn. of biogenic emiss."
+  Freq[Freq$names=="fossil_dyn","longName"]<-"Dyn. of fossil emiss."
+  Freq[Freq$names=="displacement factor used","longName"]<-"Generic displacement factor"
+  Freq[Freq$names=="self-calculated DF","longName"]<-"Self-calculated displacement factor"
+  
+ 
   return(Freq)
 }
 
@@ -656,16 +675,20 @@ plotCountryData<-function(countryData, sortingCriteria){
 create_processes_frequency <- function(study_freq, wrap){
   
   if(missing(wrap)){
-    plotData<-study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),c("names","variable","value","cat2","colcat2")] 
-    plotData<-aggregate(plotData$value ,by=list(plotData$names,plotData$cat2,plotData$colcat2),FUN=sum)
-    colnames(plotData)<-c("names","cat2","colcat2","value")
+    plotData<-study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),c("longName","variable","value","cat2","colcat2")] 
+ #   plotData<-study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),c("names","variable","value","cat2","colcat2")] 
+    plotData<-aggregate(plotData$value ,by=list(plotData$longName,plotData$cat2,plotData$colcat2),FUN=sum)
+#    plotData<-aggregate(plotData$value ,by=list(plotData$names,plotData$cat2,plotData$colcat2),FUN=sum)
+    colnames(plotData)<-c("longName","cat2","colcat2","value")
+#    colnames(plotData)<-c("names","cat2","colcat2","value")
     colorVect<-unique(plotData[,c("colcat2","cat2")])
     colordictProcesses<-setNames(as.character(colorVect$colcat2), 
                                  as.character(colorVect$cat2))
     plotData$wrap<-"All"
     
   }else{
-    plotData<-study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),c("names","variable","value","cat2","colcat2")] 
+    plotData<-study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),c("longName","variable","value","cat2","colcat2")] 
+#    plotData<-study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),c("names","variable","value","cat2","colcat2")] 
     
     colorVect<-unique(plotData[,c("colcat2","cat2")])
     colordictProcesses<-setNames(as.character(colorVect$colcat2), 
@@ -677,7 +700,8 @@ create_processes_frequency <- function(study_freq, wrap){
     ##   
   }
   plotData$wrap<-factor(plotData$wrap,levels=sort(levels(factor(plotData$wrap))))
-  ggplot(plotData,aes(x=names,y=value,fill=cat2))+ 
+  ggplot(plotData,aes(x=reorder(longName,value),y=value,fill=cat2))+ 
+#    ggplot(plotData,aes(x=names,y=value,fill=cat2))+ 
     coord_flip() + 
     geom_bar(stat="identity") +  
     #  scale_fill_manual(values=colorsLabels$colcat2,labels=waiver())+   
@@ -686,7 +710,8 @@ create_processes_frequency <- function(study_freq, wrap){
     theme( axis.ticks = element_blank(),text = element_text(size=txt_size_big),axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.))+ 
     ylab("Number of studies")+ 
     xlab("Forest sector description")+
-    geom_text(aes(label = value, text = paste(names, value)), alpha = 0, hoverinfo = "text", show.legend = FALSE)+
+      geom_text(aes(label = value, text = paste(longName, value)), alpha = 0, hoverinfo = "text", show.legend = FALSE)+
+      #geom_text(aes(label = value, text = paste(names, value)), alpha = 0, hoverinfo = "text", show.legend = FALSE)+
     facet_wrap(~wrap)
   # 
   # return(gg)
@@ -703,10 +728,10 @@ create_processes_versus_flux_size<-function(study_freq,palette, wrap){
   my.cols <- c(brewer.pal(5, palette),"#000000")
   print("1")
   #  plotData<-study_freq[(study_freq$cat1 =="Processes") & study_freq$cat2=="C fluxes"& study_freq$names!="eol_fossil_emiss"& !is.na(study_freq$cat1),c("names","variable","value","cat2","colcat2")]
-  plotData<-study_freq[(study_freq$cat2=="C fluxes"),c("names","variable","value","valuePercent","cat2","colcat2","nSingleProduct")]
+  plotData<-study_freq[(study_freq$cat2=="C fluxes"),c("longName","variable","value","valuePercent","cat2","colcat2","nSingleProduct")]
   if(missing(wrap)){
     print("missing wrap:")
-    plotDataAgg<-aggregate(cbind(value,nSingleProduct)~names+cat2,data=plotData,sum)
+    plotDataAgg<-aggregate(cbind(value,nSingleProduct)~longName+cat2,data=plotData,sum)
     plotDataAgg$valuePercent<-plotDataAgg$value/plotDataAgg$nSingleProduct*100
     plotDataAgg$variable<-"All"
     plotDataAgg$wrap<-"All"
@@ -729,7 +754,7 @@ create_processes_versus_flux_size<-function(study_freq,palette, wrap){
   maxValue<-max(plotData$value)+5
   maxValuePercent<-max(plotData$valuePercent)+5  
   
-  plotDataRefCProcess<-merge(plotData,refCProcessMean,by.x="names",by.y="substitutionDatabaseVariable")
+  plotDataRefCProcess<-merge(plotData,refCProcessMean,by.x="longName",by.y="substitutionDatabaseVariable")
   print(paste("plotDataRefCProcess$wrap:",plotDataRefCProcess$wrap))
   
   if(dim(plotDataRefCProcess)[1]>0){
@@ -740,7 +765,7 @@ create_processes_versus_flux_size<-function(study_freq,palette, wrap){
       labs(size="Number of studies",col="Processes")+
       theme_bw()+
       #theme( text = element_text(size=12))+
-      geom_vline(data=plotDataRefCProcess, mapping=aes(xintercept=`value GtCO2/yr`,col=names), linetype="longdash") +
+      geom_vline(data=plotDataRefCProcess, mapping=aes(xintercept=`value GtCO2/yr`,col=longName), linetype="longdash") +
       #geom_text(data=plotDataRefCProcess, mapping=aes(x=`value GtCO2/yr`, y=0.7, label=names), angle=90, vjust=-0.4, hjust=0,color='black',check_overlap = TRUE) +
       xlab("Global flux (GtCO2)")+
       ylab("Fraction of studies accounting for this process (%)")+
@@ -756,9 +781,9 @@ create_driver_frequency <- function(expt_freq,wrap){
   if(missing(wrap)){
     
     plotData<-expt_freq[(expt_freq$cat1 =="Change in practices"|expt_freq$cat1 =="Environmental change") & !is.na(expt_freq$cat1),
-                        c("names","variable","value","cat2","colcat2")] 
-    plotData<-aggregate(plotData$value ,by=list(plotData$names,plotData$cat2,plotData$colcat2),FUN=sum)
-    colnames(plotData)<-c("names","cat2","colcat2","value")
+                        c("longName","variable","value","cat2","colcat2")] 
+    plotData<-aggregate(plotData$value ,by=list(plotData$longName,plotData$cat2,plotData$colcat2),FUN=sum)
+    colnames(plotData)<-c("longName","cat2","colcat2","value")
     colorVectDrivers<-unique(plotData[,c("colcat2","cat2")])
     colordictDrivers<-setNames(as.character(colorVectDrivers$colcat2), 
                                as.character(colorVectDrivers$cat2)) 
@@ -766,7 +791,7 @@ create_driver_frequency <- function(expt_freq,wrap){
     plotData$wrap<-"All"
   }else{
     plotData<-expt_freq[(expt_freq$cat1 =="Change in practices"|expt_freq$cat1 =="Environmental change") & !is.na(expt_freq$cat1),
-                        c("names","variable","value","cat2","colcat2")] 
+                        c("longName","variable","value","cat2","colcat2")] 
     
     colorVectDrivers<-unique(plotData[,c("colcat2","cat2")])
     colordictDrivers<-setNames(as.character(colorVectDrivers$colcat2), 
@@ -780,7 +805,7 @@ create_driver_frequency <- function(expt_freq,wrap){
   }
   plotData$wrap<-factor(plotData$wrap,levels=sort(levels(factor(plotData$wrap))))
   
-  ggplot(plotData,aes(x=names,y=value,fill=cat2))+ 
+  ggplot(plotData,aes(x=reorder(longName,value),y=value,fill=cat2))+ 
     coord_flip() + 
     geom_bar(stat="identity") +  
     scale_fill_manual(values=colordictDrivers)+   
@@ -933,7 +958,6 @@ plotDriverC<-function(data_expt_approach,filters){
 plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,splitName){
   print("Entering function : plotDataFunc")
   
-  print(splitName)
   plotData <-data.frame(data_expt_approach[data_expt_approach$modelApproach %in% include_approaches & !(data_expt_approach$driver1Cat)%in%c("Demand" ,"Environmental change" ),])
   plotData $sei<-0.001
   plotData$singleProduct<-factor(plotData$singleProduct)
@@ -984,7 +1008,6 @@ plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,split
   )  
   plotData$split2<-plotData$driver1Cat
   
-  print(data.frame(plotData)$split)
   return(data.frame(plotData))
   
 }
