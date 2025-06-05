@@ -34,20 +34,117 @@ GlobalFluxData<-function(dataFlux.file){
   refCProcess<-read_xlsx(dataFlux.file)
   #refCProces<-refCProces[refCProces$substitutionDatabaseVariable!="live_biomass_in",]
   refCProcess$substitutionDatabaseVariable<-factor(refCProcess$substitutionDatabaseVariable,levels=rev(c(
-    "AgregationLevel","live_biomass_out_check","total_emissions_check",
-    "live_biomass_out","harv_residues", "soilC",
+    "AgregationLevel",
+    "live_biomass_out_check",
+    "total_sector_emission",
+    "total_sector_sequestration",
+    "harvest",
+    "harv_residues", 
+    "soilC",
     "live_biomass_in",
     "forestry_emiss",
     "products_storage_C",
     "manufacturing_emiss",
-    "maintenance_emiss",
-    "eol_biogenic_energy","eol_biogenic_disposal","eol_biogenic"
+    "eol_biogenic_energy",
+    "eol_biogenic_disposal"
   )))
   
   
   return(refCProcess)
 }
+create_C_synthesis_plot<-function(refCProces){
+  
+  refCProcessMean<-aggregate(`value GtCO2/yr`~substitutionDatabaseVariable,data=refCProces,FUN=mean,na.rm=T)
+  refCProcessMean$`value GtCO2/yr`<-as.numeric(refCProcessMean$`value GtCO2/yr`)
+  refCProcessSd<-aggregate(`value GtCO2/yr`~substitutionDatabaseVariable,data=refCProces,FUN=sd,na.rm=T)
+  
+  
+  # Calculate the sum of all "emission" processes to compare to sequestration estimate
+  TotalEmissionsMean<-round(refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="harv_residues","value GtCO2/yr"]+                                      refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="eol_biogenic_energy","value GtCO2/yr"]+ 
+                              refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="eol_biogenic_disposal","value GtCO2/yr"]+
+                              refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="forestry_emiss","value GtCO2/yr"]+                            refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="manufacturing_emiss","value GtCO2/yr"]+                             #  refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="maintenance_emiss","value GtCO2/yr"]+ 
+                              refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="soilC","value GtCO2/yr"],2)
+  
+  TotalEmissionsSd<-  round(sqrt(refCProcessMean[refCProcessSd$substitutionDatabaseVariable=="harv_residues","value GtCO2/yr"]^2+  
+                                   refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="eol_biogenic_energy","value GtCO2/yr"]^2+                 refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="eol_biogenic_disposal","value GtCO2/yr"]^2+  
+                                   refCProcessMean[refCProcessSd$substitutionDatabaseVariable=="forestry_emiss","value GtCO2/yr"]^2+
+                                   refCProcessMean[refCProcessSd$substitutionDatabaseVariable=="manufacturing_emiss","value GtCO2/yr"]^2+ 
+                                   #refCProcessMean[refCProcessSd$substitutionDatabaseVariable=="maintenance_emiss","value GtCO2/yr"]^2+
+                                   refCProcessMean[refCProcessSd$substitutionDatabaseVariable=="soilC","value GtCO2/yr"]^2),3)
+  # 
+  ######################
+  TotalSequestrationMean<-round( refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="live_biomass_in","value GtCO2/yr"]+
+                                   refCProcessMean[refCProcessMean$substitutionDatabaseVariable=="products_storage_C","value GtCO2/yr"]/2,2)
+  
+  TotalSequestrationSd<-  round(sqrt(refCProcessMean[refCProcessSd$substitutionDatabaseVariable=="live_biomass_in","value GtCO2/yr"]^2+
+                                       refCProcessMean[refCProcessSd$substitutionDatabaseVariable=="products_storage_C","value GtCO2/yr"]^2),3)
+  # 
+  
+  refCProces<-rbind(c("Summed from data synthesis","Balance","Balance","3","biogenic", "Extraction","total_sector_emission","sum of biogenic and fossil, in-situ and ex-situ emissions"," "," "," "," "," "," "," ",(TotalEmissionsMean-TotalEmissionsSd)), refCProces)
+  refCProces<-rbind(c("Summed from data synthesis","Balance","Balance","3","biogenic", "Extraction","total_sector_emission","sum of biogenic and fossil, in-situ and ex-situ emissions"," "," "," "," "," "," "," ",(TotalEmissionsMean)), refCProces)
+  
+  refCProces<-rbind(c("Summed from data synthesis","Balance","Balance","3","biogenic", "Extraction","total_sector_emission","sum of biogenic and fossil, in-situ and ex-situ emissions"," "," "," "," "," "," "," ",(TotalEmissionsMean+TotalEmissionsSd)), refCProces)
+  
+  refCProces<-rbind(c("Summed from data synthesis","Balance","Balance","2","biogenic", "Forest growth","total_sector_sequestration","sum of C sequestered out of atmosphere"," "," "," "," "," "," "," ",(TotalSequestrationMean-TotalSequestrationSd)), refCProces)
+  refCProces<-rbind(c("Summed from data synthesis","Balance","Balance","2","biogenic", "Forest growth","total_sector_sequestration","sum of C sequestered out of atmosphere"," "," "," "," "," "," "," ",(TotalSequestrationMean)), refCProces)
+  refCProces<-rbind(c("Summed from data synthesis","Balance","Balance","2","biogenic", "Forest growth","total_sector_sequestration","sum of C sequestered out of atmosphere"," "," "," "," "," "," "," ",(TotalSequestrationMean+TotalSequestrationSd)), refCProces)
+  
+  
+  refCProces$`value GtCO2/yr`<-as.numeric(refCProces$`value GtCO2/yr`)
+  
+  
+  refCProces$substitutionDatabaseVariable<-
+    factor(refCProces$substitutionDatabaseVariable,
+           levels=rev(c(
+             "harvest",
+             "live_biomass_in",
+             "forestry_emiss",
+             "products_storage_C",
+             "harv_residues", 
+             "soilC",
+             "manufacturing_emiss",
+             "maintenance_emiss",
+             "eol_biogenic_energy",
+             "eol_biogenic_disposal",
+             "total_sector_sequestration",
+             "total_sector_emission"
+           )),
+           labels=rev(c(
+             "Harvested wood",
+             "Net ecosystem production",
+             "Forestry emissions",
+             "Carbon storage in products",
+             "Emissions from harvest residues", 
+             "Emissions from forest soil",
+             "Emissions from manufacturing",
+             "Emissions from products' maintenance",
+             "Emissions from wood-based fuel",
+             "Emissions from products' disposal",
+             "Total sector sequestration",
+             "Total sector emissions"
+           ))
+    )
+  refCProces$FluxDirection<-factor(refCProces$FluxDirection,levels=c("Sequestration","Emission","Balance"),labels=c("Sequestration","Emission ","Balance"))
+  p<-ggplot(refCProces,aes(x=reorder(substitutionDatabaseVariable,`value GtCO2/yr`,na.rm=TRUE),y=`value GtCO2/yr`,col=Compartment))+
+    geom_boxplot() +  
+    scale_fill_manual(values=c("white","grey"))+
+    scale_color_manual(values=c(color_biogenic,color_fossil,color_sum))+
+    stat_summary(fun.y=mean, geom="point", shape=5, size=2, color="black") +
+    theme_bw()+
+    # theme(text = element_text(size=txt_size_big),
+    #        axis.text.x = element_text(hjust=1))+
+    labs(x="",y="Carbon flux (GtCO2/yr)")+
+    #scale_y_continuous(limits = c(-0.5, 5), breaks = c(0, 2, 4))+
+    # scale_x_discrete(labels=c("Wood end-of-life disposal","Wood energy burning","Maintenance energy","Manufacturing machinery","Storage in HWP","Forestry machinery","Harvest impact on soil C", "Wood harvest losses", "Wood harvest", "C sequestration in wood"))+
+    stat_n_text()+
+    coord_flip()+
+    #  facet_wrap(~FluxDirection,ncol=1,scales="free_y",labeller =labeller(AgregationLevel=level.labs))
+    facet_grid(FluxDirection~.,scales="free_y",space="free",switch="both")+  
+    theme(strip.placement = "outside",
+          strip.background = element_rect(color="black", fill="white", size=0.5, linetype="solid" ))
+  return(p)
 
+}
 # Function used in create_dendrogram
 cor.mtest <- function(mat, ...) {
   mat <- as.matrix(mat)
@@ -103,8 +200,10 @@ study<-function(data){
 # --------------------------------------------------------------------------- 
 # ----------------Prepare Experiment-level data -> output = data_expt 
 bibliom<-function(data){
-  dataMd<-data[data$Exclusion=='included',(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names'])  & 
-                 ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")]#data with paper metadata only
+  data<-data[!is.na(data$substitution),]
+  dataMd<-data[data$Exclusion=='included',
+               (colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names'])  & 
+               ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer" ) , ]#data with paper metadata only
   data_bibliom<-setDT(dataMd)[,list(count=.N),names(dataMd)]  #data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
   #data_bibliom_in<-unique(data[data$Exclusion=='included',(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c("Metadata","Protocol"),'names']) ])
   
@@ -112,7 +211,7 @@ bibliom<-function(data){
 
 expt<-function(data){
   print("expt")
-  data_expt<-data[!is.na(data$Exclusion) & data$Exclusion=='included' & !is.na(data$Article_Title),]
+  data_expt<-data[!is.na(data$Exclusion) & data$Exclusion=='included' & !is.na(data$Article_Title) &!is.na(data$substitution),]
  
   data_expt$scaleAgg<-factor(data_expt$scaleAgg, levels=c("loc","reg","w"))
   data_expt$singleProduct<-factor(data_expt$singleProduct, levels=c("UpstreamInput","TimberInput","EnergyInput","mixedProduct","PulpPaperInput"))
@@ -235,7 +334,7 @@ funcFreq<-function(df,categoriesdf){
 assignApproach<-function(data_expt){
   
   nminTechno<-2
-  nminEcos<-3
+  nminEcos<-4
   
   data_expt_approach<-data_expt
   data_expt_approach$modelApproach<-"Hybrid approach"
@@ -719,9 +818,8 @@ create_dendrogram<-function(data_expt){
     fviz_dend(rowCluster,
               k=2 ,           # Cut in x groups
               cex = 0.9,                 # label size
-              rect = TRUE,
+             # rect = TRUE,
               k_colors = c("#2E9FDF", "#FC4E07"),# color labels by groups
-              rect_fill = TRUE,
               labels_track_height=0.5,
               horiz = TRUE,  # color labels by groups
               ggtheme = theme_bw()     # Change theme
@@ -865,11 +963,25 @@ plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,split
     )
     
     
-  }else if(splitName=="modelApproach"){
+  }
+  if(splitName=="driver1Cat"){
+    plotData[plotData$driver1=="technologies/design switch", "split"] <- as.character(plotData[ plotData$driver1=="technologies/design switch", "singleProduct"])
+    plotData$split<-factor(plotData$split,
+                           levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
+                           labels=c("Mobilize additional wood by increased removals","Mobilize additional wood by increased productivity", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
+                           )  
+    
+    
+    
+  }
+  if(splitName=="modelApproach"){
     plotData$split<-factor(plotData$split)
   }
   
-  plotData$driver1Cat<-factor(plotData$driver1Cat,levels=c("Silviculture","Supply chain", "Technology","Multiple strategies"),labels=c("Mobilize additional wood", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies"))  
+  plotData$driver1Cat<-factor(plotData$driver1Cat,
+                              levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
+                              labels=c("Mobilize additional wood by increased removals","Mobilize additional wood by increased productivity", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
+  )  
   plotData$split2<-plotData$driver1Cat
   
   print(data.frame(plotData)$split)
@@ -914,8 +1026,11 @@ forestPlotDataFunc<-function(plotData,split,includeSplit2){
                                      !(forestPlotData$driver1Cat)%in%c("Demand" ,"Environmental change" ),]
     forestPlotData<-merge(forestPlotData,countRecordSplit[,c("nRec","split","driver1Cat")],by=c("split","driver1Cat"),all.x=TRUE)
     forestPlotData<-merge(forestPlotData,countStudySplit[,c("nStud","split","driver1Cat")],by=c("split","driver1Cat"),all.x=TRUE)
-    forestPlotData$split2<-factor(forestPlotData$driver1Cat,levels=c("Silviculture","Supply chain", "Technology","Multiple strategies"),labels=c("Mobilize additional wood", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies"))
-    
+    forestPlotData$split2<-factor(forestPlotData$driver1Cat,
+                                  levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
+                                  labels=c("Mobilize additional wood by increased removals","Mobilize additional wood by increased productivity", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
+    )  
+
     
   }else{
     countStudySplit <- aggregate(substitution ~ split, aggregate(substitution~PaperID+split,plotData,mean), length)

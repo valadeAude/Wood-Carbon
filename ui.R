@@ -2,6 +2,7 @@ library(shinyWidgets)
 library(shinydashboard)
 library(shiny)
 library(slider)
+library(htmltools)
 sidebar <- dashboardSidebar(
   width = 150,
   hr(),
@@ -24,21 +25,23 @@ sidebar <- dashboardSidebar(
   
 )
 body <- dashboardBody(
+  withMathJax(),
+  use_theme(my_theme),
   tabItems(
     tabItem(tabName = "home",
             fluidPage(
-              includeMarkdown("Home.md")
+              includeMarkdown("./TextContent/Home.Rmd")
             )
     ),
     tabItem(tabName = "context",
             fluidPage(
-              includeMarkdown('./PrinciplesContext.md'
+              includeMarkdown('./TextContent/PrinciplesContext.Rmd'
               )
             )
     ),
     tabItem(tabName = "methods",
             fluidPage(
-              includeMarkdown( './PrinciplesMethods.md'
+              includeMarkdown( './TextContent/PrinciplesMethods.Rmd'
               )
             )
     ),
@@ -153,13 +156,7 @@ body <- dashboardBody(
                                       min = minValSub,
                                       max = maxValSub,
                                       value = c(minValSub, maxValSub),
-                                    ),#end sliderInput
-                                    checkboxGroupInput(#beginning checkboxGroupInput
-                                      inputId="select_NA_substitution",
-                                      label=NULL,
-                                      choices= "NA",
-                                      selected = "NA",
-                                    )#end checkboxgroupInput
+                                    )
                                   )#end column
                                 )#end fluidrow 
                                 
@@ -177,8 +174,8 @@ body <- dashboardBody(
                   fluidRow(
                     # Clicking this will increment the progress amount
                     box(width = 4, 
-                        actionButton("submit", "Submit filters",style='padding:10px; font-size:100%'),
-                        actionButton("reset", "Reset filters",style='padding:10px; font-size:100%;  background-color: #337ab7')),
+                        actionButton("submit", "Submit filters",style='padding:10px; font-size:100%;  background-color: #e27a3a'),
+                        actionButton("reset", "Reset filters",style='padding:10px; font-size:100%;  background-color: #f3eada')),
                     infoBoxOutput("summaryExptBox"),
                     infoBoxOutput("summaryStudyBox")
                     
@@ -198,7 +195,7 @@ body <- dashboardBody(
                     tabPanel("Locations", 
                              div(  
                                h3("Number of included studies with explicit reference to a country location", class = "description"),
-                               addSpinner(plotlyOutput("countryData", height = "500px"), spin = "circle", color = "#377EB8") #This will display the plot 
+                               addSpinner(plotlyOutput("countryData", height = "500px"), spin = "circle", color = "green") #This will display the plot 
                                
                              ),#end div                  
                     ),
@@ -257,8 +254,8 @@ body <- dashboardBody(
               fluidRow(
                 # Clicking this will increment the progress amount
                 box(width = 4,
-                    actionButton("submitResults", "Submit filters",style='padding:10px; font-size:100%'),
-                    actionButton("resetResults", "Reset filters",style='padding:10px; font-size:100%;  background-color: #337ab7')),
+                    actionButton("submitResults", "Apply filters",style='padding:10px; font-size:100%;  background-color: #e27a3a'),
+                    actionButton("resetResults", "Ignore filters",style='padding:10px; font-size:100%;  background-color: #f3eada')),
                 infoBoxOutput("summaryExptBoxResults"),
                 infoBoxOutput("summaryStudyBoxResults")
               ),
@@ -269,26 +266,32 @@ body <- dashboardBody(
                 id = "tabset1", height = "800px",width=12,
                 tabPanel("Modeling approaches", 
                          div(  
-                           addSpinner(plotOutput("dendrogram", height = "500px"), spin = "circle", color = "#377EB8")
+                           addSpinner(plotOutput("dendrogram", height = "500px"), spin = "circle", color = "#377EB8"),
+                           includeMarkdown( './TextContent/leg_dendrogram.Rmd')
                            
                          )
                 ),
                 tabPanel("Carbon balance", 
                          div(  
-                           addSpinner(plotOutput("approachC",height="500px"), spin = "circle", color = "#377EB8")
+                           addSpinner(plotOutput("approachC",height="500px"), spin = "circle", color = "#377EB8"),
+                           includeMarkdown( './TextContent/leg_approachC.Rmd')
                            
                          ),#end div                  
                 ),
                 tabPanel("Model components", 
                          div(  
-                           addSpinner(plotlyOutput("modelComponentsC", height = "500px"), spin = "circle", color = "#377EB8")
+                           addSpinner(plotlyOutput("modelComponentsC", height = "500px"), spin = "circle", color = "#377EB8"),
+                           includeMarkdown( './TextContent/leg_components.Rmd')
+                           
                            
                          )  #end div                
                 ),
                 tabPanel("Mobilization strategies", 
                          div(  
                            
-                           addSpinner(plotOutput("driverC", height = "500px"), spin = "circle", color = "#377EB8")
+                           addSpinner(plotOutput("driverC", height = "500px"), spin = "circle", color = "#377EB8"),
+                           includeMarkdown( './TextContent/leg_driverC.Rmd')
+                           
                          )  #end div                
               ), #end tabpanel      
             )#end tabbox

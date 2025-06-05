@@ -1,3 +1,0 @@
-# Context
-Forest management can reduce net greenhouse gas (GHG) emissions to the atmosphere by three processes: (i) carbon sequestration in the forest soil and biomass (i) carbon storage in harvested wood products (HWP) and (iii) using wood harvest to avoid fossil fuel emissions, often referred to as substitution or displacement. Of these three levers, European forest climate policies primarily incentivize substitution at the expense of in-situ forest sequestration. Contrary to carbon sequestration in forests and products, the substitution potential depends –by definition–on the reference chosen and on the system’s boundaries making this approach highly subjective.#  
-

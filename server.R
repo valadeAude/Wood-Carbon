@@ -15,6 +15,8 @@ options(shiny.error = function() {
 server <- function(input, output, session) {
   w<-Waiter$new()
   
+ 
+  
   data_fltr <- eventReactive(input$submit, {
     filtered_data <- data[data$scaleAgg %in% input$select_scale&
                             data$country %in% input$select_countries&
@@ -38,10 +40,10 @@ server <- function(input, output, session) {
     if (is.null(input$select_NA_substitution)) {
       filtered_data <- filtered_data[!is.na(filtered_data$substitution), ]
     }
-    else{
-      filtered_data <- filtered_data
-      
-    }
+     else{
+       filtered_data <- filtered_data
+     
+     }
     
     #lost_data<-data[!(data$DOI %in% filtered_data),]
   }, ignoreNULL = FALSE) 
@@ -64,10 +66,10 @@ server <- function(input, output, session) {
                       value = c(minValSub, maxValSub),
     )#end sliderInput
     updateCheckboxGroupInput(session,inputId="select_NA_substitution", selected = "NA")    
-    
   },ignoreNULL=FALSE )
+  
   observeEvent(input$reset, {
-    
+
     updateSelectInput( session, "select_processes",selected=NULL )
     updateSelectInput(session, "select_dynamics", selected = NULL)
     updateSelectInput(session,"select_driver1Cat",selected = driver1Cat)
@@ -79,10 +81,10 @@ server <- function(input, output, session) {
                       max = maxValSub,
                       value = c(minValSub, maxValSub),
     )#end sliderInput
-    updateCheckboxGroupInput(session,inputId="select_NA_substitution", selected = "NA")    
-    
+    updateCheckboxGroupInput(session,inputId="select_NA_substitution", selected = "NA")
+
   },ignoreNULL=FALSE ) #https://github.com/rstudio/shiny/issues/2097
-  
+
   data_unfltr <- eventReactive(input$submit, {
     unfiltered_data <- data[!(data$scaleAgg %in% input$select_scale)|
                               !(data$country %in% input$select_countries)|
@@ -202,26 +204,26 @@ server <- function(input, output, session) {
   
   ## Results section -> use plotData reactive variables that respond to input$submitResults and input$resetResults
  
-  v <- reactiveValues(data_expt = data_expt, data_bibliom=data_bibliom,filterResults="no")
+  res <- reactiveValues(data_expt = data_expt, data_bibliom=data_bibliom,filterResults="no")
   
   observeEvent(input$submitResults, {
-    v$data_expt<- data_expt_select()
-    v$data_expt_approach<- data_expt_approach_select()
-    v$data_bibliom<-data_bibliom_select()
-    v$filterResults<-"filter"
+    res$data_expt<- data_expt_select()
+    res$data_expt_approach<- data_expt_approach_select()
+    res$data_bibliom<-data_bibliom_select()
+    res$filterResults<-"filter"
   })
   
   observeEvent(input$resetResults, {
-    v$data_expt <- data_expt
-    v$data_expt_approach <- data_expt_approach
-    v$data_bibliom <- data_bibliom
-    v$filterResults<-"no"
+    res$data_expt <- data_expt
+    res$data_expt_approach <- data_expt_approach
+    res$data_bibliom <- data_bibliom
+    res$filterResults<-"no"
     
   })  
   
   output$dendrogram<-renderPlot({
     print("in server : dendrogram")
-    data_expt_approachResults<-assignApproach(v$data_expt)
+    data_expt_approachResults<-assignApproach(res$data_expt)
     create_dendrogram(data_expt_approachResults)
   
   })
@@ -229,8 +231,8 @@ server <- function(input, output, session) {
   output$approachC<-renderPlot({
     #data_expt_approach<-assignApproach(data_expt) #nminTechno,nmaxTechno,nminEcos,nmaxEcos
     #     plotApproachC<-approachC(data_expt_approach)
-    data_expt_approachResults<-assignApproach(v$data_expt)
-    if (v$filterResults=="filter") {
+    data_expt_approachResults<-assignApproach(res$data_expt)
+    if (res$filterResults=="filter") {
       print("filters included")
       plotData<-plotDataFunc(data_expt_approachResults, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
       forestPlotData<-forestPlotDataFunc(plotData,"modelApproach",FALSE)
@@ -258,14 +260,19 @@ server <- function(input, output, session) {
   
   
   output$driverC<-renderPlot({
-    data_expt_approachResults<-assignApproach(v$data_expt)
+    data_expt_approachResults<-assignApproach(res$data_expt)
     
-    if (v$filterResults=="filter") {
+    if (res$filterResults=="filter") {
       plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1")
       forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1",TRUE)
+    #  plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1Cat")
+     # forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1Cat",FALSE)      
     }else{
-      plotData.driverC<-read.csv(paste0(initDataPath,"plotData.driverC.csv"))
+     plotData.driverC<-read.csv(paste0(initDataPath,"plotData.driverC.csv"))
       forestPlotData.driverC<-read.csv(paste0(initDataPath,"forestPlotData.driverC.csv"))
+   #   plotData.driverC<-read.csv(paste0(initDataPath,"plotData.driverCatC.csv"))
+    #  forestPlotData.driverC<-read.csv(paste0(initDataPath,"forestPlotData.driverCatC.csv"))
+      
      }
     create_forest_plot(plotData.driverC,forestPlotData.driverC,TRUE)
   })
@@ -294,7 +301,7 @@ server <- function(input, output, session) {
   output$summaryExptBox <- renderInfoBox({
     infoBox(
       "Records", paste0(nrow(data_expt_select()),"/",nrow(data_expt)), icon = icon("list"),
-      color = "navy"
+      color = "maroon"
     )
   })
   output$summaryStudyBox <- renderInfoBox({
@@ -305,13 +312,13 @@ server <- function(input, output, session) {
   })
   output$summaryExptBoxResults <- renderInfoBox({
     infoBox(
-      "Records", paste0(nrow(v$data_expt),"/",nrow(data_expt)), icon = icon("list"),
-      color = "navy"
+      "Records", paste0(nrow(res$data_expt),"/",nrow(data_expt)), icon = icon("list"),
+      color = "maroon"
     )
   })
   output$summaryStudyBoxResults <- renderInfoBox({
     infoBox(
-      "Publications", paste0(nrow(v$data_bibliom), "/",nrow(data_bibliom)), icon = icon("list"),
+      "Publications", paste0(nrow(res$data_bibliom), "/",nrow(data_bibliom)), icon = icon("list"),
       color = "orange"
     )
   })

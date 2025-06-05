@@ -1,0 +1,7 @@
+# Context
+Forest management can reduce net greenhouse gas (GHG) emissions to the atmosphere by three processes: (i) carbon sequestration in the forest soil and biomass (i) carbon storage in harvested wood products (HWP) and (iii) using wood harvest to avoid fossil fuel emissions, often referred to as substitution or displacement. Of these three levers, European forest climate policies primarily incentivize substitution at the expense of in-situ forest sequestration. Contrary to carbon sequestration in forests and products, the substitution potential depends –by definition–on the reference chosen and on the system’s boundaries making this approach highly subjective.#  
+
+As a background to our meta-analysis we compiled a review of the component fluxes of the global carbon cycle of the wood sector. We searched for studies that estimated each of the global fluxes listed in Figure 1 and found 13 studies, each covering a section of the global wood sector carbon cycle (Table S1). Each study’s estimate was converted into homogeneous units and grouped by process type.
+
+<img src="Csynthesis.png" alt= “” width="900" title="Synthesis of carbon fluxes in the global wood sector">
+<figcaption> Global estimates of the carbon flux for each stage of forestry value chain. The whisker plot represents the 5, 25, 50, 75 and 95 percentiles and the diamond represents the average carbon flux. The number of data sources is shown by n </figcaption>

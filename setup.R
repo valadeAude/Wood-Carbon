@@ -2,7 +2,7 @@ source("./functions.R")
 ## This script reads all raw data and creates R workspace that will be called by the application
 rawDataPath<-"./rawData/"
 initDataPath<-"./initData/"
-
+wwwDataPath<-"./www/"
 #database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.init.xlsx")
 database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.ALL.xlsx")
 
@@ -10,9 +10,10 @@ database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC
 #For FAO and Bais data on country production of wood
 dataPath<-"/Users/valade/EcoSols_Nextcloud2/Substitution/Substitution_AV/CCycleSynthesis/biblioData/"
 #For global flux size
-dataFlux.file<-"/Users/valade/EcoSols_Nextcloud2/Substitution/Substitution_AV/manuscript/2024_metaanalysis/TableForestCCycleSynthesis.2.xlsx"
+dataFlux.file<-paste0(rawDataPath,"TableForestCCycleSynthesis.3.xlsx")
 
 
+# Look at  world values in Peng-> extract	https://unece.org/sites/default/files/2022-05/unece-fao-sp-51-main-report-forest-sector-outlook_0.pdf
 
 # Set graphic parameters
 txt_size<-10
@@ -21,16 +22,13 @@ txt_size_big<-12
 txt_size_verybig<-24
 
 txt_angle<-45
-color_fossil<- as.character("#2E8FC5")
-color_biogenic<-as.character("#208039")
+color_fossil<- as.character("#332288ff")
+color_biogenic<-as.character("#cc6677ff")
+color_sum<-"black"
 palette_C<-c(color_fossil,"grey",color_biogenic)
-color_insitu<-as.character("#D59138")
-color_exsitu<-as.character("#D4BA12")
+color_insitu<-as.character("#117733ff")
+color_exsitu<-as.character("#ddcc77ff")
 palette_situ<-c(color_insitu,"grey",color_exsitu)
-
-color_CBoth <- colorRampPalette(c(color_fossil,color_biogenic))(3)[2]
-color_situBoth <- colorRampPalette(c(color_insitu,color_exsitu))(3)[2]
-
 # ==========================Process data
 palette<-read_excel(database.file,sheet=3,col_names=TRUE)
 
@@ -43,6 +41,13 @@ wood_type_names<-c(
   `EnergyInput` = "Energy",
   `All`='All types of wood use'
 )
+
+# -------------
+# ------------- Gobal carbon cycle synthesis
+refCProces<-GlobalFluxData(dataFlux.file)
+CcylePlot<-create_C_synthesis_plot(refCProces)
+ggsave(paste0(wwwDataPath,"Csynthesis.png"),width=10,bg='transparent')
+
 
 # -------------
 # ------------- Read header of data and palette to have a lookup table for category of variables along with their colors
@@ -125,11 +130,8 @@ maxValSub <- max(valSub, na.rm = TRUE)
 
 
 
-#Test
 data_expt_approachResults<-assignApproach(data_expt)
-
-
-# 
+ 
 plotData.approachC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
 forestPlotData.approachC<-forestPlotDataFunc(plotData.approachC,"modelApproach",FALSE)
 write.csv(plotData.approachC,paste0(initDataPath,"plotData.approachC.csv"))
@@ -143,6 +145,10 @@ write.csv(forestPlotData.driverC,paste0(initDataPath,"forestPlotData.driverC.csv
 
 
 
+plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1Cat")
+forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1Cat",FALSE) #set includeSplit2 to TRUE
+write.csv(plotData.driverC,paste0(initDataPath,"plotData.driverCatC.csv"))
+write.csv(forestPlotData.driverC,paste0(initDataPath,"forestPlotData.driverCatC.csv"))
 
 
 save.image(paste0(initDataPath,"initData.Rdata"))
