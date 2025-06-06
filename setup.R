@@ -99,6 +99,7 @@ map.world$region<-str_to_title(map.world$region)
 # countries_study <- sort(unique(data$country))
 #countries <- data_study$country
 countries <- sort(unique(data_study$country))
+print(countries)
 #countries <- ifelse(countries == "Eur", "Europe", countries)
 countriesEurope <- c("Austria", "Denmark","Finland", "France", "Germany", "Ireland", "Lithuania", "Norway", "Portugal", "Sweden", "Switzerland", "Uk", "Ukraine")
 
@@ -152,7 +153,4 @@ write.csv(forestPlotData.driverC,paste0(initDataPath,"forestPlotData.driverCatC.
 
 
 save.image(paste0(initDataPath,"initData.Rdata"))
-
-
-
 

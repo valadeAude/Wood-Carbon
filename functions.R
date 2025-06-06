@@ -129,7 +129,7 @@ create_C_synthesis_plot<-function(refCProces){
     geom_boxplot() +  
     scale_fill_manual(values=c("white","grey"))+
     scale_color_manual(values=c(color_biogenic,color_fossil,color_sum))+
-    stat_summary(fun.y=mean, geom="point", shape=5, size=2, color="black") +
+    stat_summary(fun=mean, geom="point", shape=5, size=2, color="black") +
     theme_bw()+
     # theme(text = element_text(size=txt_size_big),
     #        axis.text.x = element_text(hjust=1))+
@@ -192,7 +192,7 @@ study<-function(data){
   data_study$study_code<-apply( data_study[,(colnames(data_study) %in% c("DOI",categoriesdf[categoriesdf$cat0 %in% c("Metadata", "Model"),'names']))] , 1 , paste , collapse = "" )
   data_study<-data_study[!duplicated(data_study$study_code),]
   # data_study$boundaries<-factor(data_study$boundaries, levels=c("biogenic_insitu_only","biogenic_all","biogenic_exsitu_only","bothC_bothSitu","biogenic_insitu_fossil_exsitu","exsitu_only","fossil_exsitu_only"))
-  
+
   return(data_study)
 }
 
@@ -296,7 +296,6 @@ country<-function(data){
   return(countryData)
 }
 
-df<-data_expt
 funcFreq<-function(df,categoriesdf){
   dfShort<-subset(df,select=-c(Exclusion,DOI))
   
@@ -440,8 +439,7 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
   formulaRHS<-paste0(paste(listCriteria, collapse="+"),"+get(compartment)")
   formulaShort<-""
   for(i in seq(length(listCriteria))){
-    print("along listCriteria")
-    print(listCriteria[i])
+   
     formulaShort<-paste0(formulaShort,"get(listCriteria[",i,"])")
     if(i!=length(listCriteria)){
       formulaShort<-paste(formulaShort,"+")
@@ -495,18 +493,12 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
       #for each subplot bootstrap (compare all pairs of same-paper)
       if( nrow(data_expt_pairs)>0){
         if(exists("tTestPairs")){
-          print("trying to rbind")
-          print(paste("tTestPairs  :",dim(tTestPairs)))
-          print(paste("data_expt_pairs  :",dim(data_expt_pairs)))
-          print(paste("t.test2", t.test2(data_expt_pairs$substitution.mn_0, data_expt_pairs$substitution.mn_1, data_expt_pairs$substitution.sd_0, data_expt_pairs$substitution.sd_1, data_expt_pairs$substitution.N_0,data_expt_pairs$substitution.N_1,m0=0)))
-          
+         
           tTestPairs<-rbind(tTestPairs,cbind(compartment,data_expt_pairs,t.test2(data_expt_pairs$substitution.mn_0, data_expt_pairs$substitution.mn_1, data_expt_pairs$substitution.sd_0, data_expt_pairs$substitution.sd_1, data_expt_pairs$substitution.N_0,data_expt_pairs$substitution.N_1,m0=0)))
-          print(paste("tTestPairs:",dim(tTestPairs)))
-          
+
         }else{
           tTestPairs<- cbind(compartment,data_expt_pairs,t.test2(data_expt_pairs$substitution.mn_0, data_expt_pairs$substitution.mn_1, data_expt_pairs$substitution.sd_0, data_expt_pairs$substitution.sd_1, data_expt_pairs$substitution.N_0,data_expt_pairs$substitution.N_1,m0=0))
-          print(paste("tTestPairs:",dim(tTestPairs)))
-          
+
         }
       }
     }
@@ -525,24 +517,14 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
     #aggregate(data_modelShort[,],by=list(data_modelShort$singleProduct), function(x) length(which(x==1)))
     if(!exists("tTestPairsSignifAggVar")){
       tTestPairsSignifAggVar<-tTestPairsSignifAgg
-      print(paste("tTestPairsSignifAggVar:",dim(tTestPairsSignifAggVar)))
     }else{
       tTestPairsSignifAggVar<-merge(tTestPairsSignifAggVar,tTestPairsSignifAgg,by="process",all=TRUE)
-      print(paste("tTestPairsSignifAggVar:",dim(tTestPairsSignifAggVar)))
-      
+
     }
   }
   
-  #### Heatmap
-  print("AggVar")
-  print(dim(tTestPairsSignifAggVar))
-  print(head(tTestPairsSignifAggVar))
-  
-  print(class(tTestPairsSignifAggVar))
-  
   tTestPairsSignifAggVarMelt<-melt(as.data.frame(tTestPairsSignifAggVar),id="process")
   print("AggVarMelt")
-  print(dim(tTestPairsSignifAggVarMelt))
   colnames(tTestPairsSignifAggVarMelt)<-c("process","variable","value")
   
   tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="live_biomass_C","process"]<-"Live biomass"
@@ -646,15 +628,10 @@ plotCountryData<-function(countryData, sortingCriteria){
   countryData<-unique(countryData[order(-countryData[,sortingCriteria]), ])
   countryData$country<-factor(countryData$country,levels=as.vector(countryData[order(countryData[,sortingCriteria]), 'country']))
   
-  print("countryData:")
-  
-  print(head(countryData) )
-  
+
+
   countryDataSubset<-rbind(countryData[1:10,],countryData[!is.na(countryData$PaperID),])
-  print("countryDataSubset:")
-  print(head(countryDataSubset))
-  
-  print("plotting left side")
+ 
   
   ggplot(countryDataSubset,aes(fill=PaperID,y=country,x=get(sortingCriteria),label=country))+
     geom_bar(stat='identity',position='dodge',colour="gray",size=0.05)+
@@ -688,16 +665,13 @@ create_processes_frequency <- function(study_freq, wrap){
     
   }else{
     plotData<-study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),c("longName","variable","value","cat2","colcat2")] 
-#    plotData<-study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),c("names","variable","value","cat2","colcat2")] 
+    plotData$cat2<-factor(plotData$cat2,levels=c("Dynamics","SubstitutionShortcut","C fluxes"), labels=c("Dynamics","Substitution shortcut","C fluxes"))
     
     colorVect<-unique(plotData[,c("colcat2","cat2")])
     colordictProcesses<-setNames(as.character(colorVect$colcat2), 
                                  as.character(colorVect$cat2))    
     plotData$wrap<-plotData$variable
-    #Debug info
-    print("found(wrap)")
-    print(head(plotData))
-    ##   
+   
   }
   plotData$wrap<-factor(plotData$wrap,levels=sort(levels(factor(plotData$wrap))))
   ggplot(plotData,aes(x=reorder(longName,value),y=value,fill=cat2))+ 
@@ -707,7 +681,10 @@ create_processes_frequency <- function(study_freq, wrap){
     #  scale_fill_manual(values=colorsLabels$colcat2,labels=waiver())+   
     scale_fill_manual(values=colordictProcesses)+   
     theme_bw()+ 
-    theme( axis.ticks = element_blank(),text = element_text(size=txt_size_big),axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.))+ 
+    theme( axis.ticks = element_blank(),
+           text = element_text(size=txt_size_big),
+           axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.),
+           legend.title = element_blank())+ 
     ylab("Number of studies")+ 
     xlab("Forest sector description")+
       geom_text(aes(label = value, text = paste(longName, value)), alpha = 0, hoverinfo = "text", show.legend = FALSE)+
@@ -728,35 +705,24 @@ create_processes_versus_flux_size<-function(study_freq,palette, wrap){
   my.cols <- c(brewer.pal(5, palette),"#000000")
   print("1")
   #  plotData<-study_freq[(study_freq$cat1 =="Processes") & study_freq$cat2=="C fluxes"& study_freq$names!="eol_fossil_emiss"& !is.na(study_freq$cat1),c("names","variable","value","cat2","colcat2")]
-  plotData<-study_freq[(study_freq$cat2=="C fluxes"),c("longName","variable","value","valuePercent","cat2","colcat2","nSingleProduct")]
+  plotData<-study_freq[(study_freq$cat2=="C fluxes"),c("names","longName","variable","value","valuePercent","cat2","colcat2","nSingleProduct")]
   if(missing(wrap)){
-    print("missing wrap:")
-    plotDataAgg<-aggregate(cbind(value,nSingleProduct)~longName+cat2,data=plotData,sum)
+    plotDataAgg<-aggregate(cbind(value,nSingleProduct)~names+cat2+longName,data=plotData,sum)
     plotDataAgg$valuePercent<-plotDataAgg$value/plotDataAgg$nSingleProduct*100
     plotDataAgg$variable<-"All"
     plotDataAgg$wrap<-"All"
     plotData<-plotDataAgg
-    print(paste("plotData$wrap:",plotData$wrap))
-    
+
   }else{
-    print(paste("found wrap:",wrap))
-    print(plotData$variable)
-    print(sort(levels(plotData[,"variable"])))
-    
     plotData$wrap<-factor(plotData$variable,levels=sort(levels(plotData[,"variable"])))
-    print(paste("plotData$wrap:",plotData$wrap))
-    
   }
-  print("out of if")
-  print(paste("plotData$wrap:",plotData$wrap))
-  
+ 
   #plotData<-rbind(plotData[,c('names','variable','valuePercent','value','nSingleProduct','cat2')],plotDataAgg[,c('names','variable','valuePercent','value','nSingleProduct','cat2')])
   maxValue<-max(plotData$value)+5
   maxValuePercent<-max(plotData$valuePercent)+5  
   
-  plotDataRefCProcess<-merge(plotData,refCProcessMean,by.x="longName",by.y="substitutionDatabaseVariable")
-  print(paste("plotDataRefCProcess$wrap:",plotDataRefCProcess$wrap))
-  
+  plotDataRefCProcess<-merge(plotData,refCProcessMean,by.x="names",by.y="substitutionDatabaseVariable")
+
   if(dim(plotDataRefCProcess)[1]>0){
     ggplot(plotDataRefCProcess,aes(x=(`value GtCO2/yr`),y=(valuePercent)))+#,shape=names))+
       geom_point(aes(size=value))+
@@ -782,6 +748,7 @@ create_driver_frequency <- function(expt_freq,wrap){
     
     plotData<-expt_freq[(expt_freq$cat1 =="Change in practices"|expt_freq$cat1 =="Environmental change") & !is.na(expt_freq$cat1),
                         c("longName","variable","value","cat2","colcat2")] 
+    plotData$cat2<-factor(plotData$cat2,levels=c("Technology","SilvicultureRemov","SilvicultureProd"," Supply chain","Demand","Environmental change"),labels=c("Technology","Forest harvest","Forest growth"," Supply chain","Demand","Environmental change"))
     plotData<-aggregate(plotData$value ,by=list(plotData$longName,plotData$cat2,plotData$colcat2),FUN=sum)
     colnames(plotData)<-c("longName","cat2","colcat2","value")
     colorVectDrivers<-unique(plotData[,c("colcat2","cat2")])
@@ -798,10 +765,7 @@ create_driver_frequency <- function(expt_freq,wrap){
                                as.character(colorVectDrivers$cat2)) 
     
     plotData$wrap<-plotData$variable
-    #Debug info
-    print("found(wrap)")
-    print(head(plotData))
-    ##   
+   
   }
   plotData$wrap<-factor(plotData$wrap,levels=sort(levels(factor(plotData$wrap))))
   
@@ -810,7 +774,10 @@ create_driver_frequency <- function(expt_freq,wrap){
     geom_bar(stat="identity") +  
     scale_fill_manual(values=colordictDrivers)+   
     theme_bw()+ 
-    theme( axis.ticks = element_blank(),text = element_text(size=txt_size_big),axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.))+ 
+    theme( axis.ticks = element_blank(),
+           text = element_text(size=txt_size_big),
+           axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.),
+           legend.title = element_blank())+ 
     ylab("Number of experiments")+ 
     xlab("Forest sector description") +
     facet_wrap(~wrap)
@@ -843,6 +810,7 @@ create_dendrogram<-function(data_expt){
     fviz_dend(rowCluster,
               k=2 ,           # Cut in x groups
               cex = 0.9,                 # label size
+              linewidth=0.1,
              # rect = TRUE,
               k_colors = c("#2E9FDF", "#FC4E07"),# color labels by groups
               labels_track_height=0.5,
@@ -1036,8 +1004,7 @@ forestPlotDataFunc<-function(plotData,split,includeSplit2){
   
   forestPlotData<-coef(summary((mod.model)))
   forestPlotData$split<-substring(rownames(forestPlotData),6)
-  print(paste0("forestPlotData$split",forestPlotData$split))
-  
+
   if(includeSplit2){
     
     countStudySplit <- aggregate(substitution ~ split+split2, aggregate(substitution~PaperID+split+split2,plotData,mean), length)
@@ -1058,27 +1025,22 @@ forestPlotDataFunc<-function(plotData,split,includeSplit2){
   }else{
     countStudySplit <- aggregate(substitution ~ split, aggregate(substitution~PaperID+split,plotData,mean), length)
     colnames(countStudySplit)<-c("split","nStud")
-    print(paste0("countStudySplit",countStudySplit))
     countRecordSplit <- aggregate(substitution ~  modelApproach+split, plotData, length)
     colnames(countRecordSplit)<-c("modelApproach","split","nRec")
-    print(paste0("countStudySplit",countRecordSplit))
-    print("----- going for the merge")
-    
+
     print(forestPlotData)
     
     #forestPlotData<-merge(forestPlotData,unique(plotData[,c("split")]),by="split",all.x=T)
     forestPlotData<-forestPlotData[forestPlotData$split %in% levels(factor(plotData$split)) ,]
     forestPlotData<-merge(forestPlotData,countRecordSplit[,c("nRec","split")],by=c("split"),all.x=TRUE)
     forestPlotData<-merge(forestPlotData,countStudySplit[,c("nStud","split")],by=c("split"),all.x=TRUE)
-    print(paste0("forestPlotData",forestPlotData))
-    
+
   }
   
   # countStudySplit$nStud<-round(countStudySplit$substitution,2)
   #  countRecordSplit$nRec<-round(countRecordSplit$substitution,2)
   listSplits<-countRecordSplit[,"split"]
-  print(paste0("listSplits",listSplits))
-  
+
   forestPlotData$signif<-""
   forestPlotData[forestPlotData$pval<=0.1,"signif"]<-",."
   forestPlotData[forestPlotData$pval<=0.05,"signif"]<-",*"
@@ -1091,7 +1053,6 @@ forestPlotDataFunc<-function(plotData,split,includeSplit2){
   forestPlotData[forestPlotData$pval<=0.001,"color"]<-"black"
   
   forestPlotData$substitution<-forestPlotData$estimate
-  print(paste0("split",split))
   if(split=="driver1"){
     
     
@@ -1099,8 +1060,7 @@ forestPlotDataFunc<-function(plotData,split,includeSplit2){
   
   
   
-  print(forestPlotData$split)
-  
+
   return(forestPlotData)
   
 }

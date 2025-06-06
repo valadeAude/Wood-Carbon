@@ -70,9 +70,9 @@ body <- dashboardBody(
                                          selectInput(#beginning selectInput
                                            inputId = "select_countries",
                                            label = "Country", 
-                                           choices = countries, 
+                                           choices = sort(countries), 
                                            multiple = TRUE, 
-                                           selected = countries
+                                           selected = sort(countries)
                                          ),#end selectInput   
                                          checkboxGroupInput( #beginning checkboxGroupInput
                                            inputId="select_single_product",
