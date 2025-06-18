@@ -133,7 +133,7 @@ server <- function(input, output, session) {
   
   
   output$filtered_db_table<-renderDT(
-    unique(data_fltr()[,c("PaperID")]), options = list(lengthChange = FALSE))
+    unique(data_fltr()[,c("PaperID","DOI")]), options = list(lengthChange = FALSE))
   
   output$barplotYear<- renderPlotly({
     #plotBarplotYear(data_bibliom_select())

@@ -4,4 +4,4 @@ Forest management can reduce net greenhouse gas (GHG) emissions to the atmospher
 As a background to our meta-analysis we compiled a review of the component fluxes of the global carbon cycle of the wood sector. We searched for studies that estimated each of the global fluxes listed in Figure 1 and found 13 studies, each covering a section of the global wood sector carbon cycle (Table S1). Each study’s estimate was converted into homogeneous units and grouped by process type.
 
 <img src="Csynthesis.png" alt= “” width="900" title="Synthesis of carbon fluxes in the global wood sector">
-<figcaption> Global estimates of the carbon flux for each stage of forestry value chain. The whisker plot represents the 5, 25, 50, 75 and 95 percentiles and the diamond represents the average carbon flux. The number of data sources is shown by n </figcaption>
+<em> Global estimates of the carbon flux for each stage of forestry value chain. The whisker plot represents the 5, 25, 50, 75 and 95 percentiles and the diamond represents the average carbon flux. The number of data sources is shown by n. </em>

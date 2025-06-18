@@ -64,8 +64,8 @@ body <- dashboardBody(
                                          checkboxGroupInput(#beginning checkboxGroupInput
                                            inputId="select_scale",
                                            label="Spatial scale",
-                                           choices= c("world"="w","regional" = "reg", "local" = "loc"),
-                                           selected = c("world"="w","regional" = "reg", "local" = "loc"),
+                                           choices= c("World"="w","Regional" = "reg", "Local" = "loc"),
+                                           selected = c("World"="w","Regional" = "reg", "Local" = "loc"),
                                          ),#end  checkboxGroupInput 
                                          selectInput(#beginning selectInput
                                            inputId = "select_countries",
@@ -78,7 +78,7 @@ body <- dashboardBody(
                                            inputId="select_single_product",
                                            label="Wood product type",
                                            #  choices = products,
-                                           choiceNames=productsLabels,
+                                           choiceNames=str_to_title(productsLabels),
                                            choiceValues=products,
                                            selected = products,  
                                          ), #end  checkboxGroupInput 
@@ -170,8 +170,8 @@ body <- dashboardBody(
                               
                        )#end tabbox
                        )#end box
-                       ,
-                       DTOutput('filtered_db_table')
+                       #,
+                       #DTOutput('filtered_db_table')
                        
                 ),#end column
                 
@@ -193,7 +193,7 @@ body <- dashboardBody(
                   tabBox(
                     # Standard TabBox
                     #                  title='Plot',
-                    id = "tabset1", height = "500px",width=12,
+                    id = "tabset1", height = "700px",width=12,
                     tabPanel("Years", 
                              div(  
                                h3("Years of publication of included studies", class = "description"),
@@ -247,9 +247,13 @@ body <- dashboardBody(
                                )#end  checkboxGroupInput
                              )                  ),  #end tabpanel      
                     
-                  )#end tabbox
+                  ),#end tabbox
+                  box( id = "boxTable", width=12,#height = "500px",
+                       DTOutput('filtered_db_table')
+                       )
                   
-                )#end column
+                ),#end column
+                
               )#end fluirow
               
               # infoBox("Processed", 10 * 2, icon = icon("list"), fill = TRUE),
@@ -301,7 +305,7 @@ body <- dashboardBody(
                 tabPanel("Mobilization strategies", 
                          div(  
                            
-                           addSpinner(plotOutput("driverC", height = "500px"), spin = "circle", color = "#377EB8"),
+                           addSpinner(plotOutput("driverC", height = "600px"), spin = "circle", color = "#377EB8"),
                            includeMarkdown( './TextContent/leg_driverC.Rmd')
                            
                          )  #end div                
