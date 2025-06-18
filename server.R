@@ -116,6 +116,7 @@ server <- function(input, output, session) {
     input$wrap_type_wood_processes
     input$wrap_type_wood_cor
     input$exclusion
+    input$countryRanking
   })
   
   observe({ #dependence scale -> country
@@ -140,8 +141,9 @@ server <- function(input, output, session) {
   })
   
   output$countryData <- renderPlotly({
-    browser()
-    plotlyCountryData<-plotCountryData(data_country_select(),"Forest.area..1000.ha.")
+   
+    plotlyCountryData<-plotCountryData(data_country_select(),input$countryRanking)
+#    plotlyCountryData<-plotCountryData(data_country_select(),"Forest.area..1000.ha.")
   }) 
   
   output$processes_plot <- renderPlotly({

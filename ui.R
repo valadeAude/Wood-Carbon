@@ -203,8 +203,12 @@ body <- dashboardBody(
                     tabPanel("Locations", 
                              div(  
                                h3("Number of included studies with explicit reference to a country location", class = "description"),
-                               addSpinner(plotlyOutput("countryData", height = "500px"), spin = "circle", color = "green") #This will display the plot 
-                               
+                               addSpinner(plotlyOutput("countryData", height = "500px"), spin = "circle", color = "green"), #This will display the plot 
+                               selectInput( 
+                                 "countryRanking", 
+                                 "Select options below:", 
+                                 list("Forest Area" = "Forest.area..1000.ha.", "Roundwood production" = "Roundwood (m3)", "Part of R&D in GDP" = "GDP_RD") 
+                               )
                              ),#end div                  
                     ),
                     tabPanel("Model", 

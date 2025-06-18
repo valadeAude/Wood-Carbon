@@ -244,11 +244,13 @@ countryFreq<-function(data_study,countryData){
   data_study[(data_study$country=="USA"|data_study$country=="Usa"),"country"]<-str_to_title("United States Of America")
   nStudyCountry<-aggregate(PaperID~country,data=unique(data_study[,c("PaperID","country")]),FUN=length)
   colnames(nStudyCountry)<-c("Country","nPaperID")
-  countryFreq<-merge(nStudyCountry,countryData,by="Country")
-  return(countryFreq)
+  countryFreqData<-merge(nStudyCountry,countryData,by="Country",all.y=TRUE)
+  return(countryFreqData)
 }
 
 readCountryData<-function(rawDataPath){
+  refYear<-2015
+  
   countryCodes<-read.csv(paste0(rawDataPath,"/countryCodes/countryCodes.csv"))
   countryCodes$Country<-str_to_title(countryCodes$Country)
   
@@ -260,10 +262,11 @@ readCountryData<-function(rawDataPath){
   BaisData<-BaisData[,c("levelFig3a","levelFig3c","Alpha.3.code")]
   
   # Load FAO Roundwod data
-  faoData<-read.csv(paste0(rawDataPath,"/FAOWoodData/FAOSTAT_data_en_12-11-2023.csv"))
+  faoData<-read.csv(paste0(rawDataPath,"/FAOWoodData/FAOSTAT_data_en_6-18-2025.csv"))
   
   faoData[faoData$Area=="United Kingdom of Great Britain and Northern Ireland","Area"]<-"United Kingdom"
   faoData$Area<-str_to_title(faoData$Area)
+  faoData<-faoData[faoData$Year==refYear,]
   
   faoData<-merge(faoData[,c("Area","Item","Year.Code","Unit","Value")],countryCodes,by.x="Area",by.y="Country",all=T)
   colnames(faoData)[colnames(faoData)=="Value"]<-"Roundwood (m3)"
@@ -275,7 +278,7 @@ readCountryData<-function(rawDataPath){
   
   faoForestData[faoForestData$Country=="United Kingdom of Great Britain and Northern Ireland","Country"]<-"United Kingdom"
   faoForestData$Country<-str_to_title(faoForestData$Country)
-  faoForestData<-faoForestData[faoForestData$Year==2015,]
+  faoForestData<-faoForestData[faoForestData$Year==refYear,]
   
   faoForestData<-merge(faoForestData[,c("Country","Year","Forest area ratio (%)")],countryCodes,by.x="Country",by.y="Country")
   faoForestData<-faoForestData[,c("Alpha.3.code","Forest area ratio (%)")]
@@ -285,13 +288,13 @@ readCountryData<-function(rawDataPath){
   
   faoForestAData[faoForestAData$Country=="United Kingdom of Great Britain and Northern Ireland","Country"]<-"United Kingdom"
   faoForestAData$Country<-str_to_title(faoForestAData$Country)
-  faoForestAData<-faoForestAData[faoForestAData$Year==2015,]
+  faoForestAData<-faoForestAData[faoForestAData$Year==refYear,]
   faoForestAData<-merge(faoForestAData[,c("Country","Year","Forest.area..1000.ha.")],countryCodes,by.x="Country",by.y="Country")
   faoForestAData<-faoForestAData[,c("Alpha.3.code","Forest.area..1000.ha.")]
   
   #Load OECD GDP spending for research
   gdpRD<-read.csv(paste0(rawDataPath,"/UnescoData/SCN_DS_14122023043909123.csv"))
-  gdpRD<-gdpRD[gdpRD$TIME=="2015",c("LOCATION","TIME","Value")]
+  gdpRD<-gdpRD[gdpRD$TIME==as.character(refYear),c("LOCATION","TIME","Value")]
   colnames(gdpRD)<-c("Alpha.3.code","TIME","GDP_RD")
   gdpRD<-merge(gdpRD,countryCodes,by="Alpha.3.code",all=T)
   gdpRD<-gdpRD[,c("Alpha.3.code","GDP_RD")]
@@ -302,7 +305,7 @@ readCountryData<-function(rawDataPath){
   countryData<-merge(countryData,faoForestAData ,by="Alpha.3.code",all=TRUE)
   countryData<-merge(countryData,faoData,by="Alpha.3.code",all=TRUE)
   countryData<-merge(countryData,countryCodes,by="Alpha.3.code",all=TRUE)
-
+  
   #countryData<-merge(countryData,nStudyCountry,by='Alpha-3 code',all=TRUE)
   #countryData<-countryData[!is.na(countryData$PaperID),]
   #countryData$PaperID<-as.numeric(countryData$PaperID)
@@ -618,10 +621,18 @@ plotBarplotYear<-function(data_bibliom){
 
 plotCountryData<-function(countryFreqData, sortingCriteria){
   print("Entering function : plotCountryData")
+  countryFreqData<-countryFreqData[!is.na(countryFreqData[,sortingCriteria]),]
   countryFreqData<-unique(countryFreqData[order(-countryFreqData[,sortingCriteria]), ])
   countryFreqData$Country<-factor(countryFreqData$Country,
                                   levels=as.vector(countryFreqData[order(countryFreqData[,sortingCriteria]), 'Country']))
+  colnames(countryFreqData)[colnames(countryFreqData)=="Roundwood (m3)"]<-"Roundwood (m3, source: FAO)"
+  colnames(countryFreqData)[colnames(countryFreqData)=="Forest.area..1000.ha."]<-"Forest area (x1000 ha, source: FAO)"
+  colnames(countryFreqData)[colnames(countryFreqData)=="GDP_RD"]<-"Part of R&D in GDP (%, source: Unesco)"
   countryDataSubset<-rbind(countryFreqData[1:10,],countryFreqData[!is.na(countryFreqData$nPaperID),])
+  if(sortingCriteria=="Roundwood (m3)"){sortingCriteria<-"Roundwood (m3, source: FAO)"}
+  if(sortingCriteria=="Forest.area..1000.ha."){sortingCriteria<-"Forest area (x1000 ha, source: FAO)"}
+  if(sortingCriteria=="GDP_RD"){sortingCriteria<-"Part of R&D in GDP (%, source: Unesco)"}
+  
   
   ggplot(countryDataSubset,aes(fill=nPaperID,y=Country,x=get(sortingCriteria),label=Country))+
     geom_bar(stat='identity',position='dodge',colour="gray",size=0.05)+
@@ -998,7 +1009,7 @@ forestPlotDataFunc<-function(plotData,split,includeSplit2){
     countRecordSplit <- aggregate(substitution ~  modelApproach+split, plotData, length)
     colnames(countRecordSplit)<-c("modelApproach","split","nRec")
     
-
+    
     #forestPlotData<-merge(forestPlotData,unique(plotData[,c("split")]),by="split",all.x=T)
     forestPlotData<-forestPlotData[forestPlotData$split %in% levels(factor(plotData$split)) ,]
     forestPlotData<-merge(forestPlotData,countRecordSplit[,c("nRec","split")],by=c("split"),all.x=TRUE)
@@ -1031,16 +1042,16 @@ know_dynamics<-function(data_expt){
   forestPlotData.approachC.dyn<-data.frame()
   for(i in seq(2002,2021,1)){
     data_expt_approach_yr<-assignApproach(data_expt[data_expt$Publication_Year<=i  &data_expt_approach$modelApproach!="Hybrid approach",])
-   
+    
     plotData.approachC.yr<-plotDataFunc(data_expt_approach_yr, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
-
+    
     forestPlotData.approachC.yr<-forestPlotDataFunc(plotData.approachC.yr,"modelApproach",FALSE)
     forestPlotData.approachC.yr$year<-as.character(i)
     forestPlotData.approachC.dyn <-rbind(forestPlotData.approachC.dyn,forestPlotData.approachC.yr)
   }
-
+  
   ggplot(forestPlotData.approachC.dyn,aes(x=year,y=substitution,color=split))+
-   # geom_boxplot(data=plotData.approachC.dyn,aes(y=substitution ,x=year,outliers = FALSE,outlier.color=NULL,fatten = NULL,size=0.5,color=split))+
+    # geom_boxplot(data=plotData.approachC.dyn,aes(y=substitution ,x=year,outliers = FALSE,outlier.color=NULL,fatten = NULL,size=0.5,color=split))+
     #stat_summary(fun=median, color=split, geom="point",  shape=15, size=3, show.legend=FALSE) +
     scale_color_manual(values=c("Ecosystem approach"="#2E9FDF", "Technology approach"="#FC4E07","Whole sector approach"="black"))+
     
