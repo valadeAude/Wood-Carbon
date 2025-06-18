@@ -1,4 +1,42 @@
 source("./functions.R")
+
+
+
+my_theme <- create_theme(
+  adminlte_color(
+    light_blue = "#00a98e",#top banner
+    blue="#ffa17a",#"#9eadc3",#button1
+    aqua = "#f3eada",#button2
+    
+    maroon = "#344b47",#infobox1
+    orange="#97b1ab",#infobox2
+    red = "#ffa17a",
+    green = "#ffa17a",
+    yellow = "#ffa17a",
+    navy = "#ffa17a",
+    teal = "#ffa17a",
+    olive = "#ffa17a",
+    lime = "#ffa17a",
+    fuchsia = "#ffa17a",
+    purple = "#ffa17a",
+    black = "#ffa17a",
+    gray_lte = "#ffa17a"
+    
+  ),
+  adminlte_sidebar(
+    width = "400px",
+    dark_bg = "#344b47",
+    dark_hover_bg = "#97b1ab",
+    dark_color = "#e8f3f1"
+  ),
+  adminlte_global(
+    content_bg = "#e8f3f1",
+    box_bg = "#FFFFFF", 
+    info_box_bg = "#FFFFFF"
+  )
+)
+
+
 ## This script reads all raw data and creates R workspace that will be called by the application
 rawDataPath<-"./rawData/"
 initDataPath<-"./initData/"
@@ -8,7 +46,7 @@ database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC
 
 #database.file <-"/Users/valade/EcoSols_Nextcloud2/Substitution/Metaanalysis/Data_extraction/v6_extraction/database_substitution_metaanalysis.v5.v6.ALL.xlsx"
 #For FAO and Bais data on country production of wood
-dataPath<-"/Users/valade/EcoSols_Nextcloud2/Substitution/Substitution_AV/CCycleSynthesis/biblioData/"
+#dataPath<-"/Users/valade/EcoSols_Nextcloud2/Substitution/Substitution_AV/CCycleSynthesis/biblioData/"
 #For global flux size
 dataFlux.file<-paste0(rawDataPath,"TableForestCCycleSynthesis.3.xlsx")
 
@@ -65,7 +103,7 @@ data<-read_excel(database.file,skip=6)
 
 ## Make country index Titlecase and prepare country list
 data$country<-str_to_title(data$country)
-countryCodes<-read.csv(paste0(dataPath,"countryCodes/countryCodes.csv"))
+countryCodes<-read.csv(paste0(rawDataPath,"countryCodes/countryCodes.csv"))
 countryCodes<-countryCodes[,c("Country","Alpha.2.code","Alpha.3.code")]
 colnames(countryCodes)<-c("Country","Alpha-2 code","Alpha-3 code")
 countryCodes$Country<-str_to_title(countryCodes$Country)
@@ -78,7 +116,7 @@ data_expt_approach<-assignApproach(data_expt)
 study_freq<-funcFreq(data_study,categoriesdf)
 expt_freq<-funcFreq(data_expt,categoriesdf)
 
-countryData<-country(data_study)
+countryData<-country(data_study,countryCodes)
 
 singleProductVect<-c('UpstreamInput','TimberInput','PulpPaperInput','EnergyInput','mixedProduct') 
 
@@ -138,19 +176,16 @@ forestPlotData.approachC<-forestPlotDataFunc(plotData.approachC,"modelApproach",
 write.csv(plotData.approachC,paste0(initDataPath,"plotData.approachC.csv"))
 write.csv(forestPlotData.approachC,paste0(initDataPath,"forestPlotData.approachC.csv"))
 
-
 plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1")
 forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1",TRUE) #set includeSplit2 to TRUE
 write.csv(plotData.driverC,paste0(initDataPath,"plotData.driverC.csv"))
 write.csv(forestPlotData.driverC,paste0(initDataPath,"forestPlotData.driverC.csv"))
 
 
-
 plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1Cat")
 forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1Cat",FALSE) #set includeSplit2 to TRUE
 write.csv(plotData.driverC,paste0(initDataPath,"plotData.driverCatC.csv"))
 write.csv(forestPlotData.driverC,paste0(initDataPath,"forestPlotData.driverCatC.csv"))
-
 
 save.image(paste0(initDataPath,"initData.Rdata"))
 

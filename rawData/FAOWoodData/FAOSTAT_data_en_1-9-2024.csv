@@ -1,0 +1,58 @@
+﻿Domain Code,Domain,Area Code (M49),Area,Element Code,Element,Item Code,Item,Year Code,Year,Unit,Value,Flag,Flag Description,Note
+FO,Forestry Production and Trade,1,World,5922,Export Value,1675,Other paper and paperboard,2020,2020,1000 USD,57623631.52,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1632,"Sawnwood, coniferous",2020,2020,1000 USD,28301141.95,X,Figure from international organizations,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1656,Chemical wood pulp,2020,2020,1000 USD,27807959.14,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1674,Printing and writing papers,2020,2020,1000 USD,27523894.29,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1640,Plywood,2020,2020,1000 USD,14253253.91,X,Figure from international organizations,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1633,"Sawnwood, non-coniferous all",2020,2020,1000 USD,9621284.45,X,Figure from international organizations,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1651,"Industrial roundwood, coniferous (export/import)",2020,2020,1000 USD,8200587.03,X,Figure from international organizations,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1648,MDF/HDF,2020,2020,1000 USD,7308764.36,E,Estimated value,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1669,Recovered paper,2020,2020,1000 USD,6254298.26,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1697,Particle board,2020,2020,1000 USD,5264147.89,E,Estimated value,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1693,Wood pellets,2020,2020,1000 USD,4383503.51,E,Estimated value,energy
+FO,Forestry Production and Trade,1,World,5922,Export Value,1619,Wood chips and particles,2020,2020,1000 USD,4108305.08,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1667,Dissolving wood pulp,2020,2020,1000 USD,3776787,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1671,Newsprint,2020,2020,1000 USD,3402382.31,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1606,OSB,2020,2020,1000 USD,3306749.74,E,Estimated value,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1634,Veneer sheets,2020,2020,1000 USD,3304271.3,X,Figure from international organizations,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1657,"Industrial roundwood, non-coniferous tropical (export/import)",2020,2020,1000 USD,2593009,E,Estimated value,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1670,"Industrial roundwood, non-coniferous non-tropical (export/import)",2020,2020,1000 USD,2516035.68,X,Figure from international organizations,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1685,Mechanical and semi-chemical wood pulp,2020,2020,1000 USD,1833865.67,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1630,Wood charcoal,2020,2020,1000 USD,1365145.84,E,Estimated value,energy
+FO,Forestry Production and Trade,1,World,5922,Export Value,1647,Hardboard,2020,2020,1000 USD,1286977.85,E,Estimated value,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1650,Other fibreboard,2020,2020,1000 USD,733987.3,E,Estimated value,timber
+FO,Forestry Production and Trade,1,World,5922,Export Value,1668,Pulp from fibres other than wood,2020,2020,1000 USD,571290.79,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1694,Wood briquettes and other agglomerates,2020,2020,1000 USD,355002.44,E,Estimated value,energy
+FO,Forestry Production and Trade,1,World,5922,Export Value,1628,"Wood fuel, non-coniferous",2020,2020,1000 USD,313337.18,E,Estimated value,energy
+FO,Forestry Production and Trade,1,World,5922,Export Value,1620,Wood residues,2020,2020,1000 USD,289320.39,E,Estimated value,pulpPaper
+FO,Forestry Production and Trade,1,World,5922,Export Value,1600,Recovered post-consumer wood,2020,2020,1000 USD,154042,A,Official figure,
+FO,Forestry Production and Trade,1,World,5922,Export Value,1627,"Wood fuel, coniferous",2020,2020,1000 USD,145160.51,E,Estimated value,energy
+FO,Forestry Production and Trade,1,World,5516,Production,1628,"Wood fuel, non-coniferous",2020,2020,m3,1697308145,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1601,"Sawlogs and veneer logs, coniferous",2020,2020,m3,756019644,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1604,"Sawlogs and veneer logs, non-coniferous",2020,2020,m3,370476814,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1632,"Sawnwood, coniferous",2020,2020,m3,341679435,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1675,Other paper and paperboard,2020,2020,t,305983703,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1619,Wood chips and particles,2020,2020,m3,262938213,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1620,Wood residues,2020,2020,m3,235814387,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1627,"Wood fuel, coniferous",2020,2020,m3,229239810,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1669,Recovered paper,2020,2020,t,228284686,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1656,Chemical wood pulp,2020,2020,t,150600239,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1633,"Sawnwood, non-coniferous all",2020,2020,m3,138290222,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1626,"Other industrial roundwood, non-coniferous (production)",2020,2020,m3,115326356,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1640,Plywood,2020,2020,m3,110745713,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1648,MDF/HDF,2020,2020,m3,107219563,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1697,Particle board,2020,2020,m3,97016430,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1674,Printing and writing papers,2020,2020,t,80345814,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1630,Wood charcoal,2020,2020,t,54104368,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1623,"Other industrial roundwood, coniferous (production)",2020,2020,m3,43739920,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1693,Wood pellets,2020,2020,t,42988148,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1600,Recovered post-consumer wood,2020,2020,t,35402821,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1606,OSB,2020,2020,m3,34688692,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1685,Mechanical and semi-chemical wood pulp,2020,2020,t,29507191,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1634,Veneer sheets,2020,2020,m3,16727554,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1671,Newsprint,2020,2020,t,13796699,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1668,Pulp from fibres other than wood,2020,2020,t,11363038,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1667,Dissolving wood pulp,2020,2020,t,8291087,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1650,Other fibreboard,2020,2020,m3,7564343,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5516,Production,1647,Hardboard,2020,2020,m3,7339210,E,Estimated value,
+FO,Forestry Production and Trade,1,World,5510,Production,1694,Wood briquettes and other agglomerates,2020,2020,t,6299967,E,Estimated value,
