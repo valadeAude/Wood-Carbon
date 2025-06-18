@@ -51,7 +51,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$reset, {
     updateCheckboxGroupInput(session, "select_scale", selected = c("world"="w","regional" = "reg", "local" = "loc"))
-    updateSelectInput(session, "select_countries",selected = countries)
+    updateSelectInput(session, "select_countries",selected = countriesList)
     updateCheckboxGroupInput(session, "select_single_product", selected = products)
     updateSelectInput( session,"select_time_horizon",selected = timeHorizon)
     updateSelectInput( session, "select_processes",selected=character(0) )
@@ -90,7 +90,7 @@ server <- function(input, output, session) {
   }, ignoreNULL = FALSE)     
   data_bibliom_select<-reactive({bibliom(data_fltr()) })
   data_study_select<-reactive({study(data_fltr()) })
-  data_country_select<-reactive({country(data_fltr())})
+  data_country_select<-reactive({countryFreq(data_study_select(),countryRefData)})
   data_expt_select<-reactive({expt(data_fltr()) })
   data_expt_approach_select<-reactive({assignApproach(data_expt_select())})
   data_expt_unselect<-reactive({expt(data_unfltr()) })
@@ -119,7 +119,7 @@ server <- function(input, output, session) {
   })
   
   observe({ #dependence scale -> country
-    dt <- data$country[data$scaleAgg %in% input$select_scale]
+    dt <- sort(data$country[data$scaleAgg %in% input$select_scale])
     updatePickerInput(session, "select_countries", choices = dt, selected = dt)
   })
   cat(file=stderr(), "exit updatepicker")
@@ -140,6 +140,7 @@ server <- function(input, output, session) {
   })
   
   output$countryData <- renderPlotly({
+    browser()
     plotlyCountryData<-plotCountryData(data_country_select(),"Forest.area..1000.ha.")
   }) 
   

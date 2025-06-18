@@ -238,22 +238,26 @@ expt<-function(data){
   return(data_expt)
 }
 
-country<-function(data,countryCodes){
+countryFreq<-function(data_study,countryData){
   print("country")
   #Count number of study items per country
-  countryCodes$Country<-str_to_title(countryCodes$Country)
-  data_study<-study(data)
   data_study[(data_study$country=="USA"|data_study$country=="Usa"),"country"]<-str_to_title("United States Of America")
-  test<-unique(data_study[,c("PaperID","country")])
-  nStudyCountry<-aggregate(PaperID~country,data=test,FUN=length)
-  nStudyCountry<-merge(nStudyCountry,countryCodes,by.x='country',by.y="Country",all=TRUE)
+  nStudyCountry<-aggregate(PaperID~country,data=unique(data_study[,c("PaperID","country")]),FUN=length)
+  colnames(nStudyCountry)<-c("Country","nPaperID")
+  countryFreq<-merge(nStudyCountry,countryData,by="Country")
+  return(countryFreq)
+}
+
+readCountryData<-function(rawDataPath){
+  countryCodes<-read.csv(paste0(rawDataPath,"/countryCodes/countryCodes.csv"))
+  countryCodes$Country<-str_to_title(countryCodes$Country)
   
   #Load Bais data
   BaisFiga<-read_xlsx(paste0(rawDataPath,"/Bais/Bais2015Data/BaisExtract.xlsx"),sheet=1)
   BaisFigc<-read_xlsx(paste0(rawDataPath,"/Bais/Bais2015Data/BaisExtract.xlsx"),sheet=3)
   BaisData<-merge(BaisFiga[,c('iso_a2','levelFig3a','NAME')],BaisFigc[,c('iso_a2','levelFig3c')])
-  BaisData<-merge(BaisData,countryCodes,by.y='Alpha-2 code',by.x='iso_a2')
-  BaisData<-BaisData[,c("levelFig3a","levelFig3c","Alpha-3 code")]
+  BaisData<-merge(BaisData,countryCodes,by.y='Alpha.2.code',by.x='iso_a2',all=T)
+  BaisData<-BaisData[,c("levelFig3a","levelFig3c","Alpha.3.code")]
   
   # Load FAO Roundwod data
   faoData<-read.csv(paste0(rawDataPath,"/FAOWoodData/FAOSTAT_data_en_12-11-2023.csv"))
@@ -261,10 +265,10 @@ country<-function(data,countryCodes){
   faoData[faoData$Area=="United Kingdom of Great Britain and Northern Ireland","Area"]<-"United Kingdom"
   faoData$Area<-str_to_title(faoData$Area)
   
-  faoData<-merge(faoData[,c("Area","Item","Year.Code","Unit","Value")],countryCodes,by.x="Area",by.y="Country")
+  faoData<-merge(faoData[,c("Area","Item","Year.Code","Unit","Value")],countryCodes,by.x="Area",by.y="Country",all=T)
   colnames(faoData)[colnames(faoData)=="Value"]<-"Roundwood (m3)"
   faoData<-faoData[order(-faoData$Roundwood),]
-  faoData<-faoData[,c("Alpha-3 code","Roundwood (m3)")]
+  faoData<-faoData[,c("Alpha.3.code","Roundwood (m3)")]
   
   # Load FAO ForestAreaPercentLand data
   faoForestData<-read_xlsx(paste0(rawDataPath,"/FAOForestAreaPercentLand/Forest area as a percent of land area.xlsx"))
@@ -274,7 +278,7 @@ country<-function(data,countryCodes){
   faoForestData<-faoForestData[faoForestData$Year==2015,]
   
   faoForestData<-merge(faoForestData[,c("Country","Year","Forest area ratio (%)")],countryCodes,by.x="Country",by.y="Country")
-  faoForestData<-faoForestData[,c("Alpha-3 code","Forest area ratio (%)")]
+  faoForestData<-faoForestData[,c("Alpha.3.code","Forest area ratio (%)")]
   
   # Load FAO ForestArea data
   faoForestAData<-read.csv(paste0(rawDataPath,"/FAOForestArea/Forest area.csv"))
@@ -283,23 +287,25 @@ country<-function(data,countryCodes){
   faoForestAData$Country<-str_to_title(faoForestAData$Country)
   faoForestAData<-faoForestAData[faoForestAData$Year==2015,]
   faoForestAData<-merge(faoForestAData[,c("Country","Year","Forest.area..1000.ha.")],countryCodes,by.x="Country",by.y="Country")
-  faoForestAData<-faoForestAData[,c("Alpha-3 code","Forest.area..1000.ha.")]
+  faoForestAData<-faoForestAData[,c("Alpha.3.code","Forest.area..1000.ha.")]
   
   #Load OECD GDP spending for research
   gdpRD<-read.csv(paste0(rawDataPath,"/UnescoData/SCN_DS_14122023043909123.csv"))
   gdpRD<-gdpRD[gdpRD$TIME=="2015",c("LOCATION","TIME","Value")]
-  colnames(gdpRD)<-c("Alpha-3 code","TIME","GDP_RD")
-  gdpRD<-merge(gdpRD,countryCodes,by="Alpha-3 code")
-  gdpRD<-gdpRD[,c("Alpha-3 code","GDP_RD")]
+  colnames(gdpRD)<-c("Alpha.3.code","TIME","GDP_RD")
+  gdpRD<-merge(gdpRD,countryCodes,by="Alpha.3.code",all=T)
+  gdpRD<-gdpRD[,c("Alpha.3.code","GDP_RD")]
   
   #Merge datasets
-  countryData<-merge(BaisData,gdpRD,by='Alpha-3 code',all=TRUE)
-  countryData<-merge(countryData,faoForestData ,by="Alpha-3 code",all=TRUE)
-  countryData<-merge(countryData,faoForestAData ,by="Alpha-3 code",all=TRUE)
-  countryData<-merge(countryData,faoData,by="Alpha-3 code",all=TRUE)
-  countryData<-merge(countryData,nStudyCountry,by='Alpha-3 code',all=TRUE)
+  countryData<-merge(BaisData,gdpRD,by='Alpha.3.code',all=TRUE)
+  countryData<-merge(countryData,faoForestData ,by="Alpha.3.code",all=TRUE)
+  countryData<-merge(countryData,faoForestAData ,by="Alpha.3.code",all=TRUE)
+  countryData<-merge(countryData,faoData,by="Alpha.3.code",all=TRUE)
+  countryData<-merge(countryData,countryCodes,by="Alpha.3.code",all=TRUE)
+
+  #countryData<-merge(countryData,nStudyCountry,by='Alpha-3 code',all=TRUE)
   #countryData<-countryData[!is.na(countryData$PaperID),]
-  countryData$PaperID<-as.numeric(countryData$PaperID)
+  #countryData$PaperID<-as.numeric(countryData$PaperID)
   countryData<-countryData[!is.na(countryData$`Forest area ratio (%)`),]  
   print("exit country")
   
@@ -609,17 +615,15 @@ plotBarplotYear<-function(data_bibliom){
 
 
 
-plotCountryData<-function(countryData, sortingCriteria){
+
+plotCountryData<-function(countryFreqData, sortingCriteria){
   print("Entering function : plotCountryData")
-  countryData<-unique(countryData[order(-countryData[,sortingCriteria]), ])
-  countryData$country<-factor(countryData$country,levels=as.vector(countryData[order(countryData[,sortingCriteria]), 'country']))
+  countryFreqData<-unique(countryFreqData[order(-countryFreqData[,sortingCriteria]), ])
+  countryFreqData$Country<-factor(countryFreqData$Country,
+                                  levels=as.vector(countryFreqData[order(countryFreqData[,sortingCriteria]), 'Country']))
+  countryDataSubset<-rbind(countryFreqData[1:10,],countryFreqData[!is.na(countryFreqData$nPaperID),])
   
-  
-  
-  countryDataSubset<-rbind(countryData[1:10,],countryData[!is.na(countryData$PaperID),])
-  
-  
-  ggplot(countryDataSubset,aes(fill=PaperID,y=country,x=get(sortingCriteria),label=country))+
+  ggplot(countryDataSubset,aes(fill=nPaperID,y=Country,x=get(sortingCriteria),label=Country))+
     geom_bar(stat='identity',position='dodge',colour="gray",size=0.05)+
     scale_fill_viridis(na.value="white")+
     scale_y_discrete(position="left")+

@@ -1,42 +1,5 @@
 source("./functions.R")
 
-
-
-my_theme <- create_theme(
-  adminlte_color(
-    light_blue = "#00a98e",#top banner
-    blue="#ffa17a",#"#9eadc3",#button1
-    aqua = "#f3eada",#button2
-    
-    maroon = "#344b47",#infobox1
-    orange="#97b1ab",#infobox2
-    red = "#ffa17a",
-    green = "#ffa17a",
-    yellow = "#ffa17a",
-    navy = "#ffa17a",
-    teal = "#ffa17a",
-    olive = "#ffa17a",
-    lime = "#ffa17a",
-    fuchsia = "#ffa17a",
-    purple = "#ffa17a",
-    black = "#ffa17a",
-    gray_lte = "#ffa17a"
-    
-  ),
-  adminlte_sidebar(
-    width = "400px",
-    dark_bg = "#344b47",
-    dark_hover_bg = "#97b1ab",
-    dark_color = "#e8f3f1"
-  ),
-  adminlte_global(
-    content_bg = "#e8f3f1",
-    box_bg = "#FFFFFF", 
-    info_box_bg = "#FFFFFF"
-  )
-)
-
-
 ## This script reads all raw data and creates R workspace that will be called by the application
 rawDataPath<-"./rawData/"
 initDataPath<-"./initData/"
@@ -98,15 +61,9 @@ categoriesdf$id<-1:nrow(categoriesdf)
 # ------------- Read corpus of data -> output = data
 data<-read_excel(database.file,skip=6)
 
-## Make scale index lowercase
-#data$scale<-tolower(data$scale)
-
 ## Make country index Titlecase and prepare country list
 data$country<-str_to_title(data$country)
-countryCodes<-read.csv(paste0(rawDataPath,"countryCodes/countryCodes.csv"))
-countryCodes<-countryCodes[,c("Country","Alpha.2.code","Alpha.3.code")]
-colnames(countryCodes)<-c("Country","Alpha-2 code","Alpha-3 code")
-countryCodes$Country<-str_to_title(countryCodes$Country)
+
 
 
 data_bibliom<-bibliom(data)
@@ -115,8 +72,10 @@ data_expt<-expt(data)
 data_expt_approach<-assignApproach(data_expt)
 study_freq<-funcFreq(data_study,categoriesdf)
 expt_freq<-funcFreq(data_expt,categoriesdf)
-
-countryData<-country(data_study,countryCodes)
+#countryData<-country(data_study,countryCodes)
+countryRefData<-readCountryData(rawDataPath)
+countryFreqData<-countryFreq(data_study,countryRefData)
+plotCountryData(countryFreqData,"Forest.area..1000.ha.")
 
 singleProductVect<-c('UpstreamInput','TimberInput','PulpPaperInput','EnergyInput','mixedProduct') 
 
@@ -136,8 +95,7 @@ map.world$region<-str_to_title(map.world$region)
 # Les noms de pays vont servir à paramétrer les cases à cocher dans ui
 # countries_study <- sort(unique(data$country))
 #countries <- data_study$country
-countries <- sort(unique(data_study$country))
-print(countries)
+countriesList <- sort(unique(data_study$country))
 #countries <- ifelse(countries == "Eur", "Europe", countries)
 countriesEurope <- c("Austria", "Denmark","Finland", "France", "Germany", "Ireland", "Lithuania", "Norway", "Portugal", "Sweden", "Switzerland", "Uk", "Ukraine")
 
