@@ -821,7 +821,8 @@ create_dendrogram<-function(data_expt){
   return(dendrogram)
 }#end function
 
-
+plotData<-plotData.driverC
+forestPlotData<-forestPlotData.driverC
 create_forest_plot<-function(plotData,forestPlotData,wrapSplit2){
   p<-ggplot(plotData,aes(x=split,y=substitution))+
     geom_boxplot(data=plotData,aes(y=substitution ,x=reorder(split,substitution,mean,na.rm=TRUE)),outliers = FALSE,outlier.color=NULL,fatten = NULL,size=2,fill="lightgrey",color="lightgrey")+
@@ -859,9 +860,15 @@ create_forest_plot<-function(plotData,forestPlotData,wrapSplit2){
     coord_flip(y = c(-6,6),clip="off")
   
   if(wrapSplit2){
-    p<-p+facet_grid(driver1Cat~.,
+     # plotData$split2<-factor(plotData$split2,
+     #                        levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
+     #                        labels=c("Mobilize additional wood by increased removals","Mobilize additional wood by increased productivity", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
+     # )  
+    p<-p+facet_grid(split2~.,
+  #p<-p+facet_grid(driver1Cat~.,
                     switch="y",
-                    labeller = labeller( driver1Cat = label_wrap_gen(width = 10),
+  labeller = labeller( split2 = label_wrap_gen(width = 10),
+                       #labeller = labeller( driver1Cat = label_wrap_gen(width = 10),
                                          .multi_line = TRUE),
                     scales="free_y",
                     space="free_y",)
@@ -929,33 +936,34 @@ plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,split
     
     
   }
-  if(splitName=="driver1Cat"){
-    plotData[plotData$driver1=="technologies/design switch", "split"] <- as.character(plotData[ plotData$driver1=="technologies/design switch", "singleProduct"])
-    plotData$split<-factor(plotData$split,
-                           levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
-                           labels=c("Mobilize additional wood by increased removals","Mobilize additional wood by increased productivity", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
-    )  
-    
-    
-    
-  }
+  # if(splitName=="driver1Cat"){
+  #   plotData[plotData$driver1=="technologies/design switch", "split"] <- as.character(plotData[ plotData$driver1=="technologies/design switch", "singleProduct"])
+  #   plotData$split<-factor(plotData$split,
+  #                          levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
+  #                          labels=c("Mobilize additional wood by increased removals","Mobilize additional wood by increased productivity", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
+  #   )  
+  #   
+  #   
+  #   
+  # }
   if(splitName=="modelApproach"){
     plotData$split<-factor(plotData$split)
   }
   
-  plotData$driver1Cat<-factor(plotData$driver1Cat,
-                              levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
-                              labels=c("Mobilize additional wood by increased removals","Mobilize additional wood by increased productivity", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
-  )  
   plotData$split2<-plotData$driver1Cat
+  plotData$split2<-factor(plotData$split2,
+                          levels=c("Supply chain","SilvicultureProd","SilvicultureRemov", "Technology","Multiple strategies"),
+                          labels=c("Make better use of wood", "Mobilize additional wood by increased productivity","Mobilize additional wood by increased removals",  "Use wood instead of other ressource","Multiple strategies")
+  ) 
   
   return(data.frame(plotData))
   
 }
+plotData<-plotData.driverC
+split<-"driver1"
+split2<-"driver1Cat"
 
-
-
-forestPlotDataFunc<-function(plotData,split,includeSplit2){
+forestPlotDataFunc<-function(plotData,split,split2){
   print("Entering function : forestPlotDataFunc")
   
   plotData$recordID<-rownames(plotData)
@@ -985,25 +993,7 @@ forestPlotDataFunc<-function(plotData,split,includeSplit2){
   
   
   
-  
-  if(includeSplit2){
-    
-    countStudySplit <- aggregate(substitution ~ split+split2, aggregate(substitution~PaperID+split+split2,plotData,mean), length)
-    colnames(countStudySplit)<-c("split","driver1Cat","nStud")
-    countRecordSplit <- aggregate(substitution ~  modelApproach+split+split2, plotData, length)
-    colnames(countRecordSplit)<-c("modelApproach","split","driver1Cat","nRec")
-    forestPlotData<-merge(forestPlotData,unique(plotData[,c("split","driver1Cat")]),by="split",all.x=T)
-    forestPlotData<-forestPlotData[forestPlotData$split %in% levels(plotData$split) &
-                                     !(forestPlotData$driver1Cat)%in%c("Demand" ,"Environmental change" ),]
-    forestPlotData<-merge(forestPlotData,countRecordSplit[,c("nRec","split","driver1Cat")],by=c("split","driver1Cat"),all.x=TRUE)
-    forestPlotData<-merge(forestPlotData,countStudySplit[,c("nStud","split","driver1Cat")],by=c("split","driver1Cat"),all.x=TRUE)
-    forestPlotData$split2<-factor(forestPlotData$driver1Cat,
-                                  # levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
-                                  levels=c("Mobilize additional wood by increased productivity","Mobilize additional wood by increased removals", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
-    )  
-    
-    
-  }else{
+  if(missing(split2)){
     countStudySplit <- aggregate(substitution ~ split, aggregate(substitution~PaperID+split,plotData,mean), length)
     colnames(countStudySplit)<-c("split","nStud")
     countRecordSplit <- aggregate(substitution ~  modelApproach+split, plotData, length)
@@ -1014,6 +1004,24 @@ forestPlotDataFunc<-function(plotData,split,includeSplit2){
     forestPlotData<-forestPlotData[forestPlotData$split %in% levels(factor(plotData$split)) ,]
     forestPlotData<-merge(forestPlotData,countRecordSplit[,c("nRec","split")],by=c("split"),all.x=TRUE)
     forestPlotData<-merge(forestPlotData,countStudySplit[,c("nStud","split")],by=c("split"),all.x=TRUE)
+    
+  }else{
+    
+    countStudySplit <- aggregate(substitution ~ split+split2, aggregate(substitution~PaperID+split+split2,plotData,mean), length)
+    colnames(countStudySplit)<-c("split","split2","nStud")
+    countRecordSplit <- aggregate(substitution ~  modelApproach+split+split2, plotData, length)
+    colnames(countRecordSplit)<-c("modelApproach","split","split2","nRec")
+    forestPlotData<-merge(forestPlotData,unique(plotData[,c("split","split2")]),by="split",all.x=T)
+    forestPlotData<-forestPlotData[forestPlotData$split %in% levels(plotData$split) &
+                                     !(forestPlotData$split2)%in%c("Demand" ,"Environmental change" ),]
+    forestPlotData<-merge(forestPlotData,countRecordSplit[,c("nRec","split","split2")],by=c("split","split2"),all.x=TRUE)
+    forestPlotData<-merge(forestPlotData,countStudySplit[,c("nStud","split","split2")],by=c("split","split2"),all.x=TRUE)
+    
+    # forestPlotData$split2<-forestPlotData$driver1Cat
+    # forestPlotData$split2<-factor(forestPlotData$split2,
+    #                         levels=c("Supply chain","SilvicultureProd","SilvicultureRemov", "Technology","Multiple strategies"),
+    #                         labels=c("Make better use of wood", "Mobilize additional wood by increased productivity","Mobilize additional wood by increased removals",  "Use wood instead of other ressource","Multiple strategies")
+    # ) 
     
   }
   

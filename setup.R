@@ -1,11 +1,11 @@
-source("./functions.R")
 
 ## This script reads all raw data and creates R workspace that will be called by the application
-rawDataPath<-"./rawData/"
-initDataPath<-"./initData/"
-wwwDataPath<-"./www/"
+WoodCarbonPath<-"/Users/valade/Documents/GitHub/Wood-Carbon/"
+rawDataPath<-file.path(WoodCarbonPath,"rawData/")
+initDataPath<-file.path(WoodCarbonPath,"initData/")
+wwwDataPath<-file.path(WoodCarbonPath,"www/")
 #database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.init.xlsx")
-database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.ALL.xlsx")
+database.file <-file.path(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.ALL.xlsx")
 
 #database.file <-"/Users/valade/EcoSols_Nextcloud2/Substitution/Metaanalysis/Data_extraction/v6_extraction/database_substitution_metaanalysis.v5.v6.ALL.xlsx"
 #For FAO and Bais data on country production of wood
@@ -13,6 +13,9 @@ database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC
 #For global flux size
 dataFlux.file<-paste0(rawDataPath,"TableForestCCycleSynthesis.3.xlsx")
 
+
+
+source(file.path(WoodCarbonPath,"functions.R"))
 
 # Look at  world values in Peng-> extract	https://unece.org/sites/default/files/2022-05/unece-fao-sp-51-main-report-forest-sector-outlook_0.pdf
 
@@ -130,20 +133,19 @@ maxValSub <- max(valSub, na.rm = TRUE)
 data_expt_approachResults<-assignApproach(data_expt)
  
 plotData.approachC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
-forestPlotData.approachC<-forestPlotDataFunc(plotData.approachC,"modelApproach",FALSE)
+forestPlotData.approachC<-forestPlotDataFunc(plotData.approachC,"modelApproach")
 write.csv(plotData.approachC,paste0(initDataPath,"plotData.approachC.csv"))
 write.csv(forestPlotData.approachC,paste0(initDataPath,"forestPlotData.approachC.csv"))
 
 plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1")
-forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1",TRUE) #set includeSplit2 to TRUE
+forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1","driver1Cat") #set includeSplit2 to TRUE
 write.csv(plotData.driverC,paste0(initDataPath,"plotData.driverC.csv"))
 write.csv(forestPlotData.driverC,paste0(initDataPath,"forestPlotData.driverC.csv"))
 
+tTestPairsSignifAggVarMelt<-modelComponentsC(data_expt_approachResults,c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn")
+                                             , "",("PaperID"))
+write.csv(tTestPairsSignifAggVarMelt,paste0(initDataPath,"tTestPairsSignifAggVarMelt.csv"))
 
-plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1Cat")
-forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1Cat",FALSE) #set includeSplit2 to TRUE
-write.csv(plotData.driverC,paste0(initDataPath,"plotData.driverCatC.csv"))
-write.csv(forestPlotData.driverC,paste0(initDataPath,"forestPlotData.driverCatC.csv"))
 
 save.image(paste0(initDataPath,"initData.Rdata"))
 

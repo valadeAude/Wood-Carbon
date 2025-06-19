@@ -222,7 +222,7 @@ server <- function(input, output, session) {
     if (res$filterResults=="filter") {
       print("filters included")
       plotData<-plotDataFunc(data_expt_approachResults, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
-      forestPlotData<-forestPlotDataFunc(plotData,"modelApproach",FALSE)
+      forestPlotData<-forestPlotDataFunc(plotData,"modelApproach")
          }else{
       print("no filters")
       plotData<-read.csv(paste0(initDataPath,"plotData.approachC.csv"))
@@ -232,18 +232,20 @@ server <- function(input, output, session) {
   })
   
   output$modelComponentsC<-renderPlotly({
+    if (res$filterResults=="filter") {
+      
     tTestPairsSignifAggVarMelt<-modelComponentsC(data_expt_approach_select(),c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn")
                                                  , "",("PaperID"))
-    
-    #  if ("Apply database filters" %in% input$database_filters) {
-    #data_expt_approach<-assignApproach(data_expt_select()) #nminTechno,nmaxTechno,nminEcos,nmaxEcos
-    #tTestPairsSignifAggVarMelt<-modelComponentsC(data_expt_approach(),c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn")
-    #                                            , "",("PaperID"))
-    #  plotModelComponentsC(tTestPairsSignifAggVarMelt())
-    #  }else{
+    }else{
+      tTestPairsSignifAggVarMelt<-read.csv(paste0(initDataPath,"tTestPairsSignifAggVarMelt.csv"))
+    }
+   
     plotModelComponentsC(tTestPairsSignifAggVarMelt)
-    #   }    
   })
+  
+  
+  
+ 
   
   
   output$driverC<-renderPlot({
@@ -251,7 +253,7 @@ server <- function(input, output, session) {
     
     if (res$filterResults=="filter") {
       plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1")
-      forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1",TRUE)
+      forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1","driver1Cat")
     #  plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1Cat")
      # forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1Cat",FALSE)      
     }else{
