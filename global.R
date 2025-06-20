@@ -31,6 +31,10 @@ library(viridis)
 library(waiter)
 
 load("./initData/initData.Rdata")
+source(file.path(WoodCarbonPath,"functions.R"))
+
+
+
 
 my_theme <- create_theme(
   adminlte_color(

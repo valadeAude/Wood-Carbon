@@ -6,6 +6,7 @@ initDataPath<-file.path(WoodCarbonPath,"initData/")
 wwwDataPath<-file.path(WoodCarbonPath,"www/")
 #database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.init.xlsx")
 database.file <-file.path(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.ALL.xlsx")
+wosQueryResults.file<-file.path(rawDataPath,"wosQueryResults/savedrecs_2000-2022.xls")
 
 #database.file <-"/Users/valade/EcoSols_Nextcloud2/Substitution/Metaanalysis/Data_extraction/v6_extraction/database_substitution_metaanalysis.v5.v6.ALL.xlsx"
 #For FAO and Bais data on country production of wood
@@ -13,9 +14,10 @@ database.file <-file.path(rawDataPath,"/database_substitution_metaanalysis.v5.v6
 #For global flux size
 dataFlux.file<-paste0(rawDataPath,"TableForestCCycleSynthesis.3.xlsx")
 
-
-
 source(file.path(WoodCarbonPath,"functions.R"))
+
+##
+runForestPlots<-TRUE
 
 # Look at  world values in Peng-> extract	https://unece.org/sites/default/files/2022-05/unece-fao-sp-51-main-report-forest-sector-outlook_0.pdf
 
@@ -62,6 +64,7 @@ categoriesdf$id<-1:nrow(categoriesdf)
 
 # -------------
 # ------------- Read corpus of data -> output = data
+dataWoS<-read_excel(wosQueryResults.file)
 data<-read_excel(database.file,skip=6)
 
 ## Make country index Titlecase and prepare country list
@@ -69,7 +72,7 @@ data$country<-str_to_title(data$country)
 
 
 
-data_bibliom<-bibliom(data)
+data_bibliom<-bibliom_in(data)
 data_study<-study(data)
 data_expt<-expt(data)
 data_expt_approach<-assignApproach(data_expt)
@@ -78,7 +81,6 @@ expt_freq<-funcFreq(data_expt,categoriesdf)
 #countryData<-country(data_study,countryCodes)
 countryRefData<-readCountryData(rawDataPath)
 countryFreqData<-countryFreq(data_study,countryRefData)
-plotCountryData(countryFreqData,"Forest.area..1000.ha.")
 
 singleProductVect<-c('UpstreamInput','TimberInput','PulpPaperInput','EnergyInput','mixedProduct') 
 
@@ -114,24 +116,57 @@ products <- sort(unique(data$singleProduct))
 productsLabels<-gsub("([a-z])([A-Z])","\\1 \\2",str_remove(products,'Input'))
 ##Test
 #boundaries <-sort(unique(data$boundaries))
+dict = list(  loc="Local scale",
+              reg="Regional scale",
+              w= "Global scale",
+              TimberInput="Timber product",
+              EnergyInput="Energy product",
+              mixedProduct="Mixed product",
+              PulpPaperInput="Pulp and paper product",
+              soilC="Soil carbon",
+              harv_residues="Harvest residues",
+              live_biomass_C="Live biomass", 
+              products_storage_C="C storage in products",
+              forestry_emiss="Forestry emiss.",
+              manufacturing_emiss="Manufacturing emiss.",
+              maintenance_emiss="Maintenance emiss.",
+              eol_biogenic="End-of-life biogenic emiss.",
+              eol_fossil_emiss="End-of-life fossil emiss.",
+              off_product_biogenic="Avoided emiss.",
+              biogenic_dyn="Dyn. of biogenic emiss.",
+              fossil_dyn="Dyn. of fossil emiss.",
+              LUC_dyn="Land use change dyn.",
+              rebound_dyn="Market-based dyn.",
+              Demand="Demand",
+              Environment="Environmental change",
+              MultipleStrategies="Multiple strategies",
+              Silviculture="Silviculture for productivity",
+              SupplyChain="Supply chain",
+              Technology="Technology"
+              
+)
 processes <- sort(unique(colnames(data_expt)[colnames(data_expt) %in% categoriesdf[categoriesdf$cat2 %in% c( "C fluxes"),'names']]))
+processesLabels<-as.vector(unlist(dict[match(processes,(names(dict)))]))
+processes<-setNames(processes,processesLabels)
 
-##End test
-#dynamics <-sort(unique(data$dynamics))
 dynamics <- sort(unique(colnames(data_expt)[colnames(data_expt) %in% categoriesdf[categoriesdf$cat2 %in% c( "Dynamics"),'names']]))
+dynamicsLabels<-as.vector(unlist(dict[match(dynamics,(names(dict)))]))
+dynamics<-setNames(dynamics,dynamicsLabels)
 
-dynamicsLabels<-gsub("Dyn"," Dynamics",dynamics)
 driver1 <-sort(unique(data$driver1))
-driver1Cat <-sort(unique(data$driver1Cat))
+driver1Labels <-str_to_title(driver1)
+driver1<-setNames(driver1,driver1Labels)
 
-valSub <- round(sort(unique(data$substitution)), digits = 1)
-minValSub <- min(valSub, na.rm = TRUE)
-maxValSub <- max(valSub, na.rm = TRUE)
+driver1Cat <-sort(unique(data$driver1Cat))
+driver1CatLabels<-driver1Cat
+#driver1CatLabels<-as.vector(unlist(dict[match(driver1Cat,(names(dict)))]))
+driver1Cat<-setNames(driver1Cat,driver1Cat)
 
 
 
 data_expt_approachResults<-assignApproach(data_expt)
  
+if (runForestPlots){
 plotData.approachC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
 forestPlotData.approachC<-forestPlotDataFunc(plotData.approachC,"modelApproach")
 write.csv(plotData.approachC,paste0(initDataPath,"plotData.approachC.csv"))
@@ -146,6 +181,10 @@ tTestPairsSignifAggVarMelt<-modelComponentsC(data_expt_approachResults,c("soilC"
                                              , "",("PaperID"))
 write.csv(tTestPairsSignifAggVarMelt,paste0(initDataPath,"tTestPairsSignifAggVarMelt.csv"))
 
+
+forestPlotData.approachC.dyn<-knowDynamicsData(data_expt)
+write.csv(forestPlotData.approachC.dyn,file.path(initDataPath,"forestPlotData.approachC.dyn.csv"))
+}
 
 save.image(paste0(initDataPath,"initData.Rdata"))
 

@@ -208,15 +208,21 @@ study<-function(data){
 # --------------------------------------------------------------------------- 
 # ----------------Prepare Experiment-level data -> output = data_expt 
 bibliom<-function(data){
-  data<-data[!is.na(data$substitution),]
+  #data<-data[!is.na(data$substitution),]
+  #dataMd<-data[data$Exclusion=='included',
+   dataMd<-data[,
+               (colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names'])  & 
+                 ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer" ) , ]#data with paper metadata only
+  data_bibliom<-unique(setDT(dataMd)[,list(count=.N),names(dataMd)])  #data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
+
+}
+bibliom_in<-function(data){
   dataMd<-data[data$Exclusion=='included',
                (colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names'])  & 
                  ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer" ) , ]#data with paper metadata only
-  data_bibliom<-setDT(dataMd)[,list(count=.N),names(dataMd)]  #data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
-  #data_bibliom_in<-unique(data[data$Exclusion=='included',(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c("Metadata","Protocol"),'names']) ])
+  data_bibliom<-unique(setDT(dataMd)[,list(count=.N),names(dataMd)])  #data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
   
 }
-
 expt<-function(data){
   print("expt")
   data_expt<-data[!is.na(data$Exclusion) & data$Exclusion=='included' & !is.na(data$Article_Title) &!is.na(data$substitution),]
@@ -314,6 +320,7 @@ readCountryData<-function(rawDataPath){
   
   return(countryData)
 }
+
 
 funcFreq<-function(df,categoriesdf){
   dfShort<-subset(df,select=-c(Exclusion,DOI))
@@ -529,8 +536,8 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
     tTestPairsSignifAgg<-aggregate(tTestPairsSignif$`Difference of means`,
                                    by=list(tTestPairsSignif$compartment),
                                    function(x) mean(x))
-    colnames(tTestPairsSignifAgg)<-c("process",paste("Difference of means for ",variable))
-    tTestPairsSignifAgg<- tTestPairsSignifAgg[order(tTestPairsSignifAgg[,paste("Difference of means for ",variable)]),]
+    colnames(tTestPairsSignifAgg)<-c("process",paste("Difference of means for Carbon Balance (tCO2/m3)"))
+    tTestPairsSignifAgg<- tTestPairsSignifAgg[order(tTestPairsSignifAgg[,"Difference of means for Carbon Balance (tCO2/m3)"]),]
     rownames(tTestPairsSignifAgg)<-NULL
     
     #aggregate(data_modelShort[,],by=list(data_modelShort$singleProduct), function(x) length(which(x==1)))
@@ -684,11 +691,11 @@ create_processes_frequency <- function(study_freq, wrap){
     theme( axis.ticks = element_blank(),
            text = element_text(size=txt_size_big),
            axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.),
+           axis.title.y=element_blank(),
            legend.title = element_blank())+ 
     ylab("Number of studies")+ 
-    xlab("Forest sector description")+
+    labs(colour = NULL)+
     geom_text(aes(label = value, text = paste(longName, value)), alpha = 0, hoverinfo = "text", show.legend = FALSE)+
-    #geom_text(aes(label = value, text = paste(names, value)), alpha = 0, hoverinfo = "text", show.legend = FALSE)+
     facet_wrap(~wrap)
   # 
   # return(gg)
@@ -748,7 +755,7 @@ create_driver_frequency <- function(expt_freq,wrap){
     
     plotData<-expt_freq[(expt_freq$cat1 =="Change in practices"|expt_freq$cat1 =="Environmental change") & !is.na(expt_freq$cat1),
                         c("longName","variable","value","cat2","colcat2")] 
-    plotData$cat2<-factor(plotData$cat2,levels=c("Technology","SilvicultureRemov","SilvicultureProd"," Supply chain","Demand","Environmental change"),labels=c("Technology","Forest harvest","Forest growth"," Supply chain","Demand","Environmental change"))
+    plotData$cat2<-factor(plotData$cat2,levels=c("Technology","Silviculture for removals","Silviculture for productivity"," Supply chain","Demand","Environmental change"),labels=c("Technology","Forest harvest","Forest growth"," Supply chain","Demand","Environmental change"))
     plotData<-aggregate(plotData$value ,by=list(plotData$longName,plotData$cat2,plotData$colcat2),FUN=sum)
     colnames(plotData)<-c("longName","cat2","colcat2","value")
     colorVectDrivers<-unique(plotData[,c("colcat2","cat2")])
@@ -777,9 +784,10 @@ create_driver_frequency <- function(expt_freq,wrap){
     theme( axis.ticks = element_blank(),
            text = element_text(size=txt_size_big),
            axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.),
+           axis.title.y=element_blank(),
            legend.title = element_blank())+ 
     ylab("Number of experiments")+ 
-    xlab("Forest sector description") +
+    labs(colour = NULL)+
     facet_wrap(~wrap)
   #ggsave("expt_model_freq.pdf",width=7,height=5) 
 }
@@ -833,39 +841,25 @@ create_forest_plot<-function(plotData,forestPlotData,wrapSplit2){
     theme_bw()+ 
     theme( 
       axis.ticks = element_blank(),
-      axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
+      #axis.title.x = element_blank(),
+      #axis.title.y = element_blank(),
       text = element_text(size=16),
       axis.text.x = element_text(angle = 45,hjust=1,vjust=1),
       strip.placement = "outside",
       strip.text.y.left = element_text(angle = 0)
-      
-      #       axis.ticks = element_blank(),text = element_text(size=12),
-      #        axis.text.x = element_text(size=12,hjust=0.,vjust=0.5),
-      #        axis.text.y = element_text(size=12,hjust=0.,vjust=0.5)
     )+
-    labs(x="Carbon balance (tCO2/m3")+
     geom_text(data=forestPlotData,
               aes(label=paste0(round(substitution,2)," ( ",nStud,"|",nRec,signif," )" )),
               y=2.1,
               size=6,
               nudge_x=0.2) +
-    # stat_n_text(
-    #   y.pos=-2.9,
-    #   size=6)+
     
     geom_hline(yintercept=0)+
-    ylab("Carbon balance")+
-    xlab("")+
     coord_flip(y = c(-6,6),clip="off")
   
   if(wrapSplit2){
-     # plotData$split2<-factor(plotData$split2,
-     #                        levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
-     #                        labels=c("Mobilize additional wood by increased removals","Mobilize additional wood by increased productivity", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
-     # )  
+   
     p<-p+facet_grid(split2~.,
-  #p<-p+facet_grid(driver1Cat~.,
                     switch="y",
   labeller = labeller( split2 = label_wrap_gen(width = 10),
                        #labeller = labeller( driver1Cat = label_wrap_gen(width = 10),
@@ -873,6 +867,8 @@ create_forest_plot<-function(plotData,forestPlotData,wrapSplit2){
                     scales="free_y",
                     space="free_y",)
   }
+  p<-p+labs(x="",y="Carbon balance (tCO2/m3)")
+
   
   print(p) 
   
@@ -884,6 +880,7 @@ plotModelComponentsC<-function(tTestPairsSignifAggVarMelt){
   
   p<-ggplot(  tTestPairsSignifAggVarMelt,aes(x=process,y=variable,fill=value))+
     geom_tile()+
+    scale_y_discrete(labels = function(x) str_wrap(x, width = 15))+
     theme_bw()+
     scale_fill_gradient2()+
     # scale_fill_gradientn(
@@ -894,8 +891,11 @@ plotModelComponentsC<-function(tTestPairsSignifAggVarMelt){
     # )+
     theme( axis.ticks = element_blank(),
            text = element_text(size=txt_size_big),
-           axis.text.x = element_text(angle = 45,hjust=1,vjust=1)
+           axis.text.x = element_text(angle = 45,hjust=1,vjust=1),
+           axis.text.y = element_text(hjust=1),
+           axis.title=element_blank()
     )
+    
   print(p)
   
   #kable(dcast(tTestPairsSignifAggVarMelt,process~variable))
@@ -936,24 +936,15 @@ plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,split
     
     
   }
-  # if(splitName=="driver1Cat"){
-  #   plotData[plotData$driver1=="technologies/design switch", "split"] <- as.character(plotData[ plotData$driver1=="technologies/design switch", "singleProduct"])
-  #   plotData$split<-factor(plotData$split,
-  #                          levels=c("SilvicultureRemov","SilvicultureProd","Supply chain", "Technology","Multiple strategies"),
-  #                          labels=c("Mobilize additional wood by increased removals","Mobilize additional wood by increased productivity", "Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
-  #   )  
-  #   
-  #   
-  #   
-  # }
+  
   if(splitName=="modelApproach"){
     plotData$split<-factor(plotData$split)
   }
   
   plotData$split2<-plotData$driver1Cat
   plotData$split2<-factor(plotData$split2,
-                          levels=c("Supply chain","SilvicultureProd","SilvicultureRemov", "Technology","Multiple strategies"),
-                          labels=c("Make better use of wood", "Mobilize additional wood by increased productivity","Mobilize additional wood by increased removals",  "Use wood instead of other ressource","Multiple strategies")
+                          levels=c("Supply chain","Silviculture for productivity","Silviculture for removals", "Technology","Multiple strategies"),
+                          labels=c("Make better use of wood", "Mobilize additional wood by increased forest growth","Mobilize additional wood by increased forest harvest",  "Use wood instead of other ressource","Multiple strategies")
   ) 
   
   return(data.frame(plotData))
@@ -1017,11 +1008,7 @@ forestPlotDataFunc<-function(plotData,split,split2){
     forestPlotData<-merge(forestPlotData,countRecordSplit[,c("nRec","split","split2")],by=c("split","split2"),all.x=TRUE)
     forestPlotData<-merge(forestPlotData,countStudySplit[,c("nStud","split","split2")],by=c("split","split2"),all.x=TRUE)
     
-    # forestPlotData$split2<-forestPlotData$driver1Cat
-    # forestPlotData$split2<-factor(forestPlotData$split2,
-    #                         levels=c("Supply chain","SilvicultureProd","SilvicultureRemov", "Technology","Multiple strategies"),
-    #                         labels=c("Make better use of wood", "Mobilize additional wood by increased productivity","Mobilize additional wood by increased removals",  "Use wood instead of other ressource","Multiple strategies")
-    # ) 
+    
     
   }
   
@@ -1046,7 +1033,7 @@ forestPlotDataFunc<-function(plotData,split,split2){
   
 }
 
-know_dynamics<-function(data_expt){
+knowDynamicsData<-function(data_expt){
   forestPlotData.approachC.dyn<-data.frame()
   for(i in seq(2002,2021,1)){
     data_expt_approach_yr<-assignApproach(data_expt[data_expt$Publication_Year<=i  &data_expt_approach$modelApproach!="Hybrid approach",])
@@ -1057,8 +1044,11 @@ know_dynamics<-function(data_expt){
     forestPlotData.approachC.yr$year<-as.character(i)
     forestPlotData.approachC.dyn <-rbind(forestPlotData.approachC.dyn,forestPlotData.approachC.yr)
   }
+  return(forestPlotData.approachC.dyn)
+}
+create_knowDynamicsPlot<-function(forestPlotData.approachC.dyn){
   
-  ggplot(forestPlotData.approachC.dyn,aes(x=year,y=substitution,color=split))+
+  p<-ggplot(forestPlotData.approachC.dyn,aes(x=year,y=substitution,color=split))+
     # geom_boxplot(data=plotData.approachC.dyn,aes(y=substitution ,x=year,outliers = FALSE,outlier.color=NULL,fatten = NULL,size=0.5,color=split))+
     #stat_summary(fun=median, color=split, geom="point",  shape=15, size=3, show.legend=FALSE) +
     scale_color_manual(values=c("Ecosystem approach"="#2E9FDF", "Technology approach"="#FC4E07","Whole sector approach"="black"))+
@@ -1073,8 +1063,36 @@ know_dynamics<-function(data_expt){
                    position=position_dodge(width = 0.9))+  #add CIs as error bars
     theme_bw()+
     
+    theme( axis.ticks = element_blank(),
+           text = element_text(size=txt_size_big),
+           axis.text.x = element_text(angle = 45,hjust=1,vjust=1)
+    )+
+    labs( y = "Carbon balance (tCO2/m3)",x="")+
+    
     geom_hline(yintercept=0)
+  print(p)
   
+}
+
+flowchart_data<-function(data_bibliom,dataWoS){
+  
+  # Number of papers identified from WoS
+  nWoS<-length(unique(dataWoS$PaperID))
+  
+  # Number of manual additions of papers that were not identified by WoS query
+  dataManual<-data_bibliom[!(data_bibliom$PaperID %in% dataWoS$PaperID),]
+  nManual<-length(unique(dataManual$PaperID))
+  
+  # Number of processed papers
+  nBibliom<-length(unique(data_bibliom$PaperID))
+  data_bibliom$ExclusionCat <- factor(data_bibliom$Exclusion,
+                                    levels=c("no journal","not english","duplicate data","review","different perimeters" ,"no driver","no change in wood use","C var cannot be cumulated","no C output", "no delta wood","included"),
+                                    labels=c("Screening","Screening","Data originality","Data originality","Study design","Study design","Study design","Results displayed","Results displayed","Results displayed","Included")
+  )
+  #Describe exclusion criteria 
+  exclusionTable<-data.frame(table(data_bibliom$Exclusion))
+  exclusionTable<-merge(exclusionTable,unique(data_bibliom[,c("Exclusion","ExclusionCat")]),by.x="Var1",by.y="Exclusion")
+  return(exclusionTable[order(exclusionTable$ExclusionCat),])
 }
 
 debug_msg <- function(...) {

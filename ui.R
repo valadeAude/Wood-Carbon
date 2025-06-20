@@ -64,8 +64,8 @@ body <- dashboardBody(
                                          checkboxGroupInput(#beginning checkboxGroupInput
                                            inputId="select_scale",
                                            label="Spatial scale",
-                                           choices= c("World"="w","Regional" = "reg", "Local" = "loc"),
-                                           selected = c("World"="w","Regional" = "reg", "Local" = "loc"),
+                                           choices= c("Global"="w","Regional" = "reg", "Local" = "loc"),
+                                           selected = c("Global"="w","Regional" = "reg", "Local" = "loc"),
                                          ),#end  checkboxGroupInput 
                                          selectInput(#beginning selectInput
                                            inputId = "select_countries",
@@ -89,7 +89,7 @@ body <- dashboardBody(
                                          
                                          selectInput(#beginning selectInput
                                            inputId = "select_time_horizon",
-                                           label = "Time scale",
+                                           label = "Time scale (years)",
                                            choices = timeHorizon,
                                            multiple = TRUE, 
                                            selected = timeHorizon
@@ -112,8 +112,8 @@ body <- dashboardBody(
                                     selectInput( #beginning checkboxGroupInput
                                       "select_processes",
                                       "Only show records that account for processes",
-                                      #  choices = products,
-                                      choices = processes,
+                                        choices = processes,
+                                      #choices = processesLabels,
                                       multiple=TRUE,
                                       selected = NULL 
                                     ), #end  checkboxGroupInput 
@@ -136,14 +136,14 @@ body <- dashboardBody(
                                     selectInput(#beginning selectInput
                                       "select_driver1Cat",
                                       "Mobilization strategy category",
-                                      driver1Cat,
+                                      choices=driver1Cat,
                                       multiple = TRUE,
                                       selected = driver1Cat
                                     ),#end selectInput 
                                     selectInput(#beginning selectInput
                                       "select_driver1",#inputId
                                       "Mobilization strategy",#label
-                                      driver1,#choices
+                                      choices=driver1,#choices
                                       multiple = TRUE, #multiple choice  = TRUE
                                       selected = driver1
                                     )
@@ -158,6 +158,8 @@ body <- dashboardBody(
                                     sliderInput(#beginning sliderInput
                                       inputId = "select_substitution",
                                       label = "Substitution",
+                                      round=-1,
+                                      step=0.5,
                                       min = minValSub,
                                       max = maxValSub,
                                       value = c(minValSub, maxValSub),
@@ -181,8 +183,8 @@ body <- dashboardBody(
                   fluidRow(
                     # Clicking this will increment the progress amount
                     box(width = 4, 
-                        actionButton("submit", "Submit filters",style='padding:10px; font-size:100%;  background-color: #e27a3a'),
-                        actionButton("resetExp", "Ignore filters",style='padding:10px; font-size:100%;  background-color: #f3eada')
+                        actionButton("submitExp", "Submit filters",style='padding:10px; font-size:100%;  background-color: #e27a3a'),
+                        actionButton("ignoreExp", "Ignore filters",style='padding:10px; font-size:100%;  background-color: #f3eada')
                     ),
                     infoBoxOutput("summaryExptBox"),
                     infoBoxOutput("summaryStudyBox")
@@ -245,7 +247,9 @@ body <- dashboardBody(
                                  choices= "Wrap by type of wood"
                                  #                       selected = "Wrap by type of wood"
                                )#end  checkboxGroupInput
-                             )                  ),  #end tabpanel      
+                             )                  
+                    ),  #end tabpanel      
+                    
                     
                   ),#end tabbox
                   box( id = "boxTable", width=12,#height = "500px",
@@ -309,6 +313,13 @@ body <- dashboardBody(
                            includeMarkdown( './TextContent/leg_driverC.Rmd')
                            
                          )  #end div                
+              ), #end tabpanel      
+              tabPanel("Knowledge dynamics", 
+                       div(  
+                         addSpinner(plotOutput("knowledgeDyn", height = "600px"), spin = "circle", color = "#377EB8"),
+                         includeMarkdown( './TextContent/leg_driverC.Rmd')
+                         
+                       )  #end div                
               ), #end tabpanel      
             )#end tabbox
     )#end fluidpage

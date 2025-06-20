@@ -1,10 +1,10 @@
 "","process","variable","value"
-"1","Live biomass","Difference of means for  substitution",-2.15765320911343
-"2","Soil carbon","Difference of means for  substitution",-2.15765320911343
-"3","Harvest residues","Difference of means for  substitution",-1.02356028477049
-"4","End-of-life emiss.","Difference of means for  substitution",0.314539751305283
-"5","Maintenance emiss.","Difference of means for  substitution",0.409624097216196
-"6","Manufacturing emiss.","Difference of means for  substitution",0.506889564715979
-"7","C storage in products","Difference of means for  substitution",0.574750446600693
-"8","Avoided emiss.","Difference of means for  substitution",0.618216363327231
-"9","Forestry emiss.","Difference of means for  substitution",0.742560009536297
+"1","Live biomass","Difference of means for Carbon Balance (tCO2/m3)",-2.15765320911343
+"2","Soil carbon","Difference of means for Carbon Balance (tCO2/m3)",-2.15765320911343
+"3","Harvest residues","Difference of means for Carbon Balance (tCO2/m3)",-1.02356028477049
+"4","End-of-life emiss.","Difference of means for Carbon Balance (tCO2/m3)",0.314539751305283
+"5","Maintenance emiss.","Difference of means for Carbon Balance (tCO2/m3)",0.409624097216196
+"6","Manufacturing emiss.","Difference of means for Carbon Balance (tCO2/m3)",0.506889564715979
+"7","C storage in products","Difference of means for Carbon Balance (tCO2/m3)",0.574750446600693
+"8","Avoided emiss.","Difference of means for Carbon Balance (tCO2/m3)",0.618216363327231
+"9","Forestry emiss.","Difference of means for Carbon Balance (tCO2/m3)",0.742560009536297

@@ -15,10 +15,18 @@ options(shiny.error = function() {
 server <- function(input, output, session) {
   w<-Waiter$new()
   
- 
+  rv <- reactiveValues(
+    # mode d'application du filtre TRUE=on applique le filtre, FALSE=toutes les données
+    filter_data = TRUE,
+    # a chaque fois qu'on incrémente cette valeur, le filtre sera réappliqué
+    # apply_filter = 0
+  )
   
-  data_fltr <- eventReactive(input$submit, {
-    filtered_data <- data[data$scaleAgg %in% input$select_scale&
+  #data_fltr <- eventReactive(input$submitExp, {
+    data_fltr <- eventReactive(list(rv$filter_data,input$submitExp), {
+    if(rv$filter_data) {
+      
+      filtered_data <- data[data$scaleAgg %in% input$select_scale&
                             data$country %in% input$select_countries&
                             data$singleProduct %in% input$select_single_product&
                             data$time_horizon %in% input$select_time_horizon&
@@ -31,19 +39,20 @@ server <- function(input, output, session) {
                             
                             data$driver1 %in% input$select_driver1&
                             data$driver1Cat %in% input$select_driver1Cat&
-                            (  
-                              (data$substitution >= input$select_substitution[1]&
-                                 data$substitution <= input$select_substitution[2])|
-                                is.na(data$substitution)
-                            ),]
-    
-    if (is.null(input$select_NA_substitution)) {
-      filtered_data <- filtered_data[!is.na(filtered_data$substitution), ]
+                            data$substitution >= input$select_substitution[1]&
+                            data$substitution <= input$select_substitution[2]
+                            ,]
+    }else{
+      filtered_data <- data
     }
-     else{
-       filtered_data <- filtered_data
-     
-     }
+    
+    # if (is.null(input$select_NA_substitution)) {
+    #   filtered_data <- filtered_data[!is.na(filtered_data$substitution), ]
+    # }
+    #  else{
+    #    filtered_data <- filtered_data
+    #  
+    #  }
     
     #lost_data<-data[!(data$DOI %in% filtered_data),]
   }, ignoreNULL = FALSE) 
@@ -56,7 +65,7 @@ server <- function(input, output, session) {
     updateSelectInput( session,"select_time_horizon",selected = timeHorizon)
     updateSelectInput( session, "select_processes",selected=character(0) )
     updateSelectInput(session, "select_dynamics", selected = character(0))
-    updateSelectInput(session,"select_driver1Cat",selected = driver1Cat)
+    updateSelectInput(session,"select_driver1Cat",selected = driver1CatLabels)
     updateSelectInput(session,"select_driver1", selected = driver1)
     updateSliderInput(session,
                       inputId = "select_substitution",
@@ -68,7 +77,7 @@ server <- function(input, output, session) {
 },ignoreNULL=FALSE )
  
 
-  data_unfltr <- eventReactive(input$submit, {
+  data_unfltr <- eventReactive(input$submitExp, {
     unfiltered_data <- data[!(data$scaleAgg %in% input$select_scale)|
                               !(data$country %in% input$select_countries)|
                               !(data$singleProduct %in% input$select_single_product)|
@@ -88,15 +97,14 @@ server <- function(input, output, session) {
     
     #lost_data<-data[!(data$DOI %in% filtered_data),]
   }, ignoreNULL = FALSE)     
-  data_bibliom_select<-reactive({bibliom(data_fltr()) })
+  data_bibliom_select<-reactive({bibliom_in(data_fltr()) })
   data_study_select<-reactive({study(data_fltr()) })
   data_country_select<-reactive({countryFreq(data_study_select(),countryRefData)})
   data_expt_select<-reactive({expt(data_fltr()) })
   data_expt_approach_select<-reactive({assignApproach(data_expt_select())})
   data_expt_unselect<-reactive({expt(data_unfltr()) })
 
-  #Test reactive for intermediary variables
-  
+
   
   
   
@@ -123,8 +131,7 @@ server <- function(input, output, session) {
     dt <- sort(data$country[data$scaleAgg %in% input$select_scale])
     updatePickerInput(session, "select_countries", choices = dt, selected = dt)
   })
-  cat(file=stderr(), "exit updatepicker")
-  
+
   
   observe({#dependence category -> driver
     dt <- data$driver1[data$driver1Cat %in% input$select_driver1Cat]
@@ -134,37 +141,41 @@ server <- function(input, output, session) {
   
   output$filtered_db_table<-renderDT(
     unique(data_fltr()[,c("PaperID","DOI")]), options = list(lengthChange = FALSE))
+
+## Database exploration
+  observeEvent(list(input$submitExp), {
+    rv$filter_data <- TRUE
+  })
   
+  # désactive le filtrage
+  observeEvent(list(input$ignoreExp), {
+    rv$filter_data <- FALSE
+  })
+  
+  observeEvent(list(input$submitExp), {
+    rv$filter_data <- TRUE
+  })
   output$barplotYear<- renderPlotly({
-    #plotBarplotYear(data_bibliom_select())
     plotBarplotYear(data_bibliom_select())
   })
   
   output$countryData <- renderPlotly({
-   
     plotlyCountryData<-plotCountryData(data_country_select(),input$countryRanking)
-#    plotlyCountryData<-plotCountryData(data_country_select(),"Forest.area..1000.ha.")
   }) 
   
   output$processes_plot <- renderPlotly({
     study_freq<-funcFreq(data_study_select(),categoriesdf)
-    #Debug info
-    print("in server: processes_plot")
-    ##
     if ("Wrap by type of wood" %in% input$wrap_type_wood_processes) {
       create_processes_frequency(study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),],"wrap" )
     }else{
       create_processes_frequency(study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),] )
-      
     }
   })
   
   output$processes_fluxes_plot <- renderPlotly({
-    print("in server: processes_fluxes_plot")
     study_freq<-funcFreq(data_study_select(),categoriesdf)
     print(head(study_freq))
     if ("Wrap by type of wood" %in% input$wrap_type_wood_processes) {
-      
       plotlyProcessesFlux<-create_processes_versus_flux_size(study_freq ,"Set1","wrap")
     }else{
       plotlyProcessesFlux<-create_processes_versus_flux_size(study_freq ,"Set1")
@@ -173,15 +184,10 @@ server <- function(input, output, session) {
   
   output$driver_plot <- renderPlotly({
     expt_freq<-funcFreq(data_expt_select(),categoriesdf)
-    #Debug info
-    print("in server")
-    print(input$wrap_type_wood_processes)
-    ##
     if ("Wrap by type of wood" %in% input$wrap_type_wood_drivers) {
       create_driver_frequency(expt_freq[(expt_freq$cat1 =="Change in practices"|expt_freq$cat1 =="Environmental change") & !is.na(expt_freq$cat1),] ,"wrap")
     }else{
       create_driver_frequency(expt_freq[(expt_freq$cat1 =="Change in practices"|expt_freq$cat1 =="Environmental change") & !is.na(expt_freq$cat1),] )
-      
     }
   })
   
@@ -266,6 +272,16 @@ server <- function(input, output, session) {
     create_forest_plot(plotData.driverC,forestPlotData.driverC,TRUE)
   })
   
+  output$knowledgeDyn<-renderPlot({
+    data_expt_approachResults<-assignApproach(res$data_expt)
+    
+    if (res$filterResults=="filter") {
+      forestPlotData.approachC.dyn<-knowDynamicsData(data_expt_approachResults)
+    }else{
+      forestPlotData.approachC.dyn<-read.csv(file.path(initDataPath,"forestPlotData.approachC.dyn.csv"))
+    }
+    create_knowDynamicsPlot(forestPlotData.approachC.dyn)
+  })
   
   
   output$substitution_average_bars_drivers <- renderPlotly({
