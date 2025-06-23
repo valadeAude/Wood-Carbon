@@ -2,4 +2,10 @@ Title: Rshiny
 Author: Aude Valade
 DisplayMode: Showcase
 Type: Shiny
+To run the application while it is not online.
+
 1. Run the script setup. It reads data in rawData/ and writes new ones to initData/
+
+2. Open one of the global, server or ui.R files in RStudio and press green arrow "Run app"
+
+3. The application is launched in your web browser.
