@@ -1,37 +1,24 @@
 ## ----echo=FALSE, warning=FALSE, message=FALSE----------------------------------------------------------------------------------------------------
-library(cluster)    # clustering algorithms
-library(corrplot)
-library(data.table)
-library(dplyr)
-library(DT)
-library(EnvStats)
-library(factoextra)
-library(fresh)
-library(ggcorrplot)
-library(ggplot2)
-library(ggridges)
-library(ggsignif)
-library(ggthemes)
-library(gridExtra)
-library(heatmaply)
-library(mapproj)
-library(Matrix)
-library(meta)
-library(metafor)
-library(multcompView)
-library(plotly)
-library(RColorBrewer)
-library(readxl)
-library(reshape2)
-library(rmarkdown)
-library(scales)
-library(shinyBS)
-library(stringr)
-library(viridis)
-library(waiter)
-
+suppressPackageStartupMessages({ 
+  library(DT)
+  library(factoextra)
+  library(fresh)
+  library(logging)
+  library(magrittr)
+  library(plotly)
+  library(RColorBrewer)
+  library(shiny)
+  library(shinyBS)
+  library(shinybusy)
+  library(shinyjs)
+  library(shinyWidgets)
+  library(viridis)
+  library(waiter)
+  
+})
 load("./initData/initData.Rdata")
-source(file.path(WoodCarbonPath,"functions.R"))
+
+source("functions.R")
 
 
 
@@ -69,3 +56,5 @@ my_theme <- create_theme(
     info_box_bg = "#FFFFFF"
   )
 )
+txt_size<-10
+txt_angle<-45

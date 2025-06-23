@@ -17,17 +17,15 @@ dataFlux.file<-paste0(rawDataPath,"TableForestCCycleSynthesis.3.xlsx")
 source(file.path(WoodCarbonPath,"functions.R"))
 
 ##
-runForestPlots<-TRUE
 
 # Look at  world values in Peng-> extract	https://unece.org/sites/default/files/2022-05/unece-fao-sp-51-main-report-forest-sector-outlook_0.pdf
 
 # Set graphic parameters
-txt_size<-10
-txt_size_small<-9
-txt_size_big<-12
-txt_size_verybig<-24
+# txt_size<-10
+# txt_size_small<-9
+# txt_size_big<-12
+# txt_size_verybig<-24
 
-txt_angle<-45
 color_fossil<- as.character("#332288ff")
 color_biogenic<-as.character("#cc6677ff")
 color_sum<-"black"
@@ -48,12 +46,11 @@ wood_type_names<-c(
   `All`='All types of wood use'
 )
 
-# -------------
-# ------------- Gobal carbon cycle synthesis
-refCProces<-GlobalFluxData(dataFlux.file)
-CcylePlot<-create_C_synthesis_plot(refCProces)
-ggsave(paste0(wwwDataPath,"Csynthesis.png"),width=10,bg='transparent')
 
+
+refCProcess<-GlobalFluxData(dataFlux.file)
+refCProcessMean<-aggregate(`value GtCO2/yr`~substitutionDatabaseVariable,data=refCProcess,FUN=mean,na.rm=T)
+refCProcessMean$`value GtCO2/yr`<-as.numeric(refCProcessMean$`value GtCO2/yr`)
 
 # -------------
 # ------------- Read header of data and palette to have a lookup table for category of variables along with their colors
@@ -108,12 +105,12 @@ timeHorizon <- sort(unique(data$time_horizon))
 #to make "+100" the last element
 timeHorizonFrstElmt <- timeHorizon[1]
 timeHorizon <- timeHorizon[-1]
-timeHorizon <- c(timeHorizon, timeHorizonFrstElmt)
+timeHorizonList <- c(timeHorizon, timeHorizonFrstElmt)
 
 # countries_world <- unique(map.world$region)
 scaleAgg <- unique(data$scaleAgg)
-products <- sort(unique(data$singleProduct))
-productsLabels<-gsub("([a-z])([A-Z])","\\1 \\2",str_remove(products,'Input'))
+productsList <- sort(unique(data$singleProduct))
+productsLabels<-gsub("([a-z])([A-Z])","\\1 \\2",str_remove(productsList,'Input'))
 ##Test
 #boundaries <-sort(unique(data$boundaries))
 dict = list(  loc="Local scale",
@@ -147,44 +144,64 @@ dict = list(  loc="Local scale",
 )
 processes <- sort(unique(colnames(data_expt)[colnames(data_expt) %in% categoriesdf[categoriesdf$cat2 %in% c( "C fluxes"),'names']]))
 processesLabels<-as.vector(unlist(dict[match(processes,(names(dict)))]))
-processes<-setNames(processes,processesLabels)
+processesList<-setNames(processes,processesLabels)
 
 dynamics <- sort(unique(colnames(data_expt)[colnames(data_expt) %in% categoriesdf[categoriesdf$cat2 %in% c( "Dynamics"),'names']]))
 dynamicsLabels<-as.vector(unlist(dict[match(dynamics,(names(dict)))]))
-dynamics<-setNames(dynamics,dynamicsLabels)
+dynamicsList<-setNames(dynamics,dynamicsLabels)
 
 driver1 <-sort(unique(data$driver1))
 driver1Labels <-str_to_title(driver1)
-driver1<-setNames(driver1,driver1Labels)
+driver1List<-setNames(driver1,driver1Labels)
 
 driver1Cat <-sort(unique(data$driver1Cat))
 driver1CatLabels<-driver1Cat
-#driver1CatLabels<-as.vector(unlist(dict[match(driver1Cat,(names(dict)))]))
-driver1Cat<-setNames(driver1Cat,driver1Cat)
+driver1CatList<-setNames(driver1Cat,driver1Cat)
 
-
+valSub <- round(sort(unique(data$substitution)), digits = 1)
+minValSub <- min(valSub, na.rm = TRUE)
+maxValSub <- max(valSub, na.rm = TRUE)
 
 data_expt_approachResults<-assignApproach(data_expt)
- 
-if (runForestPlots){
+
 plotData.approachC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
 forestPlotData.approachC<-forestPlotDataFunc(plotData.approachC,"modelApproach")
-write.csv(plotData.approachC,paste0(initDataPath,"plotData.approachC.csv"))
-write.csv(forestPlotData.approachC,paste0(initDataPath,"forestPlotData.approachC.csv"))
+
 
 plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1")
 forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1","driver1Cat") #set includeSplit2 to TRUE
-write.csv(plotData.driverC,paste0(initDataPath,"plotData.driverC.csv"))
-write.csv(forestPlotData.driverC,paste0(initDataPath,"forestPlotData.driverC.csv"))
 
 tTestPairsSignifAggVarMelt<-modelComponentsC(data_expt_approachResults,c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn")
                                              , "",("PaperID"))
-write.csv(tTestPairsSignifAggVarMelt,paste0(initDataPath,"tTestPairsSignifAggVarMelt.csv"))
 
 
-forestPlotData.approachC.dyn<-knowDynamicsData(data_expt)
-write.csv(forestPlotData.approachC.dyn,file.path(initDataPath,"forestPlotData.approachC.dyn.csv"))
-}
+forestPlotData.approachC.dyn<-knowDynamicsData(data_expt_approach)
 
-save.image(paste0(initDataPath,"initData.Rdata"))
+
+#save.image(paste0(initDataPath,"initData.workspace.Rdata"))
+save(refCProcessMean,
+     countriesList,
+     productsLabels,
+     productsList,
+     timeHorizonList,
+     processesList,
+     dynamicsList,
+     driver1CatList,
+     driver1List,
+     wood_type_names,
+     minValSub,
+     maxValSub,
+     data,
+     categoriesdf,
+     countryRefData,
+     data_expt,
+     data_expt_approach,
+     data_bibliom,
+     plotData.approachC,
+     forestPlotData.approachC,
+     tTestPairsSignifAggVarMelt,
+     forestPlotData.approachC.dyn,
+     plotData.driverC,
+     forestPlotData.driverC,
+     file=paste0(initDataPath,"initData.Rdata"))
 

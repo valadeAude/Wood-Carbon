@@ -32,18 +32,18 @@ body <- dashboardBody(
   tabItems(
     tabItem(tabName = "home",
             fluidPage(
-              includeMarkdown("./TextContent/Home.Rmd")
+              includeMarkdown("./TextContent/Home.md")
             )
     ),
     tabItem(tabName = "context",
             fluidPage(
-              includeMarkdown('./TextContent/PrinciplesContext.Rmd'
+              includeMarkdown('./TextContent/PrinciplesContext.md'
               )
             )
     ),
     tabItem(tabName = "methods",
             fluidPage(
-              includeMarkdown( './TextContent/PrinciplesMethods.Rmd'
+              includeMarkdown( './TextContent/PrinciplesMethods.md'
               )
             )
     ),
@@ -79,8 +79,8 @@ body <- dashboardBody(
                                            label="Wood product type",
                                            #  choices = products,
                                            choiceNames=str_to_title(productsLabels),
-                                           choiceValues=products,
-                                           selected = products,  
+                                           choiceValues=productsList,
+                                           selected = productsList,  
                                          ), #end  checkboxGroupInput 
                                          bsPopover(id="select_single_product", 
                                                    "Wood type","Select which wood types the analyzed studies focus on. Mixed product means that more than one wood type is considered.",
@@ -90,9 +90,9 @@ body <- dashboardBody(
                                          selectInput(#beginning selectInput
                                            inputId = "select_time_horizon",
                                            label = "Time scale (years)",
-                                           choices = timeHorizon,
+                                           choices = timeHorizonList,
                                            multiple = TRUE, 
-                                           selected = timeHorizon
+                                           selected = timeHorizonList
                                          )#end  selectInput
                                   )#end column
                                 )#end fluidrow
@@ -112,7 +112,7 @@ body <- dashboardBody(
                                     selectInput( #beginning checkboxGroupInput
                                       "select_processes",
                                       "Only show records that account for processes",
-                                        choices = processes,
+                                        choices = processesList,
                                       #choices = processesLabels,
                                       multiple=TRUE,
                                       selected = NULL 
@@ -120,7 +120,7 @@ body <- dashboardBody(
                                     selectInput(#beginning checkboxGroupInput
                                       "select_dynamics",#inputId
                                       "Only show records that account for dynamics",#label
-                                      choices=dynamics,
+                                      choices=dynamicsList,
                                       multiple=TRUE,
                                       selected = NULL
                                       #                                    selected = dynamics
@@ -136,16 +136,16 @@ body <- dashboardBody(
                                     selectInput(#beginning selectInput
                                       "select_driver1Cat",
                                       "Mobilization strategy category",
-                                      choices=driver1Cat,
+                                      choices=driver1CatList,
                                       multiple = TRUE,
-                                      selected = driver1Cat
+                                      selected = driver1CatList
                                     ),#end selectInput 
                                     selectInput(#beginning selectInput
                                       "select_driver1",#inputId
                                       "Mobilization strategy",#label
-                                      choices=driver1,#choices
+                                      choices=driver1List,#choices
                                       multiple = TRUE, #multiple choice  = TRUE
-                                      selected = driver1
+                                      selected = driver1List
                                     )
                                   )
                                 )
@@ -229,7 +229,7 @@ body <- dashboardBody(
                              div(  
                                h3("Number of studies considering each process"),
                                checkboxGroupInput(#beginning checkboxGroupInput
-                                 inputId="wrap_type_wood_processes",
+                                 inputId="wrap_type_wood_fluxes",
                                  label = NULL,
                                  choices= "Wrap by type of wood"
                                  #                       selected = "Wrap by type of wood"
@@ -240,13 +240,14 @@ body <- dashboardBody(
                     tabPanel("Mobilization strategy", 
                              div(  
                                h3("Number of experiments considering each strategy of increased wood use"),
-                               addSpinner(plotlyOutput("driver_plot", height = "500px"), spin = "circle", color = "#377EB8"),
                                checkboxGroupInput(#beginning checkboxGroupInput
                                  inputId="wrap_type_wood_drivers",
                                  label = NULL,
                                  choices= "Wrap by type of wood"
                                  #                       selected = "Wrap by type of wood"
-                               )#end  checkboxGroupInput
+                               ),#end  checkboxGroupInput
+                               addSpinner(plotlyOutput("driver_plot", height = "500px"), spin = "circle", color = "#377EB8"),
+                               
                              )                  
                     ),  #end tabpanel      
                     
@@ -287,21 +288,21 @@ body <- dashboardBody(
                 tabPanel("Modeling approaches", 
                          div(  
                            addSpinner(plotOutput("dendrogram", height = "500px"), spin = "circle", color = "#377EB8"),
-                           includeMarkdown( './TextContent/leg_dendrogram.Rmd')
+                           includeMarkdown( './TextContent/leg_dendrogram.md')
                            
                          )
                 ),
                 tabPanel("Carbon balance", 
                          div(  
                            addSpinner(plotOutput("approachC",height="500px"), spin = "circle", color = "#377EB8"),
-                           includeMarkdown( './TextContent/leg_approachC.Rmd')
+                           includeMarkdown( './TextContent/leg_approachC.md')
                            
                          ),#end div                  
                 ),
                 tabPanel("Model components", 
                          div(  
                            addSpinner(plotlyOutput("modelComponentsC", height = "500px"), spin = "circle", color = "#377EB8"),
-                           includeMarkdown( './TextContent/leg_components.Rmd')
+                           includeMarkdown( './TextContent/leg_components.md')
                            
                            
                          )  #end div                
@@ -310,14 +311,14 @@ body <- dashboardBody(
                          div(  
                            
                            addSpinner(plotOutput("driverC", height = "600px"), spin = "circle", color = "#377EB8"),
-                           includeMarkdown( './TextContent/leg_driverC.Rmd')
+                           includeMarkdown( './TextContent/leg_driverC.md')
                            
                          )  #end div                
               ), #end tabpanel      
               tabPanel("Knowledge dynamics", 
                        div(  
                          addSpinner(plotOutput("knowledgeDyn", height = "600px"), spin = "circle", color = "#377EB8"),
-                         includeMarkdown( './TextContent/leg_driverC.Rmd')
+                         includeMarkdown( './TextContent/leg_driverC.md')
                          
                        )  #end div                
               ), #end tabpanel      

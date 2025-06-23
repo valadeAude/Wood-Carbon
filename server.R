@@ -1,10 +1,4 @@
-library(shiny)
-library(plotly)
-library(shinyWidgets)
-library(shinybusy)
-library(magrittr)
-library(shinyjs)
-library(logging)
+
 
 basicConfig()
 
@@ -26,7 +20,7 @@ server <- function(input, output, session) {
     data_fltr <- eventReactive(list(rv$filter_data,input$submitExp), {
     if(rv$filter_data) {
       
-      filtered_data <- data[data$scaleAgg %in% input$select_scale&
+      filtered_data <- data[data$scaleAgg %in% input$select_scale &
                             data$country %in% input$select_countries&
                             data$singleProduct %in% input$select_single_product&
                             data$time_horizon %in% input$select_time_horizon&
@@ -46,27 +40,19 @@ server <- function(input, output, session) {
       filtered_data <- data
     }
     
-    # if (is.null(input$select_NA_substitution)) {
-    #   filtered_data <- filtered_data[!is.na(filtered_data$substitution), ]
-    # }
-    #  else{
-    #    filtered_data <- filtered_data
-    #  
-    #  }
-    
-    #lost_data<-data[!(data$DOI %in% filtered_data),]
+   
   }, ignoreNULL = FALSE) 
   
   
   observeEvent(input$reset, {
     updateCheckboxGroupInput(session, "select_scale", selected = c("world"="w","regional" = "reg", "local" = "loc"))
     updateSelectInput(session, "select_countries",selected = countriesList)
-    updateCheckboxGroupInput(session, "select_single_product", selected = products)
-    updateSelectInput( session,"select_time_horizon",selected = timeHorizon)
+    updateCheckboxGroupInput(session, "select_single_product", selected = productsList)
+    updateSelectInput( session,"select_time_horizon",selected = timeHorizonList)
     updateSelectInput( session, "select_processes",selected=character(0) )
     updateSelectInput(session, "select_dynamics", selected = character(0))
-    updateSelectInput(session,"select_driver1Cat",selected = driver1CatLabels)
-    updateSelectInput(session,"select_driver1", selected = driver1)
+    updateSelectInput(session,"select_driver1Cat",selected = driver1CatList)
+    updateSelectInput(session,"select_driver1", selected = driver1List)
     updateSliderInput(session,
                       inputId = "select_substitution",
                       label = "Substitution",
@@ -76,27 +62,9 @@ server <- function(input, output, session) {
     )#end sliderInput
 },ignoreNULL=FALSE )
  
-
-  data_unfltr <- eventReactive(input$submitExp, {
-    unfiltered_data <- data[!(data$scaleAgg %in% input$select_scale)|
-                              !(data$country %in% input$select_countries)|
-                              !(data$singleProduct %in% input$select_single_product)|
-                              !(data$time_horizon %in% input$select_time_horizon)|
-                              !(data$boundaries %in% input$select_boundaries)|
-                              !(data$dynamics %in% input$select_dynamics)|
-                              !(data$driver1 %in% input$select_driver1)|
-                              !(data$driver1Cat %in% input$select_driver1Cat),]
-    
-    # if (is.null(input$select_NA_substitution)) {
-    #   unfiltered_data <- unfiltered_data[is.na(filtered_data$substitution), ]
-    # }
-    # else{
-    #   unfiltered_data <- unfiltered_data
-    #   
-    # }
-    
-    #lost_data<-data[!(data$DOI %in% filtered_data),]
-  }, ignoreNULL = FALSE)     
+ 
+  
+  
   data_bibliom_select<-reactive({bibliom_in(data_fltr()) })
   data_study_select<-reactive({study(data_fltr()) })
   data_country_select<-reactive({countryFreq(data_study_select(),countryRefData)})
@@ -105,7 +73,6 @@ server <- function(input, output, session) {
   data_expt_unselect<-reactive({expt(data_unfltr()) })
 
 
-  
   
   
   wt_select<-reactive({
@@ -122,6 +89,7 @@ server <- function(input, output, session) {
     input$select_substitution
     input$wrap_type_wood_map
     input$wrap_type_wood_processes
+    input$wrap_type_wood_fluxes
     input$wrap_type_wood_cor
     input$exclusion
     input$countryRanking
@@ -160,6 +128,7 @@ server <- function(input, output, session) {
   })
   
   output$countryData <- renderPlotly({
+   
     plotlyCountryData<-plotCountryData(data_country_select(),input$countryRanking)
   }) 
   
@@ -174,11 +143,10 @@ server <- function(input, output, session) {
   
   output$processes_fluxes_plot <- renderPlotly({
     study_freq<-funcFreq(data_study_select(),categoriesdf)
-    print(head(study_freq))
-    if ("Wrap by type of wood" %in% input$wrap_type_wood_processes) {
-      plotlyProcessesFlux<-create_processes_versus_flux_size(study_freq ,"Set1","wrap")
+    if ("Wrap by type of wood" %in% input$wrap_type_wood_fluxes) {
+      plotlyProcessesFlux<-create_processes_versus_flux_size(refCProcessMean,study_freq ,"Set1",wood_type_names,"wrap")
     }else{
-      plotlyProcessesFlux<-create_processes_versus_flux_size(study_freq ,"Set1")
+      plotlyProcessesFlux<-create_processes_versus_flux_size(refCProcessMean,study_freq ,"Set1",wood_type_names)
     }
   })
   
@@ -215,38 +183,35 @@ server <- function(input, output, session) {
   })  
   
   output$dendrogram<-renderPlot({
-    print("in server : dendrogram")
-    data_expt_approachResults<-assignApproach(res$data_expt)
-    create_dendrogram(data_expt_approachResults)
+    create_dendrogram(res$data_expt_approach)
   
   })
   
   output$approachC<-renderPlot({
-    #data_expt_approach<-assignApproach(data_expt) #nminTechno,nmaxTechno,nminEcos,nmaxEcos
-    #     plotApproachC<-approachC(data_expt_approach)
-    data_expt_approachResults<-assignApproach(res$data_expt)
+
     if (res$filterResults=="filter") {
-      print("filters included")
-      plotData<-plotDataFunc(data_expt_approachResults, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
-      forestPlotData<-forestPlotDataFunc(plotData,"modelApproach")
+      plotData.tmp<-plotDataFunc(res$data_expt_approach, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
+      forestPlotData.tmp<-forestPlotDataFunc(plotData.tmp,"modelApproach")
          }else{
-      print("no filters")
-      plotData<-read.csv(paste0(initDataPath,"plotData.approachC.csv"))
-      forestPlotData<-read.csv(paste0(initDataPath,"forestPlotData.approachC.csv"))
+           plotData.tmp<-plotData.approachC
+           forestPlotData.tmp<-forestPlotData.approachC
+        
     }
-    create_forest_plot(plotData,forestPlotData,FALSE)
+    create_forest_plot(plotData.tmp,forestPlotData.tmp,FALSE)
   })
+  
+  
   
   output$modelComponentsC<-renderPlotly({
     if (res$filterResults=="filter") {
       
-    tTestPairsSignifAggVarMelt<-modelComponentsC(data_expt_approach_select(),c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn")
+    tTestPairsSignifAggVarMelt.tmp<-modelComponentsC(data_expt_approach_select(),c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn")
                                                  , "",("PaperID"))
     }else{
-      tTestPairsSignifAggVarMelt<-read.csv(paste0(initDataPath,"tTestPairsSignifAggVarMelt.csv"))
+      tTestPairsSignifAggVarMelt.tmp<-tTestPairsSignifAggVarMelt
     }
    
-    plotModelComponentsC(tTestPairsSignifAggVarMelt)
+    plotModelComponentsC(tTestPairsSignifAggVarMelt.tmp)
   })
   
   
@@ -255,32 +220,29 @@ server <- function(input, output, session) {
   
   
   output$driverC<-renderPlot({
-    data_expt_approachResults<-assignApproach(res$data_expt)
-    
+
     if (res$filterResults=="filter") {
-      plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1")
-      forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1","driver1Cat")
-    #  plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1Cat")
-     # forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1Cat",FALSE)      
+      plotData.driverC.tmp<-plotDataFunc(res$data_expt_approach, c("Whole sector approach"),NULL,"driver1")
+      forestPlotData.driverC.tmp<-forestPlotDataFunc(plotData.driverC.tmp,"driver1","driver1Cat")
+    
     }else{
-     plotData.driverC<-read.csv(paste0(initDataPath,"plotData.driverC.csv"))
-      forestPlotData.driverC<-read.csv(paste0(initDataPath,"forestPlotData.driverC.csv"))
-   #   plotData.driverC<-read.csv(paste0(initDataPath,"plotData.driverCatC.csv"))
-    #  forestPlotData.driverC<-read.csv(paste0(initDataPath,"forestPlotData.driverCatC.csv"))
-      
+           plotData.driverC.tmp<-plotData.driverC
+      forestPlotData.driverC.tmp<-forestPlotData.driverC
+
      }
-    create_forest_plot(plotData.driverC,forestPlotData.driverC,TRUE)
+    create_forest_plot(plotData.driverC.tmp,forestPlotData.driverC.tmp,TRUE)
   })
   
+  
+  
   output$knowledgeDyn<-renderPlot({
-    data_expt_approachResults<-assignApproach(res$data_expt)
-    
+
     if (res$filterResults=="filter") {
-      forestPlotData.approachC.dyn<-knowDynamicsData(data_expt_approachResults)
+      forestPlotData.approachC.dyn.tmp<-knowDynamicsData(res$data_expt_approach)
     }else{
-      forestPlotData.approachC.dyn<-read.csv(file.path(initDataPath,"forestPlotData.approachC.dyn.csv"))
+      forestPlotData.approachC.dyn.tmp<-forestPlotData.approachC.dyn
     }
-    create_knowDynamicsPlot(forestPlotData.approachC.dyn)
+    create_knowDynamicsPlot(forestPlotData.approachC.dyn.tmp)
   })
   
   
@@ -290,8 +252,8 @@ server <- function(input, output, session) {
   output$substitution_average_bars_processes <- renderPlotly({
     plotSubstitutionBars<-create_substitution_average_bars_processes(data_expt_select()) 
   })
-  #displays the number of rows of the filtered_data
-  output$summaryExpt <- renderText({
+
+    output$summaryExpt <- renderText({
     paste("Records processed:", nrow(data_expt_select()),"/",nrow(data_expt), sep = " ")
     
   })

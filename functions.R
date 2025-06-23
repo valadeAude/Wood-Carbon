@@ -1,33 +1,34 @@
-library(cluster)    # clustering algorithms
-library(corrplot)
 library(data.table)
 library(dplyr)
-library(DT)
-library(EnvStats)
-library(factoextra)
-library(fresh)
-library(ggcorrplot)
 library(ggplot2)
-library(ggridges)
-library(ggsignif)
-library(ggthemes)
-library(gridExtra)
-library(heatmaply)
-library(mapproj)
-library(Matrix)
-library(meta)
 library(metafor)
-library(multcompView)
-library(plotly)
-library(RColorBrewer)                           
 library(readxl)
-library(reshape2)
-library(rmarkdown)
-library(scales)
-library(shinyBS)
 library(stringr)
-library(viridis)
-library(waiter)
+
+# 
+# 
+# library(cluster)    # clustering algorithms
+# library(corrplot)
+# library(DT)
+# library(factoextra)
+# library(fresh)
+# library(ggcorrplot)
+# library(ggridges)
+# library(ggsignif)
+# library(ggthemes)
+# library(gridExtra)
+# library(heatmaply)
+# library(mapproj)
+# library(Matrix)
+# library(meta)
+# library(multcompView)
+# library(plotly)
+# library(reshape2)
+# library(rmarkdown)
+# library(scales)
+# library(shinyBS)
+# library(viridis)
+# library(waiter)
 #----------- Data processing ----------- 
 
 # Function Read data synthesis of global carbon fluxes
@@ -194,13 +195,11 @@ cor.test.p <- function(x){
 
 study<-function(data){
   # Study data are unique sets of study framework parameters
-  data_study<-unique(data[data$Exclusion=='included',(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c("Metadata", "Model"),'names'])])
-  
+  data_study<-unique(data[!is.na(data$substitution) &
+                            data$Exclusion=='included',(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c("Metadata", "Model"),'names'])])
   # Each study data item is assigned a study code
   data_study$study_code<-apply( data_study[,(colnames(data_study) %in% c("DOI",categoriesdf[categoriesdf$cat0 %in% c("Metadata", "Model"),'names']))] , 1 , paste , collapse = "" )
   data_study<-data_study[!duplicated(data_study$study_code),]
-  # data_study$boundaries<-factor(data_study$boundaries, levels=c("biogenic_insitu_only","biogenic_all","biogenic_exsitu_only","bothC_bothSitu","biogenic_insitu_fossil_exsitu","exsitu_only","fossil_exsitu_only"))
-  
   return(data_study)
 }
 
@@ -216,15 +215,16 @@ bibliom<-function(data){
   data_bibliom<-unique(setDT(dataMd)[,list(count=.N),names(dataMd)])  #data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
 
 }
+
 bibliom_in<-function(data){
-  dataMd<-data[data$Exclusion=='included',
+  dataMd<-data[data$Exclusion=='included'&
+                 !is.na(data$substitution),
                (colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names'])  & 
                  ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer" ) , ]#data with paper metadata only
   data_bibliom<-unique(setDT(dataMd)[,list(count=.N),names(dataMd)])  #data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
   
 }
 expt<-function(data){
-  print("expt")
   data_expt<-data[!is.na(data$Exclusion) & data$Exclusion=='included' & !is.na(data$Article_Title) &!is.na(data$substitution),]
   
   data_expt$scaleAgg<-factor(data_expt$scaleAgg, levels=c("loc","reg","w"))
@@ -245,12 +245,12 @@ expt<-function(data){
 }
 
 countryFreq<-function(data_study,countryData){
-  print("country")
+
   #Count number of study items per country
   data_study[(data_study$country=="USA"|data_study$country=="Usa"),"country"]<-str_to_title("United States Of America")
   nStudyCountry<-aggregate(PaperID~country,data=unique(data_study[,c("PaperID","country")]),FUN=length)
-  colnames(nStudyCountry)<-c("Country","nPaperID")
-  countryFreqData<-merge(nStudyCountry,countryData,by="Country",all.y=TRUE)
+  colnames(nStudyCountry)<-c("country","nPaperID")
+  countryFreqData<-merge(nStudyCountry,countryData,by="country",all.y=TRUE)
   return(countryFreqData)
 }
 
@@ -258,7 +258,7 @@ readCountryData<-function(rawDataPath){
   refYear<-2015
   
   countryCodes<-read.csv(paste0(rawDataPath,"/countryCodes/countryCodes.csv"))
-  countryCodes$Country<-str_to_title(countryCodes$Country)
+  countryCodes$country<-str_to_title(countryCodes$country)
   
   #Load Bais data
   BaisFiga<-read_xlsx(paste0(rawDataPath,"/Bais/Bais2015Data/BaisExtract.xlsx"),sheet=1)
@@ -274,7 +274,7 @@ readCountryData<-function(rawDataPath){
   faoData$Area<-str_to_title(faoData$Area)
   faoData<-faoData[faoData$Year==refYear,]
   
-  faoData<-merge(faoData[,c("Area","Item","Year.Code","Unit","Value")],countryCodes,by.x="Area",by.y="Country",all=T)
+  faoData<-merge(faoData[,c("Area","Item","Year.Code","Unit","Value")],countryCodes,by.x="Area",by.y="country",all=T)
   colnames(faoData)[colnames(faoData)=="Value"]<-"Roundwood (m3)"
   faoData<-faoData[order(-faoData$Roundwood),]
   faoData<-faoData[,c("Alpha.3.code","Roundwood (m3)")]
@@ -282,20 +282,20 @@ readCountryData<-function(rawDataPath){
   # Load FAO ForestAreaPercentLand data
   faoForestData<-read_xlsx(paste0(rawDataPath,"/FAOForestAreaPercentLand/Forest area as a percent of land area.xlsx"))
   
-  faoForestData[faoForestData$Country=="United Kingdom of Great Britain and Northern Ireland","Country"]<-"United Kingdom"
-  faoForestData$Country<-str_to_title(faoForestData$Country)
+  faoForestData[faoForestData$country=="United Kingdom of Great Britain and Northern Ireland","country"]<-"United Kingdom"
+  faoForestData$country<-str_to_title(faoForestData$country)
   faoForestData<-faoForestData[faoForestData$Year==refYear,]
   
-  faoForestData<-merge(faoForestData[,c("Country","Year","Forest area ratio (%)")],countryCodes,by.x="Country",by.y="Country")
+  faoForestData<-merge(faoForestData[,c("country","Year","Forest area ratio (%)")],countryCodes,by.x="country",by.y="country")
   faoForestData<-faoForestData[,c("Alpha.3.code","Forest area ratio (%)")]
   
   # Load FAO ForestArea data
   faoForestAData<-read.csv(paste0(rawDataPath,"/FAOForestArea/Forest area.csv"))
   
-  faoForestAData[faoForestAData$Country=="United Kingdom of Great Britain and Northern Ireland","Country"]<-"United Kingdom"
-  faoForestAData$Country<-str_to_title(faoForestAData$Country)
+  faoForestAData[faoForestAData$country=="United Kingdom of Great Britain and Northern Ireland","country"]<-"United Kingdom"
+  faoForestAData$country<-str_to_title(faoForestAData$country)
   faoForestAData<-faoForestAData[faoForestAData$Year==refYear,]
-  faoForestAData<-merge(faoForestAData[,c("Country","Year","Forest.area..1000.ha.")],countryCodes,by.x="Country",by.y="Country")
+  faoForestAData<-merge(faoForestAData[,c("country","Year","Forest.area..1000.ha.")],countryCodes,by.x="country",by.y="country")
   faoForestAData<-faoForestAData[,c("Alpha.3.code","Forest.area..1000.ha.")]
   
   #Load OECD GDP spending for research
@@ -312,12 +312,9 @@ readCountryData<-function(rawDataPath){
   countryData<-merge(countryData,faoData,by="Alpha.3.code",all=TRUE)
   countryData<-merge(countryData,countryCodes,by="Alpha.3.code",all=TRUE)
   
-  #countryData<-merge(countryData,nStudyCountry,by='Alpha-3 code',all=TRUE)
-  #countryData<-countryData[!is.na(countryData$PaperID),]
-  #countryData$PaperID<-as.numeric(countryData$PaperID)
+
   countryData<-countryData[!is.na(countryData$`Forest area ratio (%)`),]  
-  print("exit country")
-  
+
   return(countryData)
 }
 
@@ -481,20 +478,13 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
   # WARNING : need to run it with only experiments done with whole system approach
   
   # ----Run calculations
-  rm(list=c("tTestPairsSignifAggVar"))
-  rm(tTestPairsSignifAggVarMelt,tTestPairsSignifAggVar)
+  
   variable<-"substitution"
   for(variable in c("substitution")){
     # Select dat rows that have several model setups only changing one model parameter 
     t.u.d.m<-findDuplicates(data_expt,variable)
     
-    # Figures for each process -> To supplementary information
-    # for (compartment in compartmentList){
-    #   boxplotCompartment(t.u.d.m,compartment,variable,listCriteria)
-    # }
-    # 
-    rm(list=c("tTestPairs"))
-    rm(tTestPairs)
+
     for (compartment in compartmentList){
       # For a given compartment model parameter, for each paper calculate mean value of substitution of each of the recorded values
       t.u.d.mMean<-setNames(aggregate(formula,data=t.u.d.m, mean),c(listCriteria,compartment,"substitution.mn"))
@@ -550,7 +540,6 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
   }
   
   tTestPairsSignifAggVarMelt<-melt(as.data.frame(tTestPairsSignifAggVar),id="process")
-  print("AggVarMelt")
   colnames(tTestPairsSignifAggVarMelt)<-c("process","variable","value")
   
   tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="live_biomass_C","process"]<-"Live biomass"
@@ -571,10 +560,7 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
 }
 
 approachC<-function(data_expt_approach,filters){
-  print("Entering function : approachC")
-  # medianData <- aggregate(get(variable) ~  modelApproach, data_expt_approach, median)
-  # colnames(medianData)<-c("modelApproach",variable)
-  # medianData[,variable]<-round(medianData[,variable],2)
+
   
   if(missing(filters)){
     print('in global : loading forestPlotData results')
@@ -584,20 +570,7 @@ approachC<-function(data_expt_approach,filters){
   }else{
     print('in global : calculating forestPlotData results')
     
-    # dataMA<-data_expt_approach[data_expt_approach$modelApproach!="Hybrid approach",]
-    # dataMA$sei<-0.01
-    # dataMA$recordID<-rownames(dataMA)
-    # dataMA$split<-dataMA$modelApproach
-    # dataMA$split2<-dataMA$driver1Cat
-    #  countStudySplit <- aggregate(substitution ~ split, aggregate(substitution~PaperID+split,dataMA,mean), length)
-    # colnames(countStudySplit)<-c("split","substitution")
-    # countStudySplit$nStud<-round(countStudySplit$substitution,2)
-    # 
-    # countRecordSplit <- aggregate(substitution ~  split, dataMA, length)
-    # colnames(countRecordSplit)<-c("split","substitution")
-    # countRecordSplit$nRec<-round(countRecordSplit$substitution,2)
-    # listSplits<-countRecordSplit[,"split"]
-    # print(which(is.na(dataMA)))
+  
     
     dataMA<-plotDataFunc(data_expt_approach,filters=NULL, include_approaches=c("Whole sector approach","Ecosystem approach", "Technology approach"),outliers_out=NULL,split="modelApproach")#data_expt_approach,filters, include_approaches,outliers_out,split
     listSplits<-levels(dataMA$split)
@@ -613,7 +586,6 @@ approachC<-function(data_expt_approach,filters){
 
 
 plotBarplotYear<-function(data_bibliom){
-  print("Entering function : plotBarplotYear")
   ggplot(data_bibliom,aes(x=Publication_Year))+
     geom_histogram(stat='count')+  
     theme_bw()+
@@ -624,14 +596,12 @@ plotBarplotYear<-function(data_bibliom){
 }
 
 
-
-
+sortingCriteria<-"Forest.area..1000.ha."
 plotCountryData<-function(countryFreqData, sortingCriteria){
-  print("Entering function : plotCountryData")
   countryFreqData<-countryFreqData[!is.na(countryFreqData[,sortingCriteria]),]
   countryFreqData<-unique(countryFreqData[order(-countryFreqData[,sortingCriteria]), ])
-  countryFreqData$Country<-factor(countryFreqData$Country,
-                                  levels=as.vector(countryFreqData[order(countryFreqData[,sortingCriteria]), 'Country']))
+  countryFreqData$country<-factor(countryFreqData$country,
+                                  levels=as.vector(countryFreqData[order(countryFreqData[,sortingCriteria]), 'country']))
   colnames(countryFreqData)[colnames(countryFreqData)=="Roundwood (m3)"]<-"Roundwood (m3, source: FAO)"
   colnames(countryFreqData)[colnames(countryFreqData)=="Forest.area..1000.ha."]<-"Forest area (x1000 ha, source: FAO)"
   colnames(countryFreqData)[colnames(countryFreqData)=="GDP_RD"]<-"Part of R&D in GDP (%, source: Unesco)"
@@ -641,7 +611,7 @@ plotCountryData<-function(countryFreqData, sortingCriteria){
   if(sortingCriteria=="GDP_RD"){sortingCriteria<-"Part of R&D in GDP (%, source: Unesco)"}
   
   
-  ggplot(countryDataSubset,aes(fill=nPaperID,y=Country,x=get(sortingCriteria),label=Country))+
+  ggplot(countryDataSubset,aes(fill=nPaperID,y=country,x=get(sortingCriteria),label=country))+
     geom_bar(stat='identity',position='dodge',colour="gray",size=0.05)+
     scale_fill_viridis(na.value="white")+
     scale_y_discrete(position="left")+
@@ -678,6 +648,7 @@ create_processes_frequency <- function(study_freq, wrap){
     colordictProcesses<-setNames(as.character(colorVect$colcat2), 
                                  as.character(colorVect$cat2))    
     plotData$wrap<-plotData$variable
+    plotData$wrap<-gsub("([a-z])([A-Z])","\\1 \\2",str_remove(plotData$wrap,'Input'))
     
   }
   plotData$wrap<-factor(plotData$wrap,levels=sort(levels(factor(plotData$wrap))))
@@ -689,14 +660,14 @@ create_processes_frequency <- function(study_freq, wrap){
     scale_fill_manual(values=colordictProcesses)+   
     theme_bw()+ 
     theme( axis.ticks = element_blank(),
-           text = element_text(size=txt_size_big),
+           text = element_text(size=txt_size),
            axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.),
            axis.title.y=element_blank(),
            legend.title = element_blank())+ 
     ylab("Number of studies")+ 
     labs(colour = NULL)+
     geom_text(aes(label = value, text = paste(longName, value)), alpha = 0, hoverinfo = "text", show.legend = FALSE)+
-    facet_wrap(~wrap)
+    facet_wrap(~wrap,scales="free_x")
   # 
   # return(gg)
   #ggsave("study_model_freq.pdf",width=7,height=5) 
@@ -704,14 +675,9 @@ create_processes_frequency <- function(study_freq, wrap){
 
 
 # 
-create_processes_versus_flux_size<-function(study_freq,palette, wrap){
-  refCProcess<-GlobalFluxData(dataFlux.file)
-  refCProcessMean<-aggregate(`value GtCO2/yr`~substitutionDatabaseVariable,data=refCProcess,FUN=mean,na.rm=T)
-  refCProcessMean$`value GtCO2/yr`<-as.numeric(refCProcessMean$`value GtCO2/yr`)
+create_processes_versus_flux_size<-function(refCProcessMean,study_freq,palette,wood_type_names, wrap){
   
   my.cols <- c(brewer.pal(5, palette),"#000000")
-  print("1")
-  #  plotData<-study_freq[(study_freq$cat1 =="Processes") & study_freq$cat2=="C fluxes"& study_freq$names!="eol_fossil_emiss"& !is.na(study_freq$cat1),c("names","variable","value","cat2","colcat2")]
   plotData<-study_freq[(study_freq$cat2=="C fluxes"),c("names","longName","variable","value","valuePercent","cat2","colcat2","nSingleProduct")]
   if(missing(wrap)){
     plotDataAgg<-aggregate(cbind(value,nSingleProduct)~names+cat2+longName,data=plotData,sum)
@@ -772,6 +738,8 @@ create_driver_frequency <- function(expt_freq,wrap){
                                as.character(colorVectDrivers$cat2)) 
     
     plotData$wrap<-plotData$variable
+    plotData$wrap<-gsub("([a-z])([A-Z])","\\1 \\2",str_remove(plotData$wrap,'Input'))
+    
     
   }
   plotData$wrap<-factor(plotData$wrap,levels=sort(levels(factor(plotData$wrap))))
@@ -782,21 +750,20 @@ create_driver_frequency <- function(expt_freq,wrap){
     scale_fill_manual(values=colordictDrivers)+   
     theme_bw()+ 
     theme( axis.ticks = element_blank(),
-           text = element_text(size=txt_size_big),
+           text = element_text(size=txt_size),
            axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.),
            axis.title.y=element_blank(),
            legend.title = element_blank())+ 
     ylab("Number of experiments")+ 
     labs(colour = NULL)+
-    facet_wrap(~wrap)
+    facet_wrap(~wrap,scales="free_x")
   #ggsave("expt_model_freq.pdf",width=7,height=5) 
 }
 
 
 
 create_dendrogram<-function(data_expt){
-  print("Entering function : create_dendrogram")
-  
+
   #dataCor<-data_expt[data_expt$Exclusion=="included",c('scaleAgg','singleProduct','time_horizon', 'soilC', 'harv_residues', 'live_biomass_C', 'products_storage_C', 'forestry_emiss', 'manufacturing_emiss', 'maintenance_emiss','eol_biogenic', 'biogenic_dyn')]
   #Add off_product_biogenic once it is filled for all studies
   dataCor<-data_expt[data_expt$Exclusion=="included",c('scaleAgg','singleProduct','time_horizon', 'soilC', 'harv_residues', 'live_biomass_C', 'products_storage_C', 'forestry_emiss', 'manufacturing_emiss', 'maintenance_emiss','eol_biogenic','off_product_biogenic', 'biogenic_dyn')]
@@ -829,8 +796,6 @@ create_dendrogram<-function(data_expt){
   return(dendrogram)
 }#end function
 
-plotData<-plotData.driverC
-forestPlotData<-forestPlotData.driverC
 create_forest_plot<-function(plotData,forestPlotData,wrapSplit2){
   p<-ggplot(plotData,aes(x=split,y=substitution))+
     geom_boxplot(data=plotData,aes(y=substitution ,x=reorder(split,substitution,mean,na.rm=TRUE)),outliers = FALSE,outlier.color=NULL,fatten = NULL,size=2,fill="lightgrey",color="lightgrey")+
@@ -876,8 +841,7 @@ create_forest_plot<-function(plotData,forestPlotData,wrapSplit2){
 }
 
 plotModelComponentsC<-function(tTestPairsSignifAggVarMelt){
-  print("Entering function : plotModelComponentsC")
-  
+
   p<-ggplot(  tTestPairsSignifAggVarMelt,aes(x=process,y=variable,fill=value))+
     geom_tile()+
     scale_y_discrete(labels = function(x) str_wrap(x, width = 15))+
@@ -890,7 +854,7 @@ plotModelComponentsC<-function(tTestPairsSignifAggVarMelt){
     #   limits = c(-1,1 )
     # )+
     theme( axis.ticks = element_blank(),
-           text = element_text(size=txt_size_big),
+           text = element_text(size=txt_size),
            axis.text.x = element_text(angle = 45,hjust=1,vjust=1),
            axis.text.y = element_text(hjust=1),
            axis.title=element_blank()
@@ -904,8 +868,7 @@ plotModelComponentsC<-function(tTestPairsSignifAggVarMelt){
 
 
 plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,splitName){
-  print("Entering function : plotDataFunc")
-  
+
   plotData <-data.frame(data_expt_approach[data_expt_approach$modelApproach %in% include_approaches & !(data_expt_approach$driver1Cat)%in%c("Demand" ,"Environmental change" ),])
   plotData $sei<-0.001
   plotData$singleProduct<-factor(plotData$singleProduct)
@@ -950,13 +913,11 @@ plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,split
   return(data.frame(plotData))
   
 }
-plotData<-plotData.driverC
-split<-"driver1"
-split2<-"driver1Cat"
+
+
+
 
 forestPlotDataFunc<-function(plotData,split,split2){
-  print("Entering function : forestPlotDataFunc")
-  
   plotData$recordID<-rownames(plotData)
   if(length(table(plotData[,split])[table(plotData[,split])!=0])>1){
     mod.model <- rma.mv(yi = substitution, 
@@ -970,7 +931,6 @@ forestPlotDataFunc<-function(plotData,split,split2){
     forestPlotData<-coef(summary((mod.model)))
     forestPlotData$split<-substring(rownames(forestPlotData),6)
   }else{
-    print("only one level")
     mod.model <- rma.mv(yi = substitution, 
                         V = sei, 
                         slab = PaperID, 
@@ -991,7 +951,6 @@ forestPlotDataFunc<-function(plotData,split,split2){
     colnames(countRecordSplit)<-c("modelApproach","split","nRec")
     
     
-    #forestPlotData<-merge(forestPlotData,unique(plotData[,c("split")]),by="split",all.x=T)
     forestPlotData<-forestPlotData[forestPlotData$split %in% levels(factor(plotData$split)) ,]
     forestPlotData<-merge(forestPlotData,countRecordSplit[,c("nRec","split")],by=c("split"),all.x=TRUE)
     forestPlotData<-merge(forestPlotData,countStudySplit[,c("nStud","split")],by=c("split"),all.x=TRUE)
@@ -1015,7 +974,6 @@ forestPlotDataFunc<-function(plotData,split,split2){
   # countStudySplit$nStud<-round(countStudySplit$substitution,2)
   #  countRecordSplit$nRec<-round(countRecordSplit$substitution,2)
   listSplits<-countRecordSplit[,"split"]
-  
   forestPlotData$signif<-""
   forestPlotData[forestPlotData$pval<=0.1,"signif"]<-",."
   forestPlotData[forestPlotData$pval<=0.05,"signif"]<-",*"
@@ -1033,10 +991,11 @@ forestPlotDataFunc<-function(plotData,split,split2){
   
 }
 
-knowDynamicsData<-function(data_expt){
+knowDynamicsData<-function(data_expt_approach){
   forestPlotData.approachC.dyn<-data.frame()
   for(i in seq(2002,2021,1)){
-    data_expt_approach_yr<-assignApproach(data_expt[data_expt$Publication_Year<=i  &data_expt_approach$modelApproach!="Hybrid approach",])
+    print(i)
+    data_expt_approach_yr<-data_expt_approach[data_expt_approach$Publication_Year<=i  &data_expt_approach$modelApproach!="Hybrid approach",]
     
     plotData.approachC.yr<-plotDataFunc(data_expt_approach_yr, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
     
@@ -1047,11 +1006,8 @@ knowDynamicsData<-function(data_expt){
   return(forestPlotData.approachC.dyn)
 }
 create_knowDynamicsPlot<-function(forestPlotData.approachC.dyn){
-  
   p<-ggplot(forestPlotData.approachC.dyn,aes(x=year,y=substitution,color=split))+
-    # geom_boxplot(data=plotData.approachC.dyn,aes(y=substitution ,x=year,outliers = FALSE,outlier.color=NULL,fatten = NULL,size=0.5,color=split))+
-    #stat_summary(fun=median, color=split, geom="point",  shape=15, size=3, show.legend=FALSE) +
-    scale_color_manual(values=c("Ecosystem approach"="#2E9FDF", "Technology approach"="#FC4E07","Whole sector approach"="black"))+
+       scale_color_manual(values=c("Ecosystem approach"="#2E9FDF", "Technology approach"="#FC4E07","Whole sector approach"="black"))+
     
     geom_point( data=forestPlotData.approachC.dyn,
                 size=3,
@@ -1064,7 +1020,7 @@ create_knowDynamicsPlot<-function(forestPlotData.approachC.dyn){
     theme_bw()+
     
     theme( axis.ticks = element_blank(),
-           text = element_text(size=txt_size_big),
+           text = element_text(size=txt_size),
            axis.text.x = element_text(angle = 45,hjust=1,vjust=1)
     )+
     labs( y = "Carbon balance (tCO2/m3)",x="")+
