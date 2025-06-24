@@ -1,5 +1,5 @@
 ## ----echo=FALSE, warning=FALSE, message=FALSE----------------------------------------------------------------------------------------------------
-suppressPackageStartupMessages({ 
+suppressPackageStartupMessages({
   library(DT)
   library(factoextra)
   library(fresh)
@@ -14,7 +14,16 @@ suppressPackageStartupMessages({
   library(shinyWidgets)
   library(viridis)
   library(waiter)
-  
+  library(shinydashboard)
+  library(slider)
+  library(bslib)
+  library(htmltools)
+  library(mathjaxr)
+  library(data.table)
+  library(dplyr)
+  library(ggplot2)
+  library(metafor)
+  library(stringr)
 })
 load("./initData/initData.Rdata")
 
@@ -28,7 +37,7 @@ my_theme <- create_theme(
     light_blue = "#00a98e",#top banner
     blue="#ffa17a",#"#9eadc3",#button1
     aqua = "#f3eada",#button2
-    
+
     maroon = "#344b47",#infobox1
     orange="#97b1ab",#infobox2
     red = "#ffa17a",
@@ -42,7 +51,7 @@ my_theme <- create_theme(
     purple = "#ffa17a",
     black = "#ffa17a",
     gray_lte = "#ffa17a"
-    
+
   ),
   adminlte_sidebar(
     width = "400px",
@@ -52,7 +61,7 @@ my_theme <- create_theme(
   ),
   adminlte_global(
     content_bg = "#e8f3f1",
-    box_bg = "#FFFFFF", 
+    box_bg = "#FFFFFF",
     info_box_bg = "#FFFFFF"
   )
 )

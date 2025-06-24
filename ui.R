@@ -1,10 +1,4 @@
-library(shinyWidgets)
-library(shinydashboard)
-library(shiny)
-library(slider)
-library(bslib)
-library(htmltools)
-library(mathjaxr)
+
 sidebar <- dashboardSidebar(
   width = 150,
   hr(),
@@ -24,7 +18,7 @@ sidebar <- dashboardSidebar(
               # )
   ),
   hr()
-  
+
 )
 body <- dashboardBody(
   withMathJax(),
@@ -50,48 +44,48 @@ body <- dashboardBody(
     tabItem(tabName = "database",
             fluidPage(
               fluidRow(
-                column(width = 4, 
+                column(width = 4,
                        box(width = NULL,
                            actionButton("reset", "Reset filters",style='padding:10px; font-size:100%;  border-color: #00a98e'),
                            br(),
                        tabBox(width = NULL,
                               tabPanel(
-                                
+
                                 h5("Perimeter"),
                                 fluidRow(
                                   column(width=12,
-                                         
+
                                          checkboxGroupInput(#beginning checkboxGroupInput
                                            inputId="select_scale",
                                            label="Spatial scale",
                                            choices= c("Global"="w","Regional" = "reg", "Local" = "loc"),
                                            selected = c("Global"="w","Regional" = "reg", "Local" = "loc"),
-                                         ),#end  checkboxGroupInput 
+                                         ),#end  checkboxGroupInput
                                          selectInput(#beginning selectInput
                                            inputId = "select_countries",
-                                           label = "Country", 
-                                           choices = sort(countriesList), 
-                                           multiple = TRUE, 
+                                           label = "Country",
+                                           choices = sort(countriesList),
+                                           multiple = TRUE,
                                            selected = sort(countriesList)
-                                         ),#end selectInput   
+                                         ),#end selectInput
                                          checkboxGroupInput( #beginning checkboxGroupInput
                                            inputId="select_single_product",
                                            label="Wood product type",
                                            #  choices = products,
                                            choiceNames=str_to_title(productsLabels),
                                            choiceValues=productsList,
-                                           selected = productsList,  
-                                         ), #end  checkboxGroupInput 
-                                         bsPopover(id="select_single_product", 
+                                           selected = productsList,
+                                         ), #end  checkboxGroupInput
+                                         bsPopover(id="select_single_product",
                                                    "Wood type","Select which wood types the analyzed studies focus on. Mixed product means that more than one wood type is considered.",
                                                    options = list(container = "body"),
                                                    trigger="hover"),
-                                         
+
                                          selectInput(#beginning selectInput
                                            inputId = "select_time_horizon",
                                            label = "Time scale (years)",
                                            choices = timeHorizonList,
-                                           multiple = TRUE, 
+                                           multiple = TRUE,
                                            selected = timeHorizonList
                                          )#end  selectInput
                                   )#end column
@@ -115,8 +109,8 @@ body <- dashboardBody(
                                         choices = processesList,
                                       #choices = processesLabels,
                                       multiple=TRUE,
-                                      selected = NULL 
-                                    ), #end  checkboxGroupInput 
+                                      selected = NULL
+                                    ), #end  checkboxGroupInput
                                     selectInput(#beginning checkboxGroupInput
                                       "select_dynamics",#inputId
                                       "Only show records that account for dynamics",#label
@@ -139,7 +133,7 @@ body <- dashboardBody(
                                       choices=driver1CatList,
                                       multiple = TRUE,
                                       selected = driver1CatList
-                                    ),#end selectInput 
+                                    ),#end selectInput
                                     selectInput(#beginning selectInput
                                       "select_driver1",#inputId
                                       "Mobilization strategy",#label
@@ -164,57 +158,57 @@ body <- dashboardBody(
                                       max = maxValSub,
                                       value = c(minValSub, maxValSub),
                                     )#end sliderInput
-                                    
+
                                   )#end column
-                                )#end fluidrow 
-                                
+                                )#end fluidrow
+
                               )#end tabpanel
-                              
+
                        )#end tabbox
                        )#end box
                        #,
                        #DTOutput('filtered_db_table')
-                       
+
                 ),#end column
-                
-                
+
+
                 column(
                   width = 8,
                   fluidRow(
                     # Clicking this will increment the progress amount
-                    box(width = 4, 
+                    box(width = 4,
                         actionButton("submitExp", "Submit filters",style='padding:10px; font-size:100%;  background-color: #e27a3a'),
                         actionButton("ignoreExp", "Ignore filters",style='padding:10px; font-size:100%;  background-color: #f3eada')
                     ),
                     infoBoxOutput("summaryExptBox"),
                     infoBoxOutput("summaryStudyBox")
-                    
+
                   ),
-                  
-                  
+
+
                   tabBox(
                     # Standard TabBox
                     #                  title='Plot',
                     id = "tabset1", height = "700px",width=12,
-                    tabPanel("Years", 
-                             div(  
+                    tabPanel("Years",
+                             div(
                                h3("Years of publication of included studies", class = "description"),
-                               plotlyOutput("barplotYear"), #This will display the map 
+                               plotlyOutput("barplotYear"), #This will display the map
                              )
                     ),
-                    tabPanel("Locations", 
-                             div(  
+                    tabPanel("Locations",
+                             div(
                                h3("Number of included studies with explicit reference to a country location", class = "description"),
-                               addSpinner(plotlyOutput("countryData", height = "500px"), spin = "circle", color = "green"), #This will display the plot 
-                               selectInput( 
-                                 "countryRanking", 
-                                 "Select options below:", 
-                                 list("Forest Area" = "Forest.area..1000.ha.", "Roundwood production" = "Roundwood (m3)", "Part of R&D in GDP" = "GDP_RD") 
+                               addSpinner(plotlyOutput("countryData", height = "500px"), spin = "circle", color = "green"), #This will display the plot
+                               selectInput(
+                                 "countryRanking",
+                                 "Select options below:",
+                                 list("Forest Area" = "Forest.area..1000.ha.", "Roundwood production" = "Roundwood (m3)", "Part of R&D in GDP" = "GDP_RD")
                                )
-                             ),#end div                  
+                             ),#end div
                     ),
-                    tabPanel("Model", 
-                             div(  
+                    tabPanel("Model",
+                             div(
                                h3("Number of studies considering each process"),
                                checkboxGroupInput(#beginning checkboxGroupInput
                                  inputId="wrap_type_wood_processes",
@@ -223,10 +217,10 @@ body <- dashboardBody(
                                  #                       selected = "Wrap by type of wood"
                                ),#end  checkboxGroupInput
                                addSpinner(plotlyOutput("processes_plot",height="500px"), spin = "circle", color = "#377EB8")
-                             )                 
+                             )
                     ),
-                    tabPanel("Emissions", 
-                             div(  
+                    tabPanel("Emissions",
+                             div(
                                h3("Number of studies considering each process"),
                                checkboxGroupInput(#beginning checkboxGroupInput
                                  inputId="wrap_type_wood_fluxes",
@@ -235,10 +229,10 @@ body <- dashboardBody(
                                  #                       selected = "Wrap by type of wood"
                                ),#end  checkboxGroupInput
                                addSpinner(plotlyOutput("processes_fluxes_plot", height = "500px"), spin = "circle", color = "#377EB8"),
-                             )               
+                             )
                     ),
-                    tabPanel("Mobilization strategy", 
-                             div(  
+                    tabPanel("Mobilization strategy",
+                             div(
                                h3("Number of experiments considering each strategy of increased wood use"),
                                checkboxGroupInput(#beginning checkboxGroupInput
                                  inputId="wrap_type_wood_drivers",
@@ -247,29 +241,29 @@ body <- dashboardBody(
                                  #                       selected = "Wrap by type of wood"
                                ),#end  checkboxGroupInput
                                addSpinner(plotlyOutput("driver_plot", height = "500px"), spin = "circle", color = "#377EB8"),
-                               
-                             )                  
-                    ),  #end tabpanel      
-                    
-                    
+
+                             )
+                    ),  #end tabpanel
+
+
                   ),#end tabbox
                   box( id = "boxTable", width=12,#height = "500px",
                        DTOutput('filtered_db_table')
                        )
-                  
+
                 ),#end column
-                
+
               )#end fluirow
-              
+
               # infoBox("Processed", 10 * 2, icon = icon("list"), fill = TRUE),
-              
+
             )#end fluidpage
     ),
-    
-    
-    
-    
-    
+
+
+
+
+
     tabItem(tabName = "resultsTab",
             fluidPage(
               fluidRow(
@@ -280,55 +274,55 @@ body <- dashboardBody(
                 infoBoxOutput("summaryExptBoxResults"),
                 infoBoxOutput("summaryStudyBoxResults")
               ),
-              
+
               tabBox(
                 # Standard TabBox
                 #                  title='Plot',
                 id = "tabset1", height = "800px",width=12,
-                tabPanel("Modeling approaches", 
-                         div(  
+                tabPanel("Modeling approaches",
+                         div(
                            addSpinner(plotOutput("dendrogram", height = "500px"), spin = "circle", color = "#377EB8"),
                            includeMarkdown( './TextContent/leg_dendrogram.md')
-                           
+
                          )
                 ),
-                tabPanel("Carbon balance", 
-                         div(  
+                tabPanel("Carbon balance",
+                         div(
                            addSpinner(plotOutput("approachC",height="500px"), spin = "circle", color = "#377EB8"),
                            includeMarkdown( './TextContent/leg_approachC.md')
-                           
-                         ),#end div                  
+
+                         ),#end div
                 ),
-                tabPanel("Model components", 
-                         div(  
+                tabPanel("Model components",
+                         div(
                            addSpinner(plotlyOutput("modelComponentsC", height = "500px"), spin = "circle", color = "#377EB8"),
                            includeMarkdown( './TextContent/leg_components.md')
-                           
-                           
-                         )  #end div                
+
+
+                         )  #end div
                 ),
-                tabPanel("Mobilization strategies", 
-                         div(  
-                           
+                tabPanel("Mobilization strategies",
+                         div(
+
                            addSpinner(plotOutput("driverC", height = "600px"), spin = "circle", color = "#377EB8"),
                            includeMarkdown( './TextContent/leg_driverC.md')
-                           
-                         )  #end div                
-              ), #end tabpanel      
-              tabPanel("Knowledge dynamics", 
-                       div(  
+
+                         )  #end div
+              ), #end tabpanel
+              tabPanel("Knowledge dynamics",
+                       div(
                          addSpinner(plotOutput("knowledgeDyn", height = "600px"), spin = "circle", color = "#377EB8"),
                          includeMarkdown( './TextContent/leg_driverC.md')
-                         
-                       )  #end div                
-              ), #end tabpanel      
+
+                       )  #end div
+              ), #end tabpanel
             )#end tabbox
     )#end fluidpage
   )#,    #end tabItem
-  
-  
-  
-  
+
+
+
+
 )
 )
 
