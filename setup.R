@@ -180,3 +180,11 @@ save(refCProcessMean,
      forestPlotData.driverC,
      file=paste0(initDataPath,"initData.Rdata"))
 
+
+
+
+plotData.driverC.outlierOut<-plotDataFunc(data_expt_approachResults[data_expt_approachResults$substitution>0.1 ,], c("Whole sector approach"),NULL,"driver1")
+forestPlotData.driverC.outlierOut<-forestPlotDataFunc(plotData.driverC.outlierOut,"driver1","driver1Cat") #set includeSplit2 to TRUE
+create_forest_plot(plotData.driverC.outlierOut,forestPlotData.driverC.outlierOut,TRUE)
+
+

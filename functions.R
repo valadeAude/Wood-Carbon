@@ -519,6 +519,69 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
   return(tTestPairsSignifAggVarMelt)
 }
 
+modelComponentsCBoxplots<-function(data, compartmentList, option, listCriteria){
+    t.u.d.m<-findDuplicates(data,"substitution")
+     for (compartment in compartmentList){
+       boxplotCompartment(t.u.d.m,compartment,"substitution",listCriteria)
+     }
+}
+
+
+boxplotCompartment<-function(t.u.d.m, compartment,variable,listCriteria){
+  countDistinct<-aggregate(t.u.d.m[,compartment], by=list(t.u.d.m$PaperID) , function(x) length(unique(x)))
+  list_studies<-countDistinct[countDistinct$x!=1,"Group.1"]
+  if(length(list_studies)>=1){
+    #    plotData<-t.u.d.m[t.u.d.m$PaperID %in% list_studies,c('PaperID','modelID','singleProduct','time_horizon',variable,compartment)]
+    plotData<-t.u.d.m[t.u.d.m$PaperID %in% list_studies,c('modelID',listCriteria,variable,compartment)]
+    if (compartment!="singleProduct" & compartment!="time_horizon"){
+      plotData[,compartment]<-factor(as.character(plotData[,compartment]),levels=c("0","1"))
+    }
+    if("time_horizon" %in% listCriteria){
+      plotData$time_horizon<-factor(plotData$time_horizon,levels=c("0","1-70","70-100","+100"))
+    }
+    if(compartment!="singleProduct"){
+      Switch<-ifelse(length(listCriteria)>=2,"T","F")
+      p<-ggplot(plotData[ !is.na(plotData$modelID) &!is.na(plotData$PaperID),],aes(x=get(compartment),get(variable),color=PaperID))+
+        #    geom_boxplot(show.legend=FALSE, position = position_dodge(width = 0.9))+
+        coord_flip()+
+        theme_bw()+
+        ###   geom_signif( map_signif_level=TRUE, y_position = c(12, 17))+ !!! not working but add significance
+        geom_boxplot(show.legend=FALSE)+
+        geom_hline(yintercept = 0,size=0.8,linestyle="dotted")+
+        geom_point()+
+        ylab(variable)+
+        stat_summary(
+          fun.y = median,
+          geom = 'line',
+          aes(group = PaperID, colour = PaperID),show.legend=FALSE )+
+        {if(Switch)facet_wrap(as.formula(paste("~", (listCriteria[2]))))}+
+        # facet_wrap(~singleProduct,scales="free")+
+        ggtitle(compartment)
+      # print(p)
+    }else{#singleProduct
+      p<-ggplot(plotData[ !is.na(plotData$modelID) &!is.na(plotData$PaperID),],aes(x=get(compartment),get(variable),color=PaperID))+
+        #    geom_boxplot(show.legend=FALSE, position = position_dodge(width = 0.9))+
+        coord_flip()+
+        theme_bw()+
+        geom_boxplot(show.legend=FALSE)+
+        geom_hline(yintercept = 0,size=0.8,linestyle="dotted")+
+        geom_point()+
+        ylab(variable)+
+        stat_summary(
+          fun.y = median,
+          geom = 'line',
+          aes(group = PaperID, colour = PaperID),show.legend=FALSE #this has to be added
+          #    position = position_dodge(width = 0.9),show.legend=FALSE #this has to be added
+        )
+      # geom_line(aes(group=PaperID),show.legend=FALSE, position = position_dodge(width = 0.9))+
+      ggtitle(compartment)
+      # print(p)
+    }   
+    print(p)
+    ggsave(file.path("./offline_figures/",paste0("boxplotCompartment_",compartment,".pdf")))
+  }
+}
+
 approachC<-function(data_expt_approach,filters){
 
 
@@ -556,16 +619,18 @@ plotBarplotYear<-function(data_bibliom){
 }
 
 
-sortingCriteria<-"Forest.area..1000.ha."
 plotCountryData<-function(countryFreqData, sortingCriteria){
   countryFreqData<-countryFreqData[!is.na(countryFreqData[,sortingCriteria]),]
   countryFreqData<-unique(countryFreqData[order(-countryFreqData[,sortingCriteria]), ])
   countryFreqData$country<-factor(countryFreqData$country,
                                   levels=as.vector(countryFreqData[order(countryFreqData[,sortingCriteria]), 'country']))
+  
+  colnames(countryFreqData)[colnames(countryFreqData)=="Forest area ratio (%)"]<-"Forest area ratio (%, source: FAO)"
   colnames(countryFreqData)[colnames(countryFreqData)=="Roundwood (m3)"]<-"Roundwood (m3, source: FAO)"
   colnames(countryFreqData)[colnames(countryFreqData)=="Forest.area..1000.ha."]<-"Forest area (x1000 ha, source: FAO)"
   colnames(countryFreqData)[colnames(countryFreqData)=="GDP_RD"]<-"Part of R&D in GDP (%, source: Unesco)"
   countryDataSubset<-rbind(countryFreqData[1:10,],countryFreqData[!is.na(countryFreqData$nPaperID),])
+  if(sortingCriteria=="Forest area ratio (%)"){sortingCriteria<-"Forest area ratio (%, source: FAO)"}
   if(sortingCriteria=="Roundwood (m3)"){sortingCriteria<-"Roundwood (m3, source: FAO)"}
   if(sortingCriteria=="Forest.area..1000.ha."){sortingCriteria<-"Forest area (x1000 ha, source: FAO)"}
   if(sortingCriteria=="GDP_RD"){sortingCriteria<-"Part of R&D in GDP (%, source: Unesco)"}

@@ -1,1 +1,7 @@
 <em>Dendrogram of the processes included in the XX studies contained in the database. When two clusters are retained, the first contains studies that mainly include technological processes (blue), whereas the second cluster contains studies that mainly include ecosystem processes (red).</em> 
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>

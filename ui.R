@@ -203,7 +203,11 @@ body <- dashboardBody(
                                selectInput(
                                  "countryRanking",
                                  "Select options below:",
-                                 list("Forest Area" = "Forest.area..1000.ha.", "Roundwood production" = "Roundwood (m3)", "Part of R&D in GDP" = "GDP_RD")
+                                 list("Forest Area" = "Forest.area..1000.ha.", 
+                                      "Roundwood production" = "Roundwood (m3)",
+                                      "Part of R&D in GDP" = "GDP_RD",
+                                      "Forest area ratio"="Forest area ratio (%)"
+                                      )
                                )
                              ),#end div
                     ),
