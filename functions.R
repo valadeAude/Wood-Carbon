@@ -167,20 +167,22 @@ study<-function(data){
 # ---------------------------------------------------------------------------
 # ----------------Prepare Experiment-level data -> output = data_expt
 bibliom<-function(data){
+  
   dataMd<-data[,
                (colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names'])  &
-                 ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer" ) , ]#data with paper metadata only
-  data_bibliom<-unique(setDT(dataMd)[,list(count=.N),names(dataMd)])  #data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
-
+                 ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer" ,"Reviewer2","Extraction round","ReviewerQCv7") , ]#data with paper metadata only
+  data_bibliom<-unique(setDT(dataMd)[,list(count=.N),names(dataMd)])  
+  return(data_bibliom)
 }
 
 bibliom_in<-function(data){
-  dataMd<-data[data$Exclusion=='included'&
+  dataMd<-data[data$Exclusion=='included' &
                  !is.na(data$substitution),
                (colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names'])  &
-                 ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer" ) , ]#data with paper metadata only
-  data_bibliom<-unique(setDT(dataMd)[,list(count=.N),names(dataMd)])  #data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
-
+               ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer","Reviewer2","Extraction round","ReviewerQCv7" )  ]#data with paper metadata only
+  
+  data_bibliom<-unique(setDT(dataMd)[,list(count=.N),names(dataMd)])  #
+  return(data_bibliom)
 }
 expt<-function(data){
   data_expt<-data[!is.na(data$Exclusion) & data$Exclusion=='included' & !is.na(data$Article_Title) &!is.na(data$substitution),]
@@ -973,7 +975,7 @@ create_knowDynamicsPlot<-function(forestPlotData.approachC.dyn){
                 position=position_dodge(width = 0.9)) +
     geom_errorbar( data=forestPlotData.approachC.dyn,
                    aes(ymin = ci.lb, ymax = ci.ub),
-                   size=1.,
+                   linewidth=1.,
                    width=1,
                    position=position_dodge(width = 0.9))+  #add CIs as error bars
     theme_bw()+
@@ -989,7 +991,6 @@ create_knowDynamicsPlot<-function(forestPlotData.approachC.dyn){
 
 }
 
-data_bibliom<-data_bibliom_all
 flowchart_data<-function(data_bibliom_all,dataWoS){
   # Number of papers identified from WoS
   nWoS<-length(unique(dataWoS$PaperID))
