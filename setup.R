@@ -1,9 +1,8 @@
 
 ## This script reads all raw data and creates R workspace that will be called by the application
-WoodCarbonPath<-"/Users/valade/Documents/GitHub/Wood-Carbon/"
-rawDataPath<-file.path(WoodCarbonPath,"rawData/")
-initDataPath<-file.path(WoodCarbonPath,"initData/")
-wwwDataPath<-file.path(WoodCarbonPath,"www/")
+rawDataPath<-file.path("rawData/")
+initDataPath<-file.path("initData/")
+wwwDataPath<-file.path("www/")
 #database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.init.xlsx")
 database.file <-file.path(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.ALL.xlsx")
 wosQueryResults.file<-file.path(rawDataPath,"wosQueryResults/savedrecs_2000-2022.xls")
@@ -14,7 +13,7 @@ wosQueryResults.file<-file.path(rawDataPath,"wosQueryResults/savedrecs_2000-2022
 #For global flux size
 dataFlux.file<-paste0(rawDataPath,"TableForestCCycleSynthesis.3.xlsx")
 
-source(file.path(WoodCarbonPath,"functions.R"))
+source(file.path("functions.R"))
 
 ##
 

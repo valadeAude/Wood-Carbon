@@ -5,8 +5,8 @@ library(readxl)
 library(stringr)
 library(viridis)
 
-load(file.path(WoodCarbonPath,"initData/initData.Rdata"))
-offlineFiguresPath<-file.path(WoodCarbonPath,"offline_figures/")
+load("./initData/initData.Rdata")
+offlineFiguresPath<-"./offline_figures/"
 
 source(file.path(WoodCarbonPath ,"functions.R"))
 
@@ -19,8 +19,8 @@ ggsave(paste0(offlineFiguresPath,"Csynthesis.png"),width=10,bg='transparent')
 # -------------
 # ------------- Database exploration
 plotBarplotYear(bibliom(data))
-dim(bibliom(data))
-dim(bibliom_in(data))
+ggsave(file.path(offlineFiguresPath,"/barplotYear.png"),dpi=300,width=15,height=7)
+
 
 # -------------
 # ------------- Analysis results

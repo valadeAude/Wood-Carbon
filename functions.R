@@ -1,30 +1,4 @@
 
-#
-#
-# library(cluster)    # clustering algorithms
-# library(corrplot)
-# library(DT)
-# library(factoextra)
-# library(fresh)
-# library(ggcorrplot)
-# library(ggridges)
-# library(ggsignif)
-# library(ggthemes)
-# library(gridExtra)
-# library(heatmaply)
-# library(mapproj)
-# library(Matrix)
-# library(meta)
-# library(multcompView)
-# library(plotly)
-# library(reshape2)
-# library(rmarkdown)
-# library(scales)
-# library(shinyBS)
-# library(viridis)
-# library(waiter)
-#----------- Data processing -----------
-
 # Function Read data synthesis of global carbon fluxes
 GlobalFluxData<-function(dataFlux.file){
   refCProcess<-read_xlsx(dataFlux.file)
@@ -325,7 +299,7 @@ funcFreq<-function(df,categoriesdf){
   Freq1<-data.frame(t(Freq0[,2:ncol(Freq0)]))
   colnames(Freq1)<-Freq0$Group.1
   Freq1[,"names"]<-colnames(dfShort)
-  Freq<-melt(data.table(Freq1))
+  Freq<-melt(data.table(Freq1),id.vars="names")
   Freq<-data.frame(merge(Freq,categoriesdf[,c('names','colcat2','cat2','cat1','colcat1')],by="names",all.x=T))
   Freq<-unique(Freq)
   Freq<-Freq[!is.na(Freq$cat2),]
@@ -581,7 +555,7 @@ approachC<-function(data_expt_approach,filters){
 
 plotBarplotYear<-function(data_bibliom){
   ggplot(data_bibliom,aes(x=Publication_Year))+
-    geom_histogram(stat='count')+
+    geom_bar()+
     theme_bw()+
     # scale_y_continuous(breaks=seq(0,20,by=2))+
     theme(text = element_text(size=txt_size),
@@ -606,7 +580,7 @@ plotCountryData<-function(countryFreqData, sortingCriteria){
 
 
   ggplot(countryDataSubset,aes(fill=nPaperID,y=country,x=get(sortingCriteria),label=country))+
-    geom_bar(stat='identity',position='dodge',colour="gray",size=0.05)+
+    geom_bar(stat='identity',position='dodge',colour="gray",linewidth=0.05)+
     scale_fill_viridis(na.value="white")+
     scale_y_discrete(position="left")+
     labs(fill="Number of studies")+
@@ -660,7 +634,7 @@ create_processes_frequency <- function(study_freq, wrap){
            legend.title = element_blank())+
     ylab("Number of studies")+
     labs(colour = NULL)+
-    geom_text(aes(label = value, text = paste(longName, value)), alpha = 0, hoverinfo = "text", show.legend = FALSE)+
+    geom_text(aes(label = value), alpha = 0,show.legend = FALSE)+
     facet_wrap(~wrap,scales="free_x")
   #
   # return(gg)
@@ -792,7 +766,8 @@ create_dendrogram<-function(data_expt){
 
 create_forest_plot<-function(plotData,forestPlotData,wrapSplit2){
   p<-ggplot(plotData,aes(x=split,y=substitution))+
-    geom_boxplot(data=plotData,aes(y=substitution ,x=reorder(split,substitution,mean,na.rm=TRUE)),outliers = FALSE,outlier.color=NULL,fatten = NULL,size=2,fill="lightgrey",color="lightgrey")+
+    geom_boxplot(data=plotData,aes(y=substitution ,x=reorder(split,substitution,mean,na.rm=TRUE)),
+                 outliers = FALSE,outlier.color=NULL,size=2,fill="lightgrey",color="lightgrey")+
     stat_summary(fun=median, color="darkgrey", geom="point",  shape=15, size=3, show.legend=FALSE) +
 
     geom_point( data=forestPlotData) +
