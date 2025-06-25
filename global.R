@@ -28,7 +28,7 @@ suppressPackageStartupMessages({
 load("./initData/initData.Rdata")
 
 source("functions.R")
-
+source("legal_notice.R")
 
 
 

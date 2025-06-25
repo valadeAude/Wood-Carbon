@@ -326,10 +326,11 @@ body <- dashboardBody(
 )
 )
 
-dashboardPage(
+page <- dashboardPage(
   dashboardHeader(title = "Wood & carbon"),
   sidebar,
   body
 )
 
+dashboardAddFooter(page, legalNotice(2025, "Aude Valade"))
 

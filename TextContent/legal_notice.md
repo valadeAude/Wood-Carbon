@@ -1,0 +1,9 @@
+Editeur
+
+Auteur
+
+Date
+
+Licence
+
+...
