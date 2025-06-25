@@ -13,7 +13,7 @@ wosQueryResults.file<-file.path(rawDataPath,"wosQueryResults/savedrecs_2000-2022
 #For global flux size
 dataFlux.file<-paste0(rawDataPath,"TableForestCCycleSynthesis.3.xlsx")
 
-source(file.path("functions.R"))
+source(file.path("./functions.R"))
 
 ##
 
@@ -67,7 +67,7 @@ data<-read_excel(database.file,skip=6)
 data$country<-str_to_title(data$country)
 
 
-
+data_bibliom_all<-bibliom(data)
 data_bibliom<-bibliom_in(data)
 data_study<-study(data)
 data_expt<-expt(data)

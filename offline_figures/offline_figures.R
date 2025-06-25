@@ -8,7 +8,7 @@ library(viridis)
 load("./initData/initData.Rdata")
 offlineFiguresPath<-"./offline_figures/"
 
-source(file.path(WoodCarbonPath ,"functions.R"))
+source("./functions.R")
 
 # -------------
 # ------------- Gobal carbon cycle synthesis
@@ -48,3 +48,6 @@ ggsave(paste0(offlineFiguresPath,"/figS2_scatterplot_processesFluxSize.png"),dpi
 forestPlotData.approachC.dyn<-read.csv(file.path(initDataPath,"forestPlotData.approachC.dyn.csv"))
 create_knowDynamicsPlot(forestPlotData.approachC.dyn)
 ggsave(paste0(offlineFiguresPath,"/figS3_errorbar_knowledgeDynamics.png"),dpi=300,width=15,height=9)
+
+flowchart_data(data_bibliom,dataWoS)
+  
