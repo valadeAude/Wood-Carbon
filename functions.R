@@ -667,7 +667,7 @@ create_processes_versus_flux_size<-function(refCProcessMean,study_freq,palette,w
   if(dim(plotDataRefCProcess)[1]>0){
     ggplot(plotDataRefCProcess,aes(x=(`value GtCO2/yr`),y=(valuePercent)))+#,shape=names))+
       geom_point(aes(size=value))+
-      geom_smooth(aes(group = variable)  ,method="glm",se=FALSE,show.legend = FALSE,col="black")+      #
+      geom_smooth(aes(group = variable),formula = y ~ x  ,method="glm",se=FALSE,show.legend = FALSE,col="black")+      #
       #scale_color_manual(name="Wood type",values = c("EnergyInput" = my.cols[1], "PulpPaperInput" = my.cols[2],"TimberInput" = my.cols[3],"mixedProduct" = my.cols[4],"UpstreamInput" = my.cols[5],"All"=my.cols[6]))+
       labs(size="Number of studies",col="Processes")+
       theme_bw()+

@@ -1,8 +1,8 @@
-Editeur
+Editor
 
-Auteur
+Author Aude Valade
 
-Date
+Date June, 25, 2025
 
 Licence
 
