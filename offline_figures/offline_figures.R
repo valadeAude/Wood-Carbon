@@ -49,5 +49,5 @@ forestPlotData.approachC.dyn<-read.csv(file.path(initDataPath,"forestPlotData.ap
 create_knowDynamicsPlot(forestPlotData.approachC.dyn)
 ggsave(paste0(offlineFiguresPath,"/figS3_errorbar_knowledgeDynamics.png"),dpi=300,width=15,height=9)
 
-flowchart_data(data_bibliom,dataWoS)
+flowchart_data(data_bibliom_all,dataWoS)
   

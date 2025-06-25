@@ -153,14 +153,6 @@ cor.test.p <- function(x){
 
 
 
-# ---------------Read Article-level data -> output = data_bibliom -----------------------
-# data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
-#
-# data_bibliom_in<-unique(data[data$Exclusion=='included',(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c("Metadata","Protocol"),'names']) ])
-
-
-# ------Read Study-level data (i.e. model configurations) -> output = data_study
-
 study<-function(data){
   # Study data are unique sets of study framework parameters
   data_study<-unique(data[!is.na(data$substitution) &
@@ -175,9 +167,7 @@ study<-function(data){
 # ---------------------------------------------------------------------------
 # ----------------Prepare Experiment-level data -> output = data_expt
 bibliom<-function(data){
-  #data<-data[!is.na(data$substitution),]
-  #dataMd<-data[data$Exclusion=='included',
-   dataMd<-data[,
+  dataMd<-data[,
                (colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names'])  &
                  ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer" ) , ]#data with paper metadata only
   data_bibliom<-unique(setDT(dataMd)[,list(count=.N),names(dataMd)])  #data_bibliom<-unique(data[,(colnames(data) %in% categoriesdf[categoriesdf$cat0 %in% c('Metadata'),'names']) & ! colnames(data)%in%c("StudyID","ExperimentID","Nstudy","Nexperiment","Reviewer")])
@@ -999,25 +989,30 @@ create_knowDynamicsPlot<-function(forestPlotData.approachC.dyn){
 
 }
 
-flowchart_data<-function(data_bibliom,dataWoS){
-
+data_bibliom<-data_bibliom_all
+flowchart_data<-function(data_bibliom_all,dataWoS){
   # Number of papers identified from WoS
   nWoS<-length(unique(dataWoS$PaperID))
-
   # Number of manual additions of papers that were not identified by WoS query
-  dataManual<-data_bibliom[!(data_bibliom$PaperID %in% dataWoS$PaperID),]
+  dataManual<-data_bibliom_all[!(data_bibliom_all$PaperID %in% dataWoS$PaperID),]
   nManual<-length(unique(dataManual$PaperID))
-
+  inclusionTable<-data.frame(
+    Var1=c("nWoS","nManual"),
+    Freq=c(nWoS,nManual),
+    Cat=c("Web Of Science","Manual addition")
+    )
+  
   # Number of processed papers
-  nBibliom<-length(unique(data_bibliom$PaperID))
-  data_bibliom$ExclusionCat <- factor(data_bibliom$Exclusion,
-                                    levels=c("no journal","not english","duplicate data","review","different perimeters" ,"no driver","no change in wood use","C var cannot be cumulated","no C output", "no delta wood","included"),
-                                    labels=c("Screening","Screening","Data originality","Data originality","Study design","Study design","Study design","Results displayed","Results displayed","Results displayed","Included")
+  nBibliom<-length(unique(data_bibliom_all$PaperID))
+  data_bibliom_all$Cat <- factor(data_bibliom_all$Exclusion,
+                                    levels=c("no journal","not english","duplicate data",    "review",     "different perimeters" ,"no driver",   "no change in wood use","C var cannot be cumulated","no C output",    "no delta wood",    "included"),
+                                    labels=c("Screening" ,"Screening",  "Data originality","Data originality","Study design",      "Study design","Study design",            "Results displayed",   "Results displayed","Results displayed","Included")
   )
   #Describe exclusion criteria
-  exclusionTable<-data.frame(table(data_bibliom$Exclusion))
-  exclusionTable<-merge(exclusionTable,unique(data_bibliom[,c("Exclusion","ExclusionCat")]),by.x="Var1",by.y="Exclusion")
-  return(exclusionTable[order(exclusionTable$ExclusionCat),])
+  exclusionTable<-data.frame(table(data_bibliom_all$Exclusion))
+  exclusionTable<-merge(exclusionTable,unique(data_bibliom_all[,c("Exclusion","Cat")]),by.x="Var1",by.y="Exclusion")
+  
+  return(rbind(inclusionTable,exclusionTable[order(exclusionTable$Cat),]))
 }
 
 debug_msg <- function(...) {

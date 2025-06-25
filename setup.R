@@ -1,29 +1,15 @@
+library(readxl)
+source(file.path("./functions.R"))
 
-## This script reads all raw data and creates R workspace that will be called by the application
 rawDataPath<-file.path("rawData/")
 initDataPath<-file.path("initData/")
 wwwDataPath<-file.path("www/")
-#database.file <-paste0(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.init.xlsx")
 database.file <-file.path(rawDataPath,"/database_substitution_metaanalysis.v5.v6.QC7.ALL.xlsx")
 wosQueryResults.file<-file.path(rawDataPath,"wosQueryResults/savedrecs_2000-2022.xls")
 
-#database.file <-"/Users/valade/EcoSols_Nextcloud2/Substitution/Metaanalysis/Data_extraction/v6_extraction/database_substitution_metaanalysis.v5.v6.ALL.xlsx"
-#For FAO and Bais data on country production of wood
-#dataPath<-"/Users/valade/EcoSols_Nextcloud2/Substitution/Substitution_AV/CCycleSynthesis/biblioData/"
-#For global flux size
 dataFlux.file<-paste0(rawDataPath,"TableForestCCycleSynthesis.3.xlsx")
 
-source(file.path("./functions.R"))
 
-##
-
-# Look at  world values in Peng-> extract	https://unece.org/sites/default/files/2022-05/unece-fao-sp-51-main-report-forest-sector-outlook_0.pdf
-
-# Set graphic parameters
-# txt_size<-10
-# txt_size_small<-9
-# txt_size_big<-12
-# txt_size_verybig<-24
 
 color_fossil<- as.character("#332288ff")
 color_biogenic<-as.character("#cc6677ff")
@@ -74,7 +60,6 @@ data_expt<-expt(data)
 data_expt_approach<-assignApproach(data_expt)
 study_freq<-funcFreq(data_study,categoriesdf)
 expt_freq<-funcFreq(data_expt,categoriesdf)
-#countryData<-country(data_study,countryCodes)
 countryRefData<-readCountryData(rawDataPath)
 countryFreqData<-countryFreq(data_study,countryRefData)
 
@@ -92,26 +77,18 @@ map.world$singleProduct<-rep(singleProductVect,len=nInit)
 map.world$region<-str_to_title(map.world$region) 
 
 
-## ------------------------------------------------------------------------------------------------------------------------------------------------
-# Les noms de pays vont servir à paramétrer les cases à cocher dans ui
-# countries_study <- sort(unique(data$country))
-#countries <- data_study$country
 countriesList <- sort(unique(data_study$country))
-#countries <- ifelse(countries == "Eur", "Europe", countries)
 countriesEurope <- c("Austria", "Denmark","Finland", "France", "Germany", "Ireland", "Lithuania", "Norway", "Portugal", "Sweden", "Switzerland", "Uk", "Ukraine")
 
 timeHorizon <- sort(unique(data$time_horizon))
-#to make "+100" the last element
 timeHorizonFrstElmt <- timeHorizon[1]
 timeHorizon <- timeHorizon[-1]
 timeHorizonList <- c(timeHorizon, timeHorizonFrstElmt)
 
-# countries_world <- unique(map.world$region)
 scaleAgg <- unique(data$scaleAgg)
 productsList <- sort(unique(data$singleProduct))
 productsLabels<-gsub("([a-z])([A-Z])","\\1 \\2",str_remove(productsList,'Input'))
-##Test
-#boundaries <-sort(unique(data$boundaries))
+
 dict = list(  loc="Local scale",
               reg="Regional scale",
               w= "Global scale",
@@ -177,7 +154,6 @@ tTestPairsSignifAggVarMelt<-modelComponentsC(data_expt_approachResults,c("soilC"
 forestPlotData.approachC.dyn<-knowDynamicsData(data_expt_approach)
 
 
-#save.image(paste0(initDataPath,"initData.workspace.Rdata"))
 save(refCProcessMean,
      countriesList,
      productsLabels,
