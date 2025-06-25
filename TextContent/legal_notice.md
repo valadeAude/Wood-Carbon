@@ -4,4 +4,4 @@ Author Aude Valade
 
 Date June, 25, 2025
 
-Licence Creative Commons
+Licence AGPL 3.0

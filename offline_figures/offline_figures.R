@@ -42,10 +42,12 @@ ggsave(paste0(offlineFiguresPath,"/figS1a_barplot_countries.roundwood.png"),dpi=
 plotCountryData(countryFreq(data_study,countryRefData),"Forest.area..1000.ha.")#Roundwood (m3)
 ggsave(paste0(offlineFiguresPath,"/figS1b_barplot_countries.forestArea.png"),dpi=300,width=15,height=9)
 
-create_processes_versus_flux_size(study_freq ,"Set1")
-ggsave(paste0(offlineFiguresPath,"/figS2_scatterplot_processesFluxSize.png"),dpi=300,width=15,height=9)
-create_processes_versus_flux_size(study_freq ,"Set1","wrap")
-ggsave(paste0(offlineFiguresPath,"/figS2_scatterplot_processesFluxSize.wrap.png"),dpi=300,width=15,height=9)
+
+
+create_processes_versus_flux_size(refCProcessMean,study_freq ,"Set1",wood_type_names)
+ggsave(paste0(offlineFiguresPath,"/figS2a_scatterplot_processesFluxSize.png"),dpi=300,width=15,height=9)
+create_processes_versus_flux_size(refCProcessMean,study_freq ,"Set1",wood_type_names,"wrap")
+ggsave(paste0(offlineFiguresPath,"/figS2b_scatterplot_processesFluxSize.wrap.png"),dpi=300,width=15,height=9)
 
 forestPlotData.approachC.dyn<-read.csv(file.path(initDataPath,"forestPlotData.approachC.dyn.csv"))
 create_knowDynamicsPlot(forestPlotData.approachC.dyn)
