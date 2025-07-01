@@ -10,11 +10,13 @@ offlineFiguresPath<-"./offline_figures/"
 
 source("./functions.R")
 
+txt_size<-10
+txt_angle<-45
 # -------------
 # ------------- Gobal carbon cycle synthesis
 refCProces<-GlobalFluxData(dataFlux.file)
 CcylePlot<-create_C_synthesis_plot(refCProces)
-ggsave(paste0(offlineFiguresPath,"Csynthesis.png"),width=10,bg='transparent')
+ggsave(paste0(offlineFiguresPath,"fig2_Csynthesis.png"),width=10,bg='transparent')
 
 # -------------
 # ------------- Database exploration
@@ -49,7 +51,8 @@ ggsave(paste0(offlineFiguresPath,"/figS2a_scatterplot_processesFluxSize.png"),dp
 create_processes_versus_flux_size(refCProcessMean,study_freq ,"Set1",wood_type_names,"wrap")
 ggsave(paste0(offlineFiguresPath,"/figS2b_scatterplot_processesFluxSize.wrap.png"),dpi=300,width=15,height=9)
 
-forestPlotData.approachC.dyn<-read.csv(file.path(initDataPath,"forestPlotData.approachC.dyn.csv"))
+tableModelComponentsC(tTestPairsSignifAggVarMelt)
+
 create_knowDynamicsPlot(forestPlotData.approachC.dyn)
 ggsave(paste0(offlineFiguresPath,"/figS3_errorbar_knowledgeDynamics.png"),dpi=300,width=15,height=9)
 
@@ -59,5 +62,5 @@ create_processes_frequency(study_freq[(study_freq$cat1 =="Processes") & !is.na(s
 create_processes_frequency(expt_freq[(expt_freq$cat1 =="Processes") & !is.na(expt_freq$cat1),] )
 
 
-modelComponentsCBoxplots(data_expt_approach,compartmentList, "", "PaperID")
+modelComponentsCBoxplots(data_expt_approach,c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn"), "", "PaperID")
 

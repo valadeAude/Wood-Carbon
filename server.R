@@ -69,11 +69,10 @@ server <- function(input, output, session) {
 
   data_bibliom_select<-reactive({bibliom_in(data_fltr()) })
   data_study_select<-reactive({study(data_fltr()) })
-  data_country_select<-reactive({countryFreq(data_study_select(),countryRefData)})
+  data_country_select<-reactive({countryFreq(data_expt_select(),countryRefData)})
   data_expt_select<-reactive({expt(data_fltr()) })
   data_expt_approach_select<-reactive({assignApproach(data_expt_select())})
   data_expt_unselect<-reactive({expt(data_unfltr()) })
-
 
 
 
@@ -134,24 +133,27 @@ server <- function(input, output, session) {
     plotlyCountryData<-plotCountryData(data_country_select(),input$countryRanking)
   })
 
+ 
   output$processes_plot <- renderPlotly({
-    study_freq<-funcFreq(data_study_select(),categoriesdf)
+    expt_freq<-funcFreq(data_expt_select(),categoriesdf)
     if ("Wrap by type of wood" %in% input$wrap_type_wood_processes) {
-      create_processes_frequency(study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),],"wrap" )
+      create_processes_frequency(expt_freq[(expt_freq$cat1 =="Processes") & !is.na(expt_freq$cat1),],"wrap" )
     }else{
-      create_processes_frequency(study_freq[(study_freq$cat1 =="Processes") & !is.na(study_freq$cat1),] )
+      create_processes_frequency(expt_freq[(expt_freq$cat1 =="Processes") & !is.na(expt_freq$cat1),] )
     }
   })
+
+  
 
   output$processes_fluxes_plot <- renderPlotly({
-    study_freq<-funcFreq(data_study_select(),categoriesdf)
+    expt_freq<-funcFreq(data_expt_select(),categoriesdf)
     if ("Wrap by type of wood" %in% input$wrap_type_wood_fluxes) {
-      plotlyProcessesFlux<-create_processes_versus_flux_size(refCProcessMean,study_freq ,"Set1",wood_type_names,"wrap")
+      plotlyProcessesFlux<-create_processes_versus_flux_size(refCProcessMean,expt_freq ,"Set1",wood_type_names,"wrap")
     }else{
-      plotlyProcessesFlux<-create_processes_versus_flux_size(refCProcessMean,study_freq ,"Set1",wood_type_names)
+      plotlyProcessesFlux<-create_processes_versus_flux_size(refCProcessMean,expt_freq ,"Set1",wood_type_names)
     }
   })
-
+  
   output$driver_plot <- renderPlotly({
     expt_freq<-funcFreq(data_expt_select(),categoriesdf)
     if ("Wrap by type of wood" %in% input$wrap_type_wood_drivers) {
@@ -163,9 +165,7 @@ server <- function(input, output, session) {
 
 
 
-
-
-  ## Results section -> use plotData reactive variables that respond to input$submitResults and input$resetResults
+  ## Results section 
 
   res <- reactiveValues(data_expt = data_expt, data_bibliom=data_bibliom,filterResults="no")
 
@@ -292,13 +292,24 @@ server <- function(input, output, session) {
     )
   })
 
-  output$downloadDatabase <- downloadHandler(
-    filename = "database_substitution_metaanalysis.v5.ALL.QC.xlsx",
+  output$downloadProtocol <- downloadHandler(
+    filename = "Wood-carbon_full_protocol.docx",
     content = function(file) {
-      file.copy("database_substitution_metaanalysis.v5.ALL.QC.xlsx", file)
+      file.copy("www/Wood-carbon_full_protocol.docx", file)
     }
   )
-
+  
+ data_expt_select_dl<- reactive({subset(data_expt_select(),
+                                         select=categoriesdf[categoriesdf$cat1 %in% c( "Paper description","Driver","DataCorrection","Processes"),'names']) })
+  
+ 
+  
+  output$downloadDatabase <- downloadHandler(
+    filename = "wood-carbon_Valade_2025.csv",
+    content = function(file) {
+      write.csv(data_expt_select_dl(),file,row.names=FALSE)
+    }
+  )
   
   
 }

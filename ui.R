@@ -6,16 +6,13 @@ sidebar <- dashboardSidebar(
               menuItem("Home", tabName="home", selected=TRUE),
               menuItem("Principles", icon=icon("table"),
                        menuSubItem("Context", tabName = "context", icon = icon("angle-right")),
+                       menuSubItem("Carbon balance", tabName = "carbonBalance", icon = icon("angle-right")),
                        menuSubItem("Methods", tabName = "methods", icon = icon("angle-right"))
+                       
               ),
               menuItem("Database", tabName="database" ),
               menuItem("Results", tabName="resultsTab" )#,
-              # menuItem("Test",  #icon = icon("file-text-o"),
-              #          menuSubItem("Approaches", tabName = "approaches", icon = icon("angle-right")),
-              #          menuSubItem("Substitution", tabName = "model", icon = icon("angle-right")),
-              #          menuSubItem("Models", tabName = "components", icon = icon("angle-right")),
-              #          menuSubItem("Drivers", tabName = "drivers", icon = icon("angle-right"))
-              # )
+             
   ),
   hr()
 
@@ -35,10 +32,30 @@ body <- dashboardBody(
               )
             )
     ),
-    tabItem(tabName = "methods",
-            fluidPage(
-              includeMarkdown( './TextContent/PrinciplesMethods.md'
+    tabItem(tabName = "carbonBalance",
+              fluidPage(
+                includeMarkdown( './TextContent/PrinciplesCarbonBalance.md'
+                )
               )
+    ),
+    tabItem(tabName = "methods",
+            fluidPage(              
+              downloadButton("downloadProtocol", "Download the protocol",style = "float: right; "),
+              tabBox(width = NULL,
+                     tabPanel(
+                       
+                       h5("Study selection"),
+                       includeMarkdown( './TextContent/PrinciplesMethodsStudies.md')
+                                        
+                     ),
+                     tabPanel(
+                       
+                       h5("Data extraction"),
+                       includeMarkdown( './TextContent/PrinciplesMethodsPairs.md')
+                       
+                     )
+              )
+              
             )
     ),
     tabItem(tabName = "database",
@@ -181,7 +198,9 @@ body <- dashboardBody(
                         actionButton("ignoreExp", "Ignore filters",style='padding:10px; font-size:100%;  background-color: #f3eada')
                     ),
                     infoBoxOutput("summaryExptBox"),
-                    infoBoxOutput("summaryStudyBox")
+                    infoBoxOutput("summaryStudyBox"),
+                   # downloadButton("downloadDatabase", "Download data",style = "float: right; "),
+                    
 
                   ),
 

@@ -527,6 +527,7 @@ modelComponentsCBoxplots<-function(data, compartmentList, option, listCriteria){
 }
 
 
+
 boxplotCompartment<-function(t.u.d.m, compartment,variable,listCriteria){
   countDistinct<-aggregate(t.u.d.m[,compartment], by=list(t.u.d.m$PaperID) , function(x) length(unique(x)))
   list_studies<-countDistinct[countDistinct$x!=1,"Group.1"]
@@ -640,7 +641,7 @@ plotCountryData<-function(countryFreqData, sortingCriteria){
     geom_bar(stat='identity',position='dodge',colour="gray",linewidth=0.05)+
     scale_fill_viridis(na.value="white")+
     scale_y_discrete(position="left")+
-    labs(fill="Number of studies")+
+    labs(fill="Number of records")+
     xlab(sortingCriteria)+
     theme_bw()+
     theme( axis.ticks = element_blank(),
@@ -689,7 +690,7 @@ create_processes_frequency <- function(study_freq, wrap){
            axis.text.x = element_text(angle = 90,hjust=0.5,vjust=0.),
            axis.title.y=element_blank(),
            legend.title = element_blank())+
-    ylab("Number of studies")+
+    ylab("Number of records")+
     labs(colour = NULL)+
     geom_text(aes(label = value), alpha = 0,show.legend = FALSE)+
     facet_wrap(~wrap,scales="free_x")
@@ -726,13 +727,13 @@ create_processes_versus_flux_size<-function(refCProcessMean,study_freq,palette,w
       geom_point(aes(size=value))+
       geom_smooth(aes(group = variable),formula = y ~ x  ,method="glm",se=FALSE,show.legend = FALSE,col="black")+      #
       #scale_color_manual(name="Wood type",values = c("EnergyInput" = my.cols[1], "PulpPaperInput" = my.cols[2],"TimberInput" = my.cols[3],"mixedProduct" = my.cols[4],"UpstreamInput" = my.cols[5],"All"=my.cols[6]))+
-      labs(size="Number of studies",col="Processes")+
+      labs(size="Number of records",col="Processes")+
       theme_bw()+
       #theme( text = element_text(size=12))+
       geom_vline(data=plotDataRefCProcess, mapping=aes(xintercept=`value GtCO2/yr`,col=longName), linetype="longdash") +
       #geom_text(data=plotDataRefCProcess, mapping=aes(x=`value GtCO2/yr`, y=0.7, label=names), angle=90, vjust=-0.4, hjust=0,color='black',check_overlap = TRUE) +
       xlab("Global flux (GtCO2)")+
-      ylab("Fraction of studies accounting for this process (%)")+
+      ylab("Fraction of records accounting for this process (%)")+
       facet_wrap(~wrap,ncol=3, labeller = as_labeller(wood_type_names))
   }
 
@@ -865,6 +866,9 @@ create_forest_plot<-function(plotData,forestPlotData,wrapSplit2){
 
 
 }
+tableModelComponentsC<-function(tTestPairsSignifAggVarMelt){
+  write.csv(kable(reshape2::dcast(tTestPairsSignifAggVarMelt,process~variable)),paste0("./offline_figures/","table_S3_model_components.csv"))
+}
 
 plotModelComponentsC<-function(tTestPairsSignifAggVarMelt){
 
@@ -888,7 +892,6 @@ plotModelComponentsC<-function(tTestPairsSignifAggVarMelt){
 
   # print(p)
 
-  #kable(dcast(tTestPairsSignifAggVarMelt,process~variable))
 }
 
 
@@ -932,8 +935,8 @@ plotDataFunc<-function(data_expt_approach, include_approaches,outliers_out,split
 
   plotData$split2<-plotData$driver1Cat
   plotData$split2<-factor(plotData$split2,
-                          levels=c("Supply chain","Silviculture for productivity","Silviculture for removals", "Technology","Multiple strategies"),
-                          labels=c("Make better use of wood", "Mobilize additional wood by increased forest growth","Mobilize additional wood by increased forest harvest",  "Use wood instead of other ressource","Multiple strategies")
+                          levels=c("Silviculture for productivity","Silviculture for removals","Supply chain", "Technology","Multiple strategies"),
+                          labels=c( "Mobilize additional wood by increased forest growth","Mobilize additional wood by increased forest harvest","Make better use of wood",  "Use wood instead of other ressource","Multiple strategies")
   )
 
   return(data.frame(plotData))
