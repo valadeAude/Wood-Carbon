@@ -499,7 +499,7 @@ modelComponentsC<-function(data_expt, compartmentList, option, listCriteria){
     }
   }
 
-  tTestPairsSignifAggVarMelt<-melt(as.data.frame(tTestPairsSignifAggVar),id="process")
+  tTestPairsSignifAggVarMelt<-data.table::melt(setDT(tTestPairsSignifAggVar),id="process")
   colnames(tTestPairsSignifAggVarMelt)<-c("process","variable","value")
 
   tTestPairsSignifAggVarMelt[tTestPairsSignifAggVarMelt$process=="live_biomass_C","process"]<-"Live biomass"
