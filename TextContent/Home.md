@@ -8,6 +8,13 @@ This app can be used to
 * Visualize the results of the meta-analysis.
 * Generate new results with subsets of data.
 
+1. Go to Database.
+2. Select or unselect any filters.
+3. Click on Submit filters.
+4. Go to Results.
+5. You visualize the results for the whole database .
+6. To visualize the results for your selection of filters click on Apply filters.
+7. To compare with the whole database results, click on Ignore filters.
 
 ## Contact
 aude.valade@cirad.fr 
