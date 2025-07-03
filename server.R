@@ -293,9 +293,9 @@ server <- function(input, output, session) {
   })
 
   output$downloadProtocol <- downloadHandler(
-    filename = "Wood-carbon_full_protocol.docx",
+    filename = "Wood-carbon_full_protocol.pdf",
     content = function(file) {
-      file.copy("www/Wood-carbon_full_protocol.docx", file)
+      file.copy("www/Wood-carbon_full_protocol.pdf", file)
     }
   )
   
