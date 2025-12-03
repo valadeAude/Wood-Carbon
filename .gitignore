@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+./log
+./offline_figures
