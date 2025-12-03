@@ -3,6 +3,7 @@ suppressPackageStartupMessages({
   library(factoextra)
   library(fresh)
   library(logging)
+  library(logr)
   library(magrittr)
   library(plotly)
   library(RColorBrewer)
@@ -26,6 +27,9 @@ suppressPackageStartupMessages({
   library(stringr)
 })
 source(file.path("./functions.R"))
+
+tmp <- file.path( "./test.log")
+lf <- log_open(tmp)
 
 rawDataPath<-file.path("rawData/")
 initDataPath<-file.path("initData/")
@@ -84,8 +88,10 @@ data_bibliom<-bibliom_in(data)
 data_study<-study(data)
 data_expt<-expt(data)
 data_expt_approach<-assignApproach(data_expt)
+data_expt_assumption<-assignAssumption(data_expt)
 study_freq<-funcFreq(data_study,categoriesdf)
 expt_freq<-funcFreq(data_expt,categoriesdf)
+expt_frq_dyn<-FreqDynamics(data_expt_assumption,categoriesdf)
 countryRefData<-readCountryData(rawDataPath)
 countryFreqData<-countryFreq(data_study,countryRefData)
 
@@ -165,22 +171,52 @@ minValSub <- min(valSub, na.rm = TRUE)
 maxValSub <- max(valSub, na.rm = TRUE)
 
 data_expt_approachResults<-assignApproach(data_expt)
+plotData.approachC<-plotDataFunc(data_expt_approachResults[data_expt_approachResults$modelApproach != "Hybrid approach",] ,
+                                 "outliers_in",
+                                 "modelApproach",
+                                 "omitSplit2",
+                                 "omitSplit3")
+forestPlotData.approachC<-forestPlotDataFunc(plotData.approachC,"modelApproach","omitSplit2")
 
-plotData.approachC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach","Technology approach","Ecosystem approach"),NULL,"modelApproach")
-forestPlotData.approachC<-forestPlotDataFunc(plotData.approachC,"modelApproach")
+#data_expt_assumptionResults<-assignAssumption(data_expt)
+data_expt_assumptionResults<-assignAssumption(data_expt_approachResults)
+
+plotData.assumptionC<-plotDataFunc(data_expt_assumptionResults[data_expt_assumptionResults$modelAssumption != "Hybrid assumption",], 
+#plotData.assumptionC<-plotDataFunc(data_expt_assumptionResults, 
+                                    "outliers_in",
+                                    "modelAssumption",
+                                    "omitSplit2",
+                                    "omitSplit3")
 
 
-plotData.driverC<-plotDataFunc(data_expt_approachResults, c("Whole sector approach"),NULL,"driver1")
-forestPlotData.driverC<-forestPlotDataFunc(plotData.driverC,"driver1","driver1Cat") #set includeSplit2 to TRUE
+forestPlotData.assumptionC<-forestPlotDataFunc(plotData.assumptionC,"modelAssumption","omitSplit2")
 
+
+plotData.driverC.wholeSector<-plotDataFunc(data_expt_approachResults[data_expt_approachResults$modelApproach %in% c("Whole sector approach"),],
+                               "outliers_out",
+                               "driver1",
+                               "driver1Cat",
+                               "omitSplit3")
+forestPlotData.driverC.wholeSector<-forestPlotDataFunc(plotData.driverC.wholeSector,"driver1","driver1Cat") 
+
+plotData.driverC.AllCPools<-plotDataFunc(data_expt_assumptionResults[data_expt_assumptionResults$modelAssumption %in% c("All C pools"),],
+                                           "outliers_out",
+                                           "driver1",
+                                           "driver1Cat",
+                                           "omitSplit3")
+forestPlotData.driverC.AllCPools<-forestPlotDataFunc(plotData.driverC.AllCPools,"driver1","driver1Cat") 
+
+#Do not run while debugging
 tTestPairsSignifAggVarMelt<-modelComponentsC(data_expt_approachResults,c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn")
                                              , "",("PaperID"))
+#Stop Do not run while debugging
 
 
-forestPlotData.approachC.dyn<-knowDynamicsData(data_expt_approach)
+#forestPlotData.approachC.dyn<-knowDynamicsData(data_expt_approach[data_expt_approach$modelApproach != "Hybrid approach",],"modelApproach")
+forestPlotData.assumptionC.dyn<-knowDynamicsData(data_expt_assumption[data_expt_assumption$modelAssumption != "Hybrid assumption",],"modelAssumption")
 
 
-save(refCProcessMean,
+save(refCProcess,
      countriesList,
      productsLabels,
      productsList,
@@ -197,17 +233,22 @@ save(refCProcessMean,
      countryRefData,
      data_expt,
      data_expt_approach,
+     data_expt_assumption,
      data_bibliom,
      plotData.approachC,
      forestPlotData.approachC,
+     #Do not run while debugging
      tTestPairsSignifAggVarMelt,
+   #Stop Do not run while debugging
      forestPlotData.approachC.dyn,
-     plotData.driverC,
-     forestPlotData.driverC,
+   plotData.driverC.wholeSector,
+   plotData.driverC.AllCPools,
+   forestPlotData.driverC.wholeSector,
+   forestPlotData.driverC.AllCPools,
      file=paste0(initDataPath,"initData.Rdata"))
 ###
 
-
-
+log_close()
+writeLines(readLines(lf))
 
 

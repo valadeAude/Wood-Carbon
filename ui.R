@@ -3,15 +3,19 @@ sidebar <- dashboardSidebar(
   width = 150,
   hr(),
   sidebarMenu(id="tabs",
-              menuItem("Home", tabName="home", selected=TRUE),
-              menuItem("Principles", icon=icon("table"),
+              menuItem("Home", icon=icon("house"),tabName="home", selected=TRUE),
+              menuItem("Principles", icon=icon("book"),
                        menuSubItem("Context", tabName = "context", icon = icon("angle-right")),
                        menuSubItem("Carbon balance", tabName = "carbonBalance", icon = icon("angle-right")),
                        menuSubItem("Methods", tabName = "methods", icon = icon("angle-right"))
                        
               ),
-              menuItem("Database", tabName="database" ),
-              menuItem("Results", tabName="resultsTab" )#,
+              menuItem("Database", icon=icon("table"), tabName="database" ),
+              menuItem("Results", icon=icon("newspaper"), tabName="resultsTab" ,
+                       menuSubItem("All records", tabName = "AnyResults", icon = icon("angle-right")),
+                       menuSubItem("Complete C cycle records only", tabName = "AllCPoolsResults", icon = icon("angle-right"))
+                       
+                       )#,
              
   ),
   hr()
@@ -80,7 +84,7 @@ body <- dashboardBody(
                                          ),#end  checkboxGroupInput
                                          selectInput(#beginning selectInput
                                            inputId = "select_countries",
-                                           label = "Country",
+                                           label = "Countries or regions",
                                            choices = sort(countriesList),
                                            multiple = TRUE,
                                            selected = sort(countriesList)
@@ -284,61 +288,93 @@ body <- dashboardBody(
     ),
 
 
-
-
-
-    tabItem(tabName = "resultsTab",
+    tabItem(tabName = "AnyResults",
+            #tabItem(tabName = "resultsTab",
             fluidPage(
               fluidRow(
                 # Clicking this will increment the progress amount
                 box(width = 4,
-                    actionButton("submitResults", "Apply filters",style='padding:10px; font-size:100%;  background-color: #e27a3a'),
-                    actionButton("resetResults", "Ignore filters",style='padding:10px; font-size:100%;  background-color: #f3eada')),
-                infoBoxOutput("summaryExptBoxResults"),
-                infoBoxOutput("summaryStudyBoxResults")
+                    actionButton("submitResultsAny", "Apply filters",style='padding:10px; font-size:100%;  background-color: #e27a3a'),
+                    actionButton("resetResultsAny", "Ignore filters",style='padding:10px; font-size:100%;  background-color: #f3eada')),
+                infoBoxOutput("summaryExptBoxResultsAny"),
+                infoBoxOutput("summaryStudyBoxResultsAny")
               ),
+              
+              tabBox(
+                # Standard TabBox
+                #                  title='Plot',
+                id = "tabset1", height = "800px",width=12,
+                tabPanel("Modeling assumptions",
+                         div(
+                           addSpinner(plotOutput("dendrogram", height = "500px"), spin = "circle", color = "#377EB8"),
+                           includeMarkdown( './TextContent/leg_dendrogram.md')
+                           
+                         )
+                ),
+                tabPanel("Assumptions applications",
+                         div(
+                           addSpinner(plotOutput("dendrogramTopic", height = "500px"), spin = "circle", color = "#377EB8"),
+                           includeMarkdown( './TextContent/leg_dendrogram.md')
+                           
+                         )
+                ),
+                tabPanel("Carbon balance",
+                         div(
+                           addSpinner(plotOutput("assumptionC",height="500px"), spin = "circle", color = "#377EB8"),
+                           includeMarkdown( './TextContent/leg_approachC.md')
+                           
+                         ),#end div
+                ),
+              
+                
+                
+                tabPanel("Knowledge dynamics",
+                         div(
+                           addSpinner(plotOutput("knowledgeDyn", height = "600px"), spin = "circle", color = "#377EB8"),
+                           includeMarkdown( './TextContent/leg_driverC.md')
+                           
+                         )  #end div
+                ), #end tabpanel
+                tabPanel("Model components",
+                         div(
+                           addSpinner(plotlyOutput("modelComponentsC", height = "500px"), spin = "circle", color = "#377EB8"),
+                           includeMarkdown( './TextContent/leg_components.md')
+                           
+                           
+                         )  #end div
+                ),# end tabpanel
+                
+               
+              )#end tabbox
+            )#end fluidpage
+    ),    #end tabItem
+
+
+    tabItem(tabName = "AllCPoolsResults",
+    #tabItem(tabName = "resultsTab",
+            fluidPage(
+              # fluidRow(
+              #   # Clicking this will increment the progress amount
+              #   box(width = 4,
+              #       actionButton("submitResults", "Apply filters",style='padding:10px; font-size:100%;  background-color: #e27a3a'),
+              #       actionButton("resetResults", "Ignore filters",style='padding:10px; font-size:100%;  background-color: #f3eada')),
+              #   infoBoxOutput("summaryExptBoxResults"),
+              #   infoBoxOutput("summaryStudyBoxResults")
+              # ),
 
               tabBox(
                 # Standard TabBox
                 #                  title='Plot',
                 id = "tabset1", height = "800px",width=12,
-                tabPanel("Modeling approaches",
-                         div(
-                           addSpinner(plotOutput("dendrogram", height = "500px"), spin = "circle", color = "#377EB8"),
-                           includeMarkdown( './TextContent/leg_dendrogram.md')
-
-                         )
-                ),
-                tabPanel("Carbon balance",
-                         div(
-                           addSpinner(plotOutput("approachC",height="500px"), spin = "circle", color = "#377EB8"),
-                           includeMarkdown( './TextContent/leg_approachC.md')
-
-                         ),#end div
-                ),
-                tabPanel("Model components",
-                         div(
-                           addSpinner(plotlyOutput("modelComponentsC", height = "500px"), spin = "circle", color = "#377EB8"),
-                           includeMarkdown( './TextContent/leg_components.md')
-
-
-                         )  #end div
-                ),
                 tabPanel("Mobilization strategies",
                          div(
-
+                           
                            addSpinner(plotOutput("driverC", height = "600px"), spin = "circle", color = "#377EB8"),
                            includeMarkdown( './TextContent/leg_driverC.md')
-
+                           
                          )  #end div
-              ), #end tabpanel
-              tabPanel("Knowledge dynamics",
-                       div(
-                         addSpinner(plotOutput("knowledgeDyn", height = "600px"), spin = "circle", color = "#377EB8"),
-                         includeMarkdown( './TextContent/leg_driverC.md')
-
-                       )  #end div
-              ), #end tabpanel
+                ), #end tabpanel
+                
             )#end tabbox
     )#end fluidpage
   )#,    #end tabItem

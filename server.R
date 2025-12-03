@@ -22,12 +22,14 @@ server <- function(input, output, session) {
     data_fltr <- eventReactive(list(rv$filter_data,input$submitExp), {
     if(rv$filter_data) {
 
-      filtered_data <- data[data$scaleAgg %in% input$select_scale &
+      filtered_data <- data[
                             data$country %in% input$select_countries&
+                            data$scaleAgg %in% input$select_scale &
                             data$singleProduct %in% input$select_single_product&
                             data$time_horizon %in% input$select_time_horizon&
                             rowSums(data[, input$select_processes]) == length(input$select_processes)  &
                             rowSums(data[, input$select_dynamics] )== length(input$select_dynamics)  &
+                              
                             #                            rowSums(data[, input$select_processes]) >0  &
                             #                           rowSums(data[, input$select_dynamics] ) >0  &
                             # data$boundaries %in% input$select_boundaries&
@@ -44,7 +46,8 @@ server <- function(input, output, session) {
 
 
   }, ignoreNULL = FALSE)
-
+    print(paste("check dim :data",dim(data)))
+    
 
   observeEvent(input$reset, {
     updateCheckboxGroupInput(session, "select_scale", selected = c("world"="w","regional" = "reg", "local" = "loc"))
@@ -72,6 +75,7 @@ server <- function(input, output, session) {
   data_country_select<-reactive({countryFreq(data_expt_select(),countryRefData)})
   data_expt_select<-reactive({expt(data_fltr()) })
   data_expt_approach_select<-reactive({assignApproach(data_expt_select())})
+  data_expt_assumption_select<-reactive({assignAssumption(data_expt_select())})
   data_expt_unselect<-reactive({expt(data_unfltr()) })
 
 
@@ -137,9 +141,9 @@ server <- function(input, output, session) {
   output$processes_plot <- renderPlotly({
     expt_freq<-funcFreq(data_expt_select(),categoriesdf)
     if ("Wrap by type of wood" %in% input$wrap_type_wood_processes) {
-      create_processes_frequency(expt_freq[(expt_freq$cat1 =="Processes") & !is.na(expt_freq$cat1),],"wrap" )
+      create_processes_frequency(expt_freq[(expt_freq$cat1 =="Processes") & !is.na(expt_freq$cat1),],percent="percent","wrap" )
     }else{
-      create_processes_frequency(expt_freq[(expt_freq$cat1 =="Processes") & !is.na(expt_freq$cat1),] )
+      create_processes_frequency(expt_freq[(expt_freq$cat1 =="Processes") & !is.na(expt_freq$cat1),],percent="percent" )
     }
   })
 
@@ -172,21 +176,49 @@ server <- function(input, output, session) {
   observeEvent(input$submitResults, {
     res$data_expt<- data_expt_select()
     res$data_expt_approach<- data_expt_approach_select()
+    res$data_expt_assumption<- data_expt_assumption_select()
     res$data_bibliom<-data_bibliom_select()
+    res$data_study<-data_study_select()
     res$filterResults<-"filter"
   })
 
   observeEvent(c(input$resetResults,input$ignore), {
     res$data_expt <- data_expt
     res$data_expt_approach <- data_expt_approach
+    res$data_expt_assumption<- data_expt_assumption
     res$data_bibliom <- data_bibliom
+    res$data_study <- data_study
     res$filterResults<-"no"
 
   })
 
+  observeEvent(input$submitResultsAny, {
+    res$data_expt<- data_expt_select()
+    res$data_expt_approach<- data_expt_approach_select()
+    res$data_expt_assumption<- data_expt_assumption_select()
+    res$data_bibliom<-data_bibliom_select()
+    res$filterResults<-"filter"
+  })
+  
+  observeEvent(c(input$resetResultsAny,input$ignore), {
+    res$data_expt <- data_expt
+    res$data_expt_approach <- data_expt_approach
+    res$data_expt_assumption<- data_expt_assumption
+    res$data_bibliom <- data_bibliom
+    res$filterResults<-"no"
+    
+  })
   output$dendrogram<-renderPlot({
-    create_dendrogram(res$data_expt_approach)
+    create_dendrogram(res$data_expt_assumption,
+                      k=3,
+                      c( 'soilC', 'harv_residues', 'live_biomass_C', 'products_storage_C', 'forestry_emiss', 'manufacturing_emiss', 'maintenance_emiss','eol_biogenic','off_product_biogenic'))
 
+  })
+  
+  output$dendrogramTopic<-renderPlot({
+    create_dendrogram(res$data_expt_assumption,
+                      k=6,
+                      c( 'modelAssumption', 'scaleAgg','singleProduct','time_horizon','driver1'))    
   })
 
   output$approachC<-renderPlot({
@@ -202,12 +234,31 @@ server <- function(input, output, session) {
     create_forest_plot(plotData.tmp,forestPlotData.tmp,FALSE)
   })
 
+  output$assumptionC<-renderPlot({
+    
+    if (res$filterResults=="filter") {
 
+      plotData.tmp<-plotDataFunc(res$data_expt_assumption, 
+                                         "outliers_in",
+                                         "modelAssumption",
+                                         "omitSplit2",
+                                         "omitSplit3")
+      
+      forestPlotData.tmp<-forestPlotDataFunc(plotData.assumptionC,"modelAssumption","omitSplit2")
+      
+    }else{
+      plotData.tmp<-plotData.assumptionC
+      forestPlotData.tmp<-forestPlotData.assumptionC
+      
+    }
+    create_forest_plot(plotData.tmp,forestPlotData.tmp,FALSE)
+  })
+  
 
   output$modelComponentsC<-renderPlotly({
     if (res$filterResults=="filter") {
 
-    tTestPairsSignifAggVarMelt.tmp<-modelComponentsC(data_expt_approach_select(),c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn")
+    tTestPairsSignifAggVarMelt.tmp<-modelComponentsC(data_expt_assumption_select(),c("soilC","harv_residues","live_biomass_C","products_storage_C","forestry_emiss","manufacturing_emiss","maintenance_emiss","eol_biogenic","off_product_biogenic","biogenic_dyn","fossil_dyn")
                                                  , "",("PaperID"))
     }else{
       tTestPairsSignifAggVarMelt.tmp<-tTestPairsSignifAggVarMelt
@@ -218,20 +269,12 @@ server <- function(input, output, session) {
 
 
 
-
+  
 
 
   output$driverC<-renderPlot({
-
-    if (res$filterResults=="filter") {
-      plotData.driverC.tmp<-plotDataFunc(res$data_expt_approach, c("Whole sector approach"),NULL,"driver1")
-      forestPlotData.driverC.tmp<-forestPlotDataFunc(plotData.driverC.tmp,"driver1","driver1Cat")
-
-    }else{
-           plotData.driverC.tmp<-plotData.driverC
-      forestPlotData.driverC.tmp<-forestPlotData.driverC
-
-     }
+      plotData.driverC.tmp<-plotData.driverC.AllCPools
+      forestPlotData.driverC.tmp<-forestPlotData.driverC.AllCPools
     create_forest_plot(plotData.driverC.tmp,forestPlotData.driverC.tmp,TRUE)
   })
 
@@ -240,11 +283,15 @@ server <- function(input, output, session) {
   output$knowledgeDyn<-renderPlot({
 
     if (res$filterResults=="filter") {
-      forestPlotData.approachC.dyn.tmp<-knowDynamicsData(res$data_expt_approach)
+      #forestPlotData.approachC.dyn.tmp<-knowDynamicsData(res$data_expt_approach)
+      forestPlotData.assumptionC.dyn.tmp <-knowDynamicsData(res$data_expt_assumption,"modelAssumption")
     }else{
-      forestPlotData.approachC.dyn.tmp<-forestPlotData.approachC.dyn
+      #forestPlotData.approachC.dyn.tmp<-forestPlotData.approachC.dyn
+      forestPlotData.assumptionC.dyn.tmp<-forestPlotData.assumptionC.dyn
     }
-    create_knowDynamicsPlot(forestPlotData.approachC.dyn.tmp)
+    #create_knowDynamicsPlot(forestPlotData.approachC.dyn.tmp)
+    create_forest_plot_dynamics(forestPlotData.assumptionC.dyn.tmp)
+    
   })
 
 
@@ -264,7 +311,7 @@ server <- function(input, output, session) {
 
   })
   output$summaryStudy <- renderText({
-    paste("Publications processed:", nrow(data_bibliom_select()), "/",nrow(data_bibliom), sep = " ")
+    paste("Publications processed:", nrow(data_study_select()), "/",nrow(data_study), sep = " ")
 
   })
   output$summaryExptBox <- renderInfoBox({
@@ -279,13 +326,14 @@ server <- function(input, output, session) {
       color = "orange"
     )
   })
-  output$summaryExptBoxResults <- renderInfoBox({
+ 
+  output$summaryExptBoxResultsAny <- renderInfoBox({
     infoBox(
       "Records", paste0(nrow(res$data_expt),"/",nrow(data_expt)), icon = icon("list"),
       color = "maroon"
     )
   })
-  output$summaryStudyBoxResults <- renderInfoBox({
+  output$summaryStudyBoxResultsAny <- renderInfoBox({
     infoBox(
       "Publications", paste0(nrow(res$data_bibliom), "/",nrow(data_bibliom)), icon = icon("list"),
       color = "orange"
