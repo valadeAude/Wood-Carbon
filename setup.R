@@ -236,6 +236,7 @@ save(refCProcess,
      data_expt_assumption,
      data_bibliom,
      plotData.approachC,
+     plotData.assumptionC,
      forestPlotData.approachC,
      forestPlotData.assumptionC,
      #Do not run while debugging
