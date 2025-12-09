@@ -7,49 +7,49 @@ R Version: 4.4.2 (2024-10-31)
 Machine: S216 x86_64 
 Operating System: Darwin 24.4.0 Darwin Kernel Version 24.4.0: Fri Apr 11 18:28:23 PDT 2025; root:xnu-11417.101.15~117/RELEASE_X86_64 
 Base Packages: stats graphics grDevices utils datasets methods base 
-Other Packages: metafor_4.6-0 numDeriv_2016.8-1.1 metadat_1.2-0 Matrix_1.7-1 dplyr_1.1.4 data.table_1.16.4 mathjaxr_1.6-0 htmltools_0.5.8.1 bslib_0.8.0 slider_0.3.2 shinydashboard_0.7.2 waiter_0.2.5 shinyWidgets_0.8.7 shinyjs_2.1.0 shinybusy_0.3.3 shinyBS_0.61.1 shiny_1.10.0 plotly_4.10.4 magrittr_2.0.3 logr_1.3.9 common_1.1.3 logging_0.10-108 fresh_0.2.1 DT_0.33 kableExtra_1.4.0 viridis_0.6.5 viridisLite_0.4.2 stringr_1.5.1 readxl_1.4.3 RColorBrewer_1.1-3 factoextra_1.0.7 ggplot2_3.5.1 EnvStats_3.0.0 
-Log Start Time: 2025-12-03 15:47:20.986233 
+Other Packages: readxl_1.4.3 logr_1.3.9 common_1.1.3 stringr_1.5.1 metafor_4.6-0 numDeriv_2016.8-1.1 metadat_1.2-0 Matrix_1.7-1 dplyr_1.1.4 data.table_1.16.4 mathjaxr_1.6-0 htmltools_0.5.8.1 bslib_0.8.0 slider_0.3.2 shinydashboard_0.7.2 waiter_0.2.5 viridis_0.6.5 viridisLite_0.4.2 shinyWidgets_0.8.7 shinyjs_2.1.0 shinybusy_0.3.3 shinyBS_0.61.1 RColorBrewer_1.1-3 plotly_4.10.4 magrittr_2.0.3 logging_0.10-108 fresh_0.2.1 factoextra_1.0.7 ggplot2_3.5.1 DT_0.33 shiny_1.10.0 
+Log Start Time: 2025-12-09 14:00:18.91156 
 ========================================================================= 
 
 Warning: Coercing text to numeric in BO1358 / R1358C67: '1.333' 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.119696 
-NOTE: Elapsed Time: 9.13243198394775 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:27.467273 
+NOTE: Elapsed Time: 8.55484294891357 secs 
 
 Warning: Coercing text to numeric in BO1359 / R1359C67: '1.333' 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.123424 
-NOTE: Elapsed Time: 0.00372815132141113 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:27.470027 
+NOTE: Elapsed Time: 0.00275397300720215 secs 
 
 Warning: Coercing text to numeric in BO1360 / R1360C67: '1.333' 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.126372 
-NOTE: Elapsed Time: 0.00294804573059082 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:27.473178 
+NOTE: Elapsed Time: 0.00315093994140625 secs 
 
 Warning: Coercing text to numeric in BO1361 / R1361C67: '1.333' 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.129556 
-NOTE: Elapsed Time: 0.00318384170532227 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:27.477267 
+NOTE: Elapsed Time: 0.0040891170501709 secs 
 
 Warning: Coercing text to numeric in BO1362 / R1362C67: '1.333' 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.134462 
-NOTE: Elapsed Time: 0.00490617752075195 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:27.480322 
+NOTE: Elapsed Time: 0.00305485725402832 secs 
 
 Warning: Coercing text to numeric in BO1363 / R1363C67: '1.333' 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.137954 
-NOTE: Elapsed Time: 0.00349187850952148 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:27.484479 
+NOTE: Elapsed Time: 0.00415706634521484 secs 
 
 ---Assign assumptions--- 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.770458 
-NOTE: Elapsed Time: 0.632503986358643 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.065926 
+NOTE: Elapsed Time: 0.581447124481201 secs 
 
 C_neutral 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.772074 
-NOTE: Elapsed Time: 0.00161600112915039 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.066923 
+NOTE: Elapsed Time: 0.000996828079223633 secs 
 
 # A tibble: 203 × 2
     PaperID          substitution
@@ -260,13 +260,13 @@ NOTE: Elapsed Time: 0.00161600112915039 secs
 
 NOTE: Data frame has 203 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.854351 
-NOTE: Elapsed Time: 0.0822770595550537 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.211341 
+NOTE: Elapsed Time: 0.144418001174927 secs 
 
 Insitu only 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.856635 
-NOTE: Elapsed Time: 0.00228404998779297 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.271039 
+NOTE: Elapsed Time: 0.0596981048583984 secs 
 
 # A tibble: 171 × 2
     PaperID                     substitution
@@ -445,13 +445,13 @@ NOTE: Elapsed Time: 0.00228404998779297 secs
 
 NOTE: Data frame has 171 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.935646 
-NOTE: Elapsed Time: 0.0790109634399414 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.330813 
+NOTE: Elapsed Time: 0.0597739219665527 secs 
 
 All C 
 
-NOTE: Log Print Time:  2025-12-03 15:47:30.937483 
-NOTE: Elapsed Time: 0.00183701515197754 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.332218 
+NOTE: Elapsed Time: 0.00140500068664551 secs 
 
 # A tibble: 269 × 2
     PaperID                     substitution
@@ -728,13 +728,13 @@ NOTE: Elapsed Time: 0.00183701515197754 secs
 
 NOTE: Data frame has 269 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:31.081268 
-NOTE: Elapsed Time: 0.143784999847412 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.41026 
+NOTE: Elapsed Time: 0.0780420303344727 secs 
 
 Intercepts C_neutral / AllC 
 
-NOTE: Log Print Time:  2025-12-03 15:47:31.082675 
-NOTE: Elapsed Time: 0.00140690803527832 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.411412 
+NOTE: Elapsed Time: 0.00115203857421875 secs 
 
 # A tibble: 198 × 2
    PaperID      substitution
@@ -754,13 +754,13 @@ NOTE: Elapsed Time: 0.00140690803527832 secs
 
 NOTE: Data frame has 198 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:31.202768 
-NOTE: Elapsed Time: 0.120093107223511 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.496963 
+NOTE: Elapsed Time: 0.0855510234832764 secs 
 
 Intercepts Biogenic/AllC 
 
-NOTE: Log Print Time:  2025-12-03 15:47:31.206421 
-NOTE: Elapsed Time: 0.00365281105041504 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.498159 
+NOTE: Elapsed Time: 0.00119590759277344 secs 
 
 # A tibble: 1 × 2
   PaperID   substitution
@@ -769,8 +769,8 @@ NOTE: Elapsed Time: 0.00365281105041504 secs
 
 NOTE: Data frame has 1 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:31.272238 
-NOTE: Elapsed Time: 0.06581711769104 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:28.539047 
+NOTE: Elapsed Time: 0.0408880710601807 secs 
 
 # A tibble: 673 × 3
    PaperID        split                 substitution
@@ -790,30 +790,30 @@ NOTE: Elapsed Time: 0.06581711769104 secs
 
 NOTE: Data frame has 673 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:38.649052 
-NOTE: Elapsed Time: 7.3768138885498 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:31.731814 
+NOTE: Elapsed Time: 3.19276690483093 secs 
 
 # A tibble: 3 × 9
-  estimate    se  tval    df   pval  ci.lb  ci.ub split                     n
-     <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>  <dbl> <chr>                 <int>
-1   -1.35  0.553 -2.43   670 0.0152 -2.43  -0.260 Ecosystem approach        3
-2    0.712 0.530  1.34   670 0.179  -0.328  1.75  Technology approach       3
-3   -0.783 0.521 -1.50   670 0.133  -1.81   0.240 Whole sector approach     3
+  estimate    se  tval    df   pval  ci.lb  ci.ub split         n
+     <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>  <dbl> <chr>     <int>
+1   -1.35  0.553 -2.43   670 0.0152 -2.43  -0.260 Ecosyste…     3
+2    0.712 0.530  1.34   670 0.179  -0.328  1.75  Technolo…     3
+3   -0.783 0.521 -1.50   670 0.133  -1.81   0.240 Whole se…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.185989 
-NOTE: Elapsed Time: 20.5369369983673 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.507107 
+NOTE: Elapsed Time: 19.7752931118011 secs 
 
 ---Assign assumptions--- 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.196041 
-NOTE: Elapsed Time: 0.0100522041320801 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.517827 
+NOTE: Elapsed Time: 0.0107200145721436 secs 
 
 C_neutral 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.197148 
-NOTE: Elapsed Time: 0.00110697746276855 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.519001 
+NOTE: Elapsed Time: 0.00117397308349609 secs 
 
 # A tibble: 203 × 2
     PaperID          substitution
@@ -1024,13 +1024,13 @@ NOTE: Elapsed Time: 0.00110697746276855 secs
 
 NOTE: Data frame has 203 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.258321 
-NOTE: Elapsed Time: 0.0611729621887207 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.583689 
+NOTE: Elapsed Time: 0.064687967300415 secs 
 
 Insitu only 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.259769 
-NOTE: Elapsed Time: 0.00144791603088379 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.585014 
+NOTE: Elapsed Time: 0.00132513046264648 secs 
 
 # A tibble: 171 × 2
     PaperID                     substitution
@@ -1209,13 +1209,13 @@ NOTE: Elapsed Time: 0.00144791603088379 secs
 
 NOTE: Data frame has 171 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.331958 
-NOTE: Elapsed Time: 0.0721890926361084 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.640515 
+NOTE: Elapsed Time: 0.0555009841918945 secs 
 
 All C 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.33307 
-NOTE: Elapsed Time: 0.00111198425292969 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.641786 
+NOTE: Elapsed Time: 0.00127100944519043 secs 
 
 # A tibble: 269 × 2
     PaperID                     substitution
@@ -1492,13 +1492,13 @@ NOTE: Elapsed Time: 0.00111198425292969 secs
 
 NOTE: Data frame has 269 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.396676 
-NOTE: Elapsed Time: 0.0636060237884521 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.705169 
+NOTE: Elapsed Time: 0.0633828639984131 secs 
 
 Intercepts C_neutral / AllC 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.39789 
-NOTE: Elapsed Time: 0.00121402740478516 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.706531 
+NOTE: Elapsed Time: 0.00136208534240723 secs 
 
 # A tibble: 198 × 2
    PaperID      substitution
@@ -1518,13 +1518,13 @@ NOTE: Elapsed Time: 0.00121402740478516 secs
 
 NOTE: Data frame has 198 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.504164 
-NOTE: Elapsed Time: 0.106273889541626 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.810478 
+NOTE: Elapsed Time: 0.103946924209595 secs 
 
 Intercepts Biogenic/AllC 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.505416 
-NOTE: Elapsed Time: 0.0012519359588623 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.812043 
+NOTE: Elapsed Time: 0.00156497955322266 secs 
 
 # A tibble: 1 × 2
   PaperID   substitution
@@ -1533,8 +1533,8 @@ NOTE: Elapsed Time: 0.0012519359588623 secs
 
 NOTE: Data frame has 1 rows and 2 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.549958 
-NOTE: Elapsed Time: 0.0445420742034912 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.853153 
+NOTE: Elapsed Time: 0.0411100387573242 secs 
 
 # A tibble: 642 × 3
    PaperID        split       substitution
@@ -1554,20 +1554,20 @@ NOTE: Elapsed Time: 0.0445420742034912 secs
 
 NOTE: Data frame has 642 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:47:59.635391 
-NOTE: Elapsed Time: 0.0854330062866211 secs 
+NOTE: Log Print Time:  2025-12-09 14:00:51.965363 
+NOTE: Elapsed Time: 0.112210035324097 secs 
 
 # A tibble: 3 × 9
-  estimate    se    tval    df    pval  ci.lb  ci.ub split                     n
-     <dbl> <dbl>   <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>                 <int>
-1  -0.0321 0.339 -0.0946   639 0.925   -0.698  0.634 All C pools               3
-2  -0.975  0.310 -3.15     639 0.00170 -1.58  -0.368 Biogenic only assump…     3
-3   0.604  0.362  1.67     639 0.0952  -0.106  1.31  Carbon neutral fores…     3
+  estimate    se    tval    df    pval  ci.lb  ci.ub split      n
+     <dbl> <dbl>   <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>  <int>
+1  -0.0321 0.339 -0.0946   639 0.925   -0.698  0.634 All C…     3
+2  -0.975  0.310 -3.15     639 0.00170 -1.58  -0.368 Bioge…     3
+3   0.604  0.362  1.67     639 0.0952  -0.106  1.31  Carbo…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:13.625277 
-NOTE: Elapsed Time: 13.9898860454559 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:06.055465 
+NOTE: Elapsed Time: 14.0901019573212 secs 
 
 # A tibble: 303 × 3
    PaperID        split             substitution
@@ -1587,33 +1587,33 @@ NOTE: Elapsed Time: 13.9898860454559 secs
 
 NOTE: Data frame has 303 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:13.762089 
-NOTE: Elapsed Time: 0.136811971664429 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:06.15376 
+NOTE: Elapsed Time: 0.0982949733734131 secs 
 
 # A tibble: 16 × 9
-   estimate    se     tval    df   pval  ci.lb  ci.ub split                    n
-      <dbl> <dbl>    <dbl> <dbl>  <dbl>  <dbl>  <dbl> <chr>                <int>
- 1 -0.251   0.638 -0.393     287 0.695  -1.51   1.01  area subject to har…    16
- 2  0.275   0.507  0.543     287 0.588  -0.723  1.27  cutting intensity       16
- 3 -0.0305  2.28  -0.0134    287 0.989  -4.51   4.45  efficiency improvem…    16
- 4 -0.0827  1.21  -0.0682    287 0.946  -2.47   2.30  end of life disposal    16
- 5  0.219   0.559  0.392     287 0.696  -0.882  1.32  EnergyInput             16
- 6  1.08    0.835  1.30      287 0.196  -0.561  2.73  fertilisation           16
- 7 -1.23    0.521 -2.36      287 0.0188 -2.26  -0.206 mixed drivers           16
- 8  0.568   1.27   0.447     287 0.655  -1.93   3.07  multiple silvicultu…    16
- 9  0.280   0.596  0.470     287 0.639  -0.893  1.45  plantation density      16
-10  0.158   1.05   0.150     287 0.881  -1.92   2.23  products lifespan       16
-11 -0.00989 2.28  -0.00435   287 0.997  -4.49   4.47  recycling               16
-12 -0.0716  0.654 -0.109     287 0.913  -1.36   1.22  rotation length         16
-13  0.405   0.572  0.707     287 0.480  -0.721  1.53  site fertility          16
-14 -0.235   0.623 -0.377     287 0.706  -1.46   0.990 species                 16
-15  1.62    0.627  2.58      287 0.0103  0.384  2.85  supply chain organi…    16
-16  0.670   0.527  1.27      287 0.205  -0.368  1.71  TimberInput             16
+   estimate    se     tval    df   pval  ci.lb  ci.ub split     n
+      <dbl> <dbl>    <dbl> <dbl>  <dbl>  <dbl>  <dbl> <chr> <int>
+ 1 -0.251   0.638 -0.393     287 0.695  -1.51   1.01  area…    16
+ 2  0.275   0.507  0.543     287 0.588  -0.723  1.27  cutt…    16
+ 3 -0.0305  2.28  -0.0134    287 0.989  -4.51   4.45  effi…    16
+ 4 -0.0827  1.21  -0.0682    287 0.946  -2.47   2.30  end …    16
+ 5  0.219   0.559  0.392     287 0.696  -0.882  1.32  Ener…    16
+ 6  1.08    0.835  1.30      287 0.196  -0.561  2.73  fert…    16
+ 7 -1.23    0.521 -2.36      287 0.0188 -2.26  -0.206 mixe…    16
+ 8  0.568   1.27   0.447     287 0.655  -1.93   3.07  mult…    16
+ 9  0.280   0.596  0.470     287 0.639  -0.893  1.45  plan…    16
+10  0.158   1.05   0.150     287 0.881  -1.92   2.23  prod…    16
+11 -0.00989 2.28  -0.00435   287 0.997  -4.49   4.47  recy…    16
+12 -0.0716  0.654 -0.109     287 0.913  -1.36   1.22  rota…    16
+13  0.405   0.572  0.707     287 0.480  -0.721  1.53  site…    16
+14 -0.235   0.623 -0.377     287 0.706  -1.46   0.990 spec…    16
+15  1.62    0.627  2.58      287 0.0103  0.384  2.85  supp…    16
+16  0.670   0.527  1.27      287 0.205  -0.368  1.71  Timb…    16
 
 NOTE: Data frame has 16 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:15.994494 
-NOTE: Elapsed Time: 2.23240494728088 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:08.472765 
+NOTE: Elapsed Time: 2.31900501251221 secs 
 
 # A tibble: 265 × 3
    PaperID        split             substitution
@@ -1633,35 +1633,36 @@ NOTE: Elapsed Time: 2.23240494728088 secs
 
 NOTE: Data frame has 265 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:16.09297 
-NOTE: Elapsed Time: 0.0984759330749512 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:08.578875 
+NOTE: Elapsed Time: 0.106110095977783 secs 
 
 # A tibble: 13 × 9
-   estimate    se    tval    df       pval     ci.lb  ci.ub split              n
-      <dbl> <dbl>   <dbl> <dbl>      <dbl>     <dbl>  <dbl> <chr>          <int>
- 1  -1.15   0.413 -2.78     252 0.00586    -1.96     -0.334 area subject …    13
- 2   0.163  0.298  0.549    252 0.584      -0.423     0.750 cutting inten…    13
- 3  -0.264  0.744 -0.355    252 0.723      -1.73      1.20  end of life d…    13
- 4  -0.0424 0.392 -0.108    252 0.914      -0.814     0.729 EnergyInput       13
- 5   0.962  0.489  1.97     252 0.0500     -0.000167  1.92  fertilisation     13
- 6  -1.50   0.308 -4.88     252 0.00000185 -2.11     -0.896 mixed drivers     13
- 7   0.565  0.732  0.772    252 0.441      -0.877     2.01  multiple silv…    13
- 8   0.142  0.352  0.403    252 0.688      -0.551     0.834 plantation de…    13
- 9   0.0291 0.566  0.0515   252 0.959      -1.09      1.14  rotation leng…    13
-10   0.0164 0.341  0.0482   252 0.962      -0.654     0.687 site fertility    13
-11   0.0235 0.374  0.0629   252 0.950      -0.712     0.759 species           13
-12   1.13   0.366  3.09     252 0.00224     0.409     1.85  supply chain …    13
-13   0.355  0.354  1.00     252 0.317      -0.342     1.05  TimberInput       13
+   estimate    se    tval    df       pval     ci.lb  ci.ub split
+      <dbl> <dbl>   <dbl> <dbl>      <dbl>     <dbl>  <dbl> <chr>
+ 1  -1.15   0.413 -2.78     252 0.00586    -1.96     -0.334 area…
+ 2   0.163  0.298  0.549    252 0.584      -0.423     0.750 cutt…
+ 3  -0.264  0.744 -0.355    252 0.723      -1.73      1.20  end …
+ 4  -0.0424 0.392 -0.108    252 0.914      -0.814     0.729 Ener…
+ 5   0.962  0.489  1.97     252 0.0500     -0.000167  1.92  fert…
+ 6  -1.50   0.308 -4.88     252 0.00000185 -2.11     -0.896 mixe…
+ 7   0.565  0.732  0.772    252 0.441      -0.877     2.01  mult…
+ 8   0.142  0.352  0.403    252 0.688      -0.551     0.834 plan…
+ 9   0.0291 0.566  0.0515   252 0.959      -1.09      1.14  rota…
+10   0.0164 0.341  0.0482   252 0.962      -0.654     0.687 site…
+11   0.0235 0.374  0.0629   252 0.950      -0.712     0.759 spec…
+12   1.13   0.366  3.09     252 0.00224     0.409     1.85  supp…
+13   0.355  0.354  1.00     252 0.317      -0.342     1.05  Timb…
+# ℹ 1 more variable: n <int>
 
 NOTE: Data frame has 13 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:17.412893 
-NOTE: Elapsed Time: 1.31992316246033 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:09.966826 
+NOTE: Elapsed Time: 1.3879508972168 secs 
 
 [1] 2002
 
-NOTE: Log Print Time:  2025-12-03 15:48:17.772228 
-NOTE: Elapsed Time: 0.359334945678711 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:10.384636 
+NOTE: Elapsed Time: 0.417809963226318 secs 
 
 # A tibble: 27 × 3
    PaperID        split       substitution
@@ -1681,23 +1682,23 @@ NOTE: Elapsed Time: 0.359334945678711 secs
 
 NOTE: Data frame has 27 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:17.860641 
-NOTE: Elapsed Time: 0.0884130001068115 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:10.480194 
+NOTE: Elapsed Time: 0.0955581665039062 secs 
 
 # A tibble: 1 × 9
-  estimate    se  tval    df   pval  ci.lb ci.ub split           n
-     <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl> <dbl> <chr>       <int>
-1    0.808 0.447  1.81    26 0.0826 -0.112  1.73 All C pools     1
+  estimate    se  tval    df   pval  ci.lb ci.ub split          n
+     <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl> <dbl> <chr>      <int>
+1    0.808 0.447  1.81    26 0.0826 -0.112  1.73 All C poo…     1
 
 NOTE: Data frame has 1 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:17.982614 
-NOTE: Elapsed Time: 0.121973037719727 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:10.615895 
+NOTE: Elapsed Time: 0.135700941085815 secs 
 
 [1] 2003
 
-NOTE: Log Print Time:  2025-12-03 15:48:17.989112 
-NOTE: Elapsed Time: 0.00649785995483398 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:10.623058 
+NOTE: Elapsed Time: 0.00716304779052734 secs 
 
 # A tibble: 27 × 3
    PaperID        split       substitution
@@ -1717,23 +1718,23 @@ NOTE: Elapsed Time: 0.00649785995483398 secs
 
 NOTE: Data frame has 27 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.076014 
-NOTE: Elapsed Time: 0.0869021415710449 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:10.711616 
+NOTE: Elapsed Time: 0.0885579586029053 secs 
 
 # A tibble: 1 × 9
-  estimate    se  tval    df   pval  ci.lb ci.ub split           n
-     <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl> <dbl> <chr>       <int>
-1    0.808 0.447  1.81    26 0.0826 -0.112  1.73 All C pools     1
+  estimate    se  tval    df   pval  ci.lb ci.ub split          n
+     <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl> <dbl> <chr>      <int>
+1    0.808 0.447  1.81    26 0.0826 -0.112  1.73 All C poo…     1
 
 NOTE: Data frame has 1 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.183723 
-NOTE: Elapsed Time: 0.107708930969238 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:10.845016 
+NOTE: Elapsed Time: 0.133399963378906 secs 
 
 [1] 2004
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.191031 
-NOTE: Elapsed Time: 0.00730800628662109 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:10.850938 
+NOTE: Elapsed Time: 0.00592207908630371 secs 
 
 # A tibble: 44 × 3
    PaperID        split       substitution
@@ -1753,25 +1754,25 @@ NOTE: Elapsed Time: 0.00730800628662109 secs
 
 NOTE: Data frame has 44 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.278291 
-NOTE: Elapsed Time: 0.0872600078582764 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:10.94718 
+NOTE: Elapsed Time: 0.0962419509887695 secs 
 
 # A tibble: 3 × 9
-  estimate    se  tval    df      pval  ci.lb ci.ub split                      n
-     <dbl> <dbl> <dbl> <dbl>     <dbl>  <dbl> <dbl> <chr>                  <int>
-1    0.416 0.311  1.33    41 0.189     -0.213  1.04 All C pools                3
-2   -4.51  1.14  -3.94    41 0.000308  -6.82  -2.20 Biogenic only assumpt…     3
-3    1.88  0.418  4.49    41 0.0000566  1.03   2.72 Carbon neutral forest…     3
+  estimate    se  tval    df      pval  ci.lb ci.ub split       n
+     <dbl> <dbl> <dbl> <dbl>     <dbl>  <dbl> <dbl> <chr>   <int>
+1    0.416 0.311  1.33    41 0.189     -0.213  1.04 All C …     3
+2   -4.51  1.14  -3.94    41 0.000308  -6.82  -2.20 Biogen…     3
+3    1.88  0.418  4.49    41 0.0000566  1.03   2.72 Carbon…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.473311 
-NOTE: Elapsed Time: 0.195019960403442 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:11.160233 
+NOTE: Elapsed Time: 0.213052988052368 secs 
 
 [1] 2005
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.479709 
-NOTE: Elapsed Time: 0.00639796257019043 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:11.166964 
+NOTE: Elapsed Time: 0.00673103332519531 secs 
 
 # A tibble: 50 × 3
    PaperID        split       substitution
@@ -1791,25 +1792,25 @@ NOTE: Elapsed Time: 0.00639796257019043 secs
 
 NOTE: Data frame has 50 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.567479 
-NOTE: Elapsed Time: 0.0877699851989746 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:11.281256 
+NOTE: Elapsed Time: 0.114291906356812 secs 
 
 # A tibble: 3 × 9
-  estimate    se  tval    df      pval    ci.lb ci.ub split                    n
-     <dbl> <dbl> <dbl> <dbl>     <dbl>    <dbl> <dbl> <chr>                <int>
-1    0.579 0.292  1.98    47 0.0535    -0.00901  1.17 All C pools              3
-2   -4.51  1.10  -4.09    47 0.000170  -6.73    -2.29 Biogenic only assum…     3
-3    1.93  0.401  4.80    47 0.0000164  1.12     2.73 Carbon neutral fore…     3
+  estimate    se  tval    df      pval    ci.lb ci.ub split     n
+     <dbl> <dbl> <dbl> <dbl>     <dbl>    <dbl> <dbl> <chr> <int>
+1    0.579 0.292  1.98    47 0.0535    -0.00901  1.17 All …     3
+2   -4.51  1.10  -4.09    47 0.000170  -6.73    -2.29 Biog…     3
+3    1.93  0.401  4.80    47 0.0000164  1.12     2.73 Carb…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.753206 
-NOTE: Elapsed Time: 0.185727119445801 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:11.457682 
+NOTE: Elapsed Time: 0.176425933837891 secs 
 
 [1] 2006
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.762118 
-NOTE: Elapsed Time: 0.00891208648681641 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:11.463921 
+NOTE: Elapsed Time: 0.00623917579650879 secs 
 
 # A tibble: 67 × 3
    PaperID        split       substitution
@@ -1829,25 +1830,25 @@ NOTE: Elapsed Time: 0.00891208648681641 secs
 
 NOTE: Data frame has 67 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:18.854117 
-NOTE: Elapsed Time: 0.091998815536499 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:11.550375 
+NOTE: Elapsed Time: 0.086453914642334 secs 
 
 # A tibble: 3 × 9
-  estimate    se  tval    df        pval  ci.lb ci.ub split                    n
-     <dbl> <dbl> <dbl> <dbl>       <dbl>  <dbl> <dbl> <chr>                <int>
-1    0.605 0.371  1.63    64 0.108       -0.137  1.35 All C pools              3
-2   -2.45  0.452 -5.42    64 0.000000974 -3.36  -1.55 Biogenic only assum…     3
-3    1.92  0.494  3.88    64 0.000251     0.929  2.90 Carbon neutral fore…     3
+  estimate    se  tval    df        pval  ci.lb ci.ub split     n
+     <dbl> <dbl> <dbl> <dbl>       <dbl>  <dbl> <dbl> <chr> <int>
+1    0.605 0.371  1.63    64 0.108       -0.137  1.35 All …     3
+2   -2.45  0.452 -5.42    64 0.000000974 -3.36  -1.55 Biog…     3
+3    1.92  0.494  3.88    64 0.000251     0.929  2.90 Carb…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.025875 
-NOTE: Elapsed Time: 0.17175817489624 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:11.727678 
+NOTE: Elapsed Time: 0.177303075790405 secs 
 
 [1] 2007
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.032516 
-NOTE: Elapsed Time: 0.00664091110229492 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:11.737226 
+NOTE: Elapsed Time: 0.00954794883728027 secs 
 
 # A tibble: 93 × 3
    PaperID        split       substitution
@@ -1867,25 +1868,25 @@ NOTE: Elapsed Time: 0.00664091110229492 secs
 
 NOTE: Data frame has 93 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.121234 
-NOTE: Elapsed Time: 0.0887179374694824 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:11.831482 
+NOTE: Elapsed Time: 0.0942559242248535 secs 
 
 # A tibble: 3 × 9
-  estimate    se  tval    df     pval  ci.lb  ci.ub split                      n
-     <dbl> <dbl> <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>                  <int>
-1    0.448 0.437  1.03    90 0.307    -0.419  1.32  All C pools                3
-2   -1.78  0.466 -3.82    90 0.000243 -2.71  -0.856 Biogenic only assumpt…     3
-3    1.50  0.512  2.93    90 0.00425   0.485  2.52  Carbon neutral forest…     3
+  estimate    se  tval    df     pval  ci.lb  ci.ub split       n
+     <dbl> <dbl> <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>   <int>
+1    0.448 0.437  1.03    90 0.307    -0.419  1.32  All C …     3
+2   -1.78  0.466 -3.82    90 0.000243 -2.71  -0.856 Biogen…     3
+3    1.50  0.512  2.93    90 0.00425   0.485  2.52  Carbon…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.296335 
-NOTE: Elapsed Time: 0.175101041793823 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:12.05223 
+NOTE: Elapsed Time: 0.220747947692871 secs 
 
 [1] 2008
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.303079 
-NOTE: Elapsed Time: 0.0067439079284668 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:12.059392 
+NOTE: Elapsed Time: 0.00716209411621094 secs 
 
 # A tibble: 97 × 3
    PaperID        split       substitution
@@ -1905,25 +1906,25 @@ NOTE: Elapsed Time: 0.0067439079284668 secs
 
 NOTE: Data frame has 97 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.393345 
-NOTE: Elapsed Time: 0.090266227722168 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:12.152999 
+NOTE: Elapsed Time: 0.0936069488525391 secs 
 
 # A tibble: 3 × 9
-  estimate    se  tval    df     pval  ci.lb  ci.ub split                      n
-     <dbl> <dbl> <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>                  <int>
-1    0.702 0.420  1.67    94 0.0979   -0.132  1.54  All C pools                3
-2   -1.66  0.480 -3.47    94 0.000786 -2.62  -0.712 Biogenic only assumpt…     3
-3    1.51  0.538  2.80    94 0.00612   0.441  2.58  Carbon neutral forest…     3
+  estimate    se  tval    df     pval  ci.lb  ci.ub split       n
+     <dbl> <dbl> <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>   <int>
+1    0.702 0.420  1.67    94 0.0979   -0.132  1.54  All C …     3
+2   -1.66  0.480 -3.47    94 0.000786 -2.62  -0.712 Biogen…     3
+3    1.51  0.538  2.80    94 0.00612   0.441  2.58  Carbon…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.588454 
-NOTE: Elapsed Time: 0.195108890533447 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:12.365719 
+NOTE: Elapsed Time: 0.212720155715942 secs 
 
 [1] 2009
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.595438 
-NOTE: Elapsed Time: 0.00698399543762207 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:12.372954 
+NOTE: Elapsed Time: 0.00723481178283691 secs 
 
 # A tibble: 99 × 3
    PaperID        split       substitution
@@ -1943,25 +1944,25 @@ NOTE: Elapsed Time: 0.00698399543762207 secs
 
 NOTE: Data frame has 99 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.684816 
-NOTE: Elapsed Time: 0.0893778800964355 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:12.46231 
+NOTE: Elapsed Time: 0.0893561840057373 secs 
 
 # A tibble: 3 × 9
-  estimate    se  tval    df    pval  ci.lb  ci.ub split                       n
-     <dbl> <dbl> <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>                   <int>
-1    0.766 0.440  1.74    96 0.0850  -0.108  1.64  All C pools                 3
-2   -1.40  0.469 -2.99    96 0.00352 -2.34  -0.473 Biogenic only assumpti…     3
-3    1.53  0.577  2.64    96 0.00963  0.379  2.67  Carbon neutral forest …     3
+  estimate    se  tval    df    pval  ci.lb  ci.ub split        n
+     <dbl> <dbl> <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>    <int>
+1    0.766 0.440  1.74    96 0.0850  -0.108  1.64  All C p…     3
+2   -1.40  0.469 -2.99    96 0.00352 -2.34  -0.473 Biogeni…     3
+3    1.53  0.577  2.64    96 0.00963  0.379  2.67  Carbon …     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.888054 
-NOTE: Elapsed Time: 0.203238010406494 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:12.680017 
+NOTE: Elapsed Time: 0.217706918716431 secs 
 
 [1] 2010
 
-NOTE: Log Print Time:  2025-12-03 15:48:19.894916 
-NOTE: Elapsed Time: 0.00686216354370117 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:12.687313 
+NOTE: Elapsed Time: 0.00729608535766602 secs 
 
 # A tibble: 139 × 3
    PaperID        split       substitution
@@ -1981,25 +1982,25 @@ NOTE: Elapsed Time: 0.00686216354370117 secs
 
 NOTE: Data frame has 139 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:20.037881 
-NOTE: Elapsed Time: 0.142964839935303 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:12.775864 
+NOTE: Elapsed Time: 0.0885508060455322 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df   pval  ci.lb  ci.ub split                       n
-     <dbl> <dbl>  <dbl> <dbl>  <dbl>  <dbl>  <dbl> <chr>                   <int>
-1    0.375 0.406  0.921   136 0.358  -0.429  1.18  All C pools                 3
-2   -1.05  0.411 -2.57    136 0.0114 -1.87  -0.242 Biogenic only assumpti…     3
-3    1.16  0.513  2.27    136 0.0248  0.149  2.18  Carbon neutral forest …     3
+  estimate    se   tval    df   pval  ci.lb  ci.ub split        n
+     <dbl> <dbl>  <dbl> <dbl>  <dbl>  <dbl>  <dbl> <chr>    <int>
+1    0.375 0.406  0.921   136 0.358  -0.429  1.18  All C p…     3
+2   -1.05  0.411 -2.57    136 0.0114 -1.87  -0.242 Biogeni…     3
+3    1.16  0.513  2.27    136 0.0248  0.149  2.18  Carbon …     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:20.421084 
-NOTE: Elapsed Time: 0.383203029632568 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:13.111243 
+NOTE: Elapsed Time: 0.335379123687744 secs 
 
 [1] 2011
 
-NOTE: Log Print Time:  2025-12-03 15:48:20.428104 
-NOTE: Elapsed Time: 0.00701999664306641 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:13.120889 
+NOTE: Elapsed Time: 0.00964593887329102 secs 
 
 # A tibble: 144 × 3
    PaperID        split       substitution
@@ -2019,25 +2020,25 @@ NOTE: Elapsed Time: 0.00701999664306641 secs
 
 NOTE: Data frame has 144 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:20.539743 
-NOTE: Elapsed Time: 0.111639022827148 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:13.218408 
+NOTE: Elapsed Time: 0.0975191593170166 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df    pval  ci.lb  ci.ub split                      n
-     <dbl> <dbl>  <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>                  <int>
-1    0.288 0.375  0.768   141 0.444   -0.454  1.03  All C pools                3
-2   -1.08  0.378 -2.86    141 0.00481 -1.83  -0.336 Biogenic only assumpt…     3
-3    1.16  0.506  2.30    141 0.0230   0.162  2.16  Carbon neutral forest…     3
+  estimate    se   tval    df    pval  ci.lb  ci.ub split       n
+     <dbl> <dbl>  <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>   <int>
+1    0.288 0.375  0.768   141 0.444   -0.454  1.03  All C …     3
+2   -1.08  0.378 -2.86    141 0.00481 -1.83  -0.336 Biogen…     3
+3    1.16  0.506  2.30    141 0.0230   0.162  2.16  Carbon…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:20.908114 
-NOTE: Elapsed Time: 0.36837100982666 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:13.550214 
+NOTE: Elapsed Time: 0.331805944442749 secs 
 
 [1] 2012
 
-NOTE: Log Print Time:  2025-12-03 15:48:20.914805 
-NOTE: Elapsed Time: 0.00669097900390625 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:13.558083 
+NOTE: Elapsed Time: 0.00786900520324707 secs 
 
 # A tibble: 244 × 3
    PaperID        split       substitution
@@ -2057,25 +2058,25 @@ NOTE: Elapsed Time: 0.00669097900390625 secs
 
 NOTE: Data frame has 244 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:21.001587 
-NOTE: Elapsed Time: 0.0867819786071777 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:13.644378 
+NOTE: Elapsed Time: 0.0862948894500732 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df     pval  ci.lb  ci.ub split                     n
-     <dbl> <dbl>  <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>                 <int>
-1    0.226 0.294  0.768   241 0.443    -0.353  0.805 All C pools               3
-2   -1.06  0.308 -3.46    241 0.000643 -1.67  -0.458 Biogenic only assump…     3
-3    1.18  0.469  2.51    241 0.0126    0.256  2.10  Carbon neutral fores…     3
+  estimate    se   tval    df     pval  ci.lb  ci.ub split      n
+     <dbl> <dbl>  <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>  <int>
+1    0.226 0.294  0.768   241 0.443    -0.353  0.805 All C…     3
+2   -1.06  0.308 -3.46    241 0.000643 -1.67  -0.458 Bioge…     3
+3    1.18  0.469  2.51    241 0.0126    0.256  2.10  Carbo…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:21.851362 
-NOTE: Elapsed Time: 0.849775075912476 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:14.465783 
+NOTE: Elapsed Time: 0.821405172348022 secs 
 
 [1] 2013
 
-NOTE: Log Print Time:  2025-12-03 15:48:21.859056 
-NOTE: Elapsed Time: 0.00769400596618652 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:14.473649 
+NOTE: Elapsed Time: 0.00786590576171875 secs 
 
 # A tibble: 246 × 3
    PaperID        split       substitution
@@ -2095,25 +2096,25 @@ NOTE: Elapsed Time: 0.00769400596618652 secs
 
 NOTE: Data frame has 246 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:21.947893 
-NOTE: Elapsed Time: 0.0888369083404541 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:14.558376 
+NOTE: Elapsed Time: 0.0847270488739014 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df     pval  ci.lb  ci.ub split                     n
-     <dbl> <dbl>  <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>                 <int>
-1    0.226 0.292  0.773   243 0.441    -0.350  0.802 All C pools               3
-2   -1.07  0.306 -3.48    243 0.000604 -1.67  -0.461 Biogenic only assump…     3
-3    1.02  0.434  2.35    243 0.0195    0.166  1.88  Carbon neutral fores…     3
+  estimate    se   tval    df     pval  ci.lb  ci.ub split      n
+     <dbl> <dbl>  <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>  <int>
+1    0.226 0.292  0.773   243 0.441    -0.350  0.802 All C…     3
+2   -1.07  0.306 -3.48    243 0.000604 -1.67  -0.461 Bioge…     3
+3    1.02  0.434  2.35    243 0.0195    0.166  1.88  Carbo…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:22.815356 
-NOTE: Elapsed Time: 0.867463111877441 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:15.430473 
+NOTE: Elapsed Time: 0.872097015380859 secs 
 
 [1] 2014
 
-NOTE: Log Print Time:  2025-12-03 15:48:22.823202 
-NOTE: Elapsed Time: 0.00784587860107422 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:15.437938 
+NOTE: Elapsed Time: 0.00746488571166992 secs 
 
 # A tibble: 276 × 3
    PaperID        split       substitution
@@ -2133,25 +2134,25 @@ NOTE: Elapsed Time: 0.00784587860107422 secs
 
 NOTE: Data frame has 276 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:22.911116 
-NOTE: Elapsed Time: 0.087913990020752 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:15.530488 
+NOTE: Elapsed Time: 0.0925500392913818 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df      pval   ci.lb  ci.ub split                   n
-     <dbl> <dbl>  <dbl> <dbl>     <dbl>   <dbl>  <dbl> <chr>               <int>
-1    0.168 0.265  0.632   273 0.528     -0.354   0.690 All C pools             3
-2   -1.11  0.271 -4.10    273 0.0000538 -1.65   -0.579 Biogenic only assu…     3
-3    0.764 0.358  2.13    273 0.0338     0.0589  1.47  Carbon neutral for…     3
+  estimate    se   tval    df     pval   ci.lb  ci.ub split     n
+     <dbl> <dbl>  <dbl> <dbl>    <dbl>   <dbl>  <dbl> <chr> <int>
+1    0.168 0.265  0.632   273  5.28e-1 -0.354   0.690 All …     3
+2   -1.11  0.271 -4.10    273  5.38e-5 -1.65   -0.579 Biog…     3
+3    0.764 0.358  2.13    273  3.38e-2  0.0589  1.47  Carb…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:24.282749 
-NOTE: Elapsed Time: 1.37163305282593 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:16.955077 
+NOTE: Elapsed Time: 1.42458891868591 secs 
 
 [1] 2015
 
-NOTE: Log Print Time:  2025-12-03 15:48:24.290283 
-NOTE: Elapsed Time: 0.00753402709960938 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:16.961985 
+NOTE: Elapsed Time: 0.00690817832946777 secs 
 
 # A tibble: 278 × 3
    PaperID        split       substitution
@@ -2171,25 +2172,25 @@ NOTE: Elapsed Time: 0.00753402709960938 secs
 
 NOTE: Data frame has 278 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:24.380125 
-NOTE: Elapsed Time: 0.0898420810699463 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:17.049156 
+NOTE: Elapsed Time: 0.0871708393096924 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df      pval   ci.lb  ci.ub split                   n
-     <dbl> <dbl>  <dbl> <dbl>     <dbl>   <dbl>  <dbl> <chr>               <int>
-1    0.169 0.261  0.647   275 0.518     -0.345   0.683 All C pools             3
-2   -1.12  0.267 -4.17    275 0.0000405 -1.64   -0.589 Biogenic only assu…     3
-3    0.724 0.337  2.15    275 0.0324     0.0611  1.39  Carbon neutral for…     3
+  estimate    se   tval    df     pval   ci.lb  ci.ub split     n
+     <dbl> <dbl>  <dbl> <dbl>    <dbl>   <dbl>  <dbl> <chr> <int>
+1    0.169 0.261  0.647   275  5.18e-1 -0.345   0.683 All …     3
+2   -1.12  0.267 -4.17    275  4.05e-5 -1.64   -0.589 Biog…     3
+3    0.724 0.337  2.15    275  3.24e-2  0.0611  1.39  Carb…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:25.672633 
-NOTE: Elapsed Time: 1.2925078868866 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:18.416341 
+NOTE: Elapsed Time: 1.36718511581421 secs 
 
 [1] 2016
 
-NOTE: Log Print Time:  2025-12-03 15:48:25.679773 
-NOTE: Elapsed Time: 0.00714015960693359 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:18.423486 
+NOTE: Elapsed Time: 0.00714492797851562 secs 
 
 # A tibble: 338 × 3
    PaperID        split       substitution
@@ -2209,25 +2210,25 @@ NOTE: Elapsed Time: 0.00714015960693359 secs
 
 NOTE: Data frame has 338 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:25.767695 
-NOTE: Elapsed Time: 0.0879218578338623 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:18.518511 
+NOTE: Elapsed Time: 0.0950250625610352 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df       pval   ci.lb  ci.ub split                  n
-     <dbl> <dbl>  <dbl> <dbl>      <dbl>   <dbl>  <dbl> <chr>              <int>
-1   -0.128 0.261 -0.489   335 0.625      -0.642   0.386 All C pools            3
-2   -1.23  0.270 -4.55    335 0.00000753 -1.76   -0.698 Biogenic only ass…     3
-3    0.756 0.366  2.07    335 0.0397      0.0359  1.48  Carbon neutral fo…     3
+  estimate    se   tval    df     pval   ci.lb  ci.ub split     n
+     <dbl> <dbl>  <dbl> <dbl>    <dbl>   <dbl>  <dbl> <chr> <int>
+1   -0.128 0.261 -0.489   335  6.25e-1 -0.642   0.386 All …     3
+2   -1.23  0.270 -4.55    335  7.53e-6 -1.76   -0.698 Biog…     3
+3    0.756 0.366  2.07    335  3.97e-2  0.0359  1.48  Carb…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:28.493895 
-NOTE: Elapsed Time: 2.72620010375977 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:21.230022 
+NOTE: Elapsed Time: 2.71151089668274 secs 
 
 [1] 2017
 
-NOTE: Log Print Time:  2025-12-03 15:48:28.501341 
-NOTE: Elapsed Time: 0.0074460506439209 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:21.238806 
+NOTE: Elapsed Time: 0.00878405570983887 secs 
 
 # A tibble: 346 × 3
    PaperID        split       substitution
@@ -2247,25 +2248,25 @@ NOTE: Elapsed Time: 0.0074460506439209 secs
 
 NOTE: Data frame has 346 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:28.594678 
-NOTE: Elapsed Time: 0.093336820602417 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:21.327925 
+NOTE: Elapsed Time: 0.0891189575195312 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df      pval   ci.lb  ci.ub split                   n
-     <dbl> <dbl>  <dbl> <dbl>     <dbl>   <dbl>  <dbl> <chr>               <int>
-1   -0.112 0.262 -0.430   343 0.667     -0.627   0.402 All C pools             3
-2   -1.14  0.258 -4.44    343 0.0000121 -1.65   -0.638 Biogenic only assu…     3
-3    0.753 0.366  2.06    343 0.0402     0.0337  1.47  Carbon neutral for…     3
+  estimate    se   tval    df     pval   ci.lb  ci.ub split     n
+     <dbl> <dbl>  <dbl> <dbl>    <dbl>   <dbl>  <dbl> <chr> <int>
+1   -0.112 0.262 -0.430   343  6.67e-1 -0.627   0.402 All …     3
+2   -1.14  0.258 -4.44    343  1.21e-5 -1.65   -0.638 Biog…     3
+3    0.753 0.366  2.06    343  4.02e-2  0.0337  1.47  Carb…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:31.534388 
-NOTE: Elapsed Time: 2.93971014022827 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:24.23587 
+NOTE: Elapsed Time: 2.90794491767883 secs 
 
 [1] 2018
 
-NOTE: Log Print Time:  2025-12-03 15:48:31.542061 
-NOTE: Elapsed Time: 0.00767302513122559 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:24.243951 
+NOTE: Elapsed Time: 0.00808119773864746 secs 
 
 # A tibble: 399 × 3
    PaperID        split       substitution
@@ -2285,25 +2286,25 @@ NOTE: Elapsed Time: 0.00767302513122559 secs
 
 NOTE: Data frame has 399 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:31.630437 
-NOTE: Elapsed Time: 0.0883758068084717 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:24.333746 
+NOTE: Elapsed Time: 0.0897948741912842 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df       pval    ci.lb  ci.ub split                 n
-     <dbl> <dbl>  <dbl> <dbl>      <dbl>    <dbl>  <dbl> <chr>             <int>
-1   -0.130 0.241 -0.539   396 0.590      -0.603    0.344 All C pools           3
-2   -1.16  0.234 -4.96    396 0.00000103 -1.62    -0.702 Biogenic only as…     3
-3    0.547 0.281  1.95    396 0.0524     -0.00574  1.10  Carbon neutral f…     3
+  estimate    se   tval    df    pval    ci.lb  ci.ub split     n
+     <dbl> <dbl>  <dbl> <dbl>   <dbl>    <dbl>  <dbl> <chr> <int>
+1   -0.130 0.241 -0.539   396 5.90e-1 -0.603    0.344 All …     3
+2   -1.16  0.234 -4.96    396 1.03e-6 -1.62    -0.702 Biog…     3
+3    0.547 0.281  1.95    396 5.24e-2 -0.00574  1.10  Carb…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:35.875364 
-NOTE: Elapsed Time: 4.24492716789246 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:28.875572 
+NOTE: Elapsed Time: 4.54182600975037 secs 
 
 [1] 2019
 
-NOTE: Log Print Time:  2025-12-03 15:48:35.885676 
-NOTE: Elapsed Time: 0.0103118419647217 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:28.894439 
+NOTE: Elapsed Time: 0.018867015838623 secs 
 
 # A tibble: 428 × 3
    PaperID        split       substitution
@@ -2323,25 +2324,25 @@ NOTE: Elapsed Time: 0.0103118419647217 secs
 
 NOTE: Data frame has 428 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:36.054864 
-NOTE: Elapsed Time: 0.169188022613525 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:29.031555 
+NOTE: Elapsed Time: 0.137115955352783 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df       pval  ci.lb  ci.ub split                   n
-     <dbl> <dbl>  <dbl> <dbl>      <dbl>  <dbl>  <dbl> <chr>               <int>
-1   -0.118 0.250 -0.474   425 0.636      -0.609  0.373 All C pools             3
-2   -1.10  0.230 -4.81    425 0.00000212 -1.56  -0.653 Biogenic only assu…     3
-3    0.728 0.274  2.66    425 0.00805     0.191  1.27  Carbon neutral for…     3
+  estimate    se   tval    df      pval  ci.lb  ci.ub split     n
+     <dbl> <dbl>  <dbl> <dbl>     <dbl>  <dbl>  <dbl> <chr> <int>
+1   -0.118 0.250 -0.474   425   6.36e-1 -0.609  0.373 All …     3
+2   -1.10  0.230 -4.81    425   2.12e-6 -1.56  -0.653 Biog…     3
+3    0.728 0.274  2.66    425   8.05e-3  0.191  1.27  Carb…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:41.044907 
-NOTE: Elapsed Time: 4.99004316329956 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:34.679784 
+NOTE: Elapsed Time: 5.64822912216187 secs 
 
 [1] 2020
 
-NOTE: Log Print Time:  2025-12-03 15:48:41.0569 
-NOTE: Elapsed Time: 0.0119929313659668 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:34.687428 
+NOTE: Elapsed Time: 0.0076439380645752 secs 
 
 # A tibble: 517 × 3
    PaperID        split       substitution
@@ -2361,25 +2362,25 @@ NOTE: Elapsed Time: 0.0119929313659668 secs
 
 NOTE: Data frame has 517 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:41.159677 
-NOTE: Elapsed Time: 0.102777004241943 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:34.778115 
+NOTE: Elapsed Time: 0.0906870365142822 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df     pval  ci.lb  ci.ub split                     n
-     <dbl> <dbl>  <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>                 <int>
-1   -0.237 0.374 -0.635   514 0.526    -0.972  0.497 All C pools               3
-2   -1.18  0.339 -3.48    514 0.000551 -1.84  -0.512 Biogenic only assump…     3
-3    0.729 0.427  1.71    514 0.0884   -0.110  1.57  Carbon neutral fores…     3
+  estimate    se   tval    df     pval  ci.lb  ci.ub split      n
+     <dbl> <dbl>  <dbl> <dbl>    <dbl>  <dbl>  <dbl> <chr>  <int>
+1   -0.237 0.374 -0.635   514 0.526    -0.972  0.497 All C…     3
+2   -1.18  0.339 -3.48    514 0.000551 -1.84  -0.512 Bioge…     3
+3    0.729 0.427  1.71    514 0.0884   -0.110  1.57  Carbo…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:50.620074 
-NOTE: Elapsed Time: 9.46039700508118 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:46.572378 
+NOTE: Elapsed Time: 11.7942628860474 secs 
 
 [1] 2021
 
-NOTE: Log Print Time:  2025-12-03 15:48:50.628398 
-NOTE: Elapsed Time: 0.00832390785217285 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:46.585304 
+NOTE: Elapsed Time: 0.0129261016845703 secs 
 
 # A tibble: 564 × 3
    PaperID        split       substitution
@@ -2399,25 +2400,25 @@ NOTE: Elapsed Time: 0.00832390785217285 secs
 
 NOTE: Data frame has 564 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:48:50.724712 
-NOTE: Elapsed Time: 0.0963139533996582 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:46.775991 
+NOTE: Elapsed Time: 0.190686941146851 secs 
 
 # A tibble: 3 × 9
-  estimate    se   tval    df    pval  ci.lb  ci.ub split                      n
-     <dbl> <dbl>  <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>                  <int>
-1  -0.0734 0.375 -0.196   561 0.845   -0.811  0.664 All C pools                3
-2  -1.05   0.342 -3.07    561 0.00225 -1.72  -0.378 Biogenic only assumpt…     3
-3   0.684  0.428  1.60    561 0.111   -0.157  1.53  Carbon neutral forest…     3
+  estimate    se   tval    df    pval  ci.lb  ci.ub split       n
+     <dbl> <dbl>  <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>   <int>
+1  -0.0734 0.375 -0.196   561 0.845   -0.811  0.664 All C …     3
+2  -1.05   0.342 -3.07    561 0.00225 -1.72  -0.378 Biogen…     3
+3   0.684  0.428  1.60    561 0.111   -0.157  1.53  Carbon…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:49:02.125396 
-NOTE: Elapsed Time: 11.4006841182709 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:59.452341 
+NOTE: Elapsed Time: 12.6763501167297 secs 
 
 [1] 2022
 
-NOTE: Log Print Time:  2025-12-03 15:49:02.133907 
-NOTE: Elapsed Time: 0.00851106643676758 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:59.467418 
+NOTE: Elapsed Time: 0.0150768756866455 secs 
 
 # A tibble: 642 × 3
    PaperID        split       substitution
@@ -2437,22 +2438,22 @@ NOTE: Elapsed Time: 0.00851106643676758 secs
 
 NOTE: Data frame has 642 rows and 3 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:49:02.223826 
-NOTE: Elapsed Time: 0.089918851852417 secs 
+NOTE: Log Print Time:  2025-12-09 14:01:59.604315 
+NOTE: Elapsed Time: 0.136897087097168 secs 
 
 # A tibble: 3 × 9
-  estimate    se    tval    df    pval  ci.lb  ci.ub split                     n
-     <dbl> <dbl>   <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>                 <int>
-1  -0.0321 0.339 -0.0946   639 0.925   -0.698  0.634 All C pools               3
-2  -0.975  0.310 -3.15     639 0.00170 -1.58  -0.368 Biogenic only assump…     3
-3   0.604  0.362  1.67     639 0.0952  -0.106  1.31  Carbon neutral fores…     3
+  estimate    se    tval    df    pval  ci.lb  ci.ub split      n
+     <dbl> <dbl>   <dbl> <dbl>   <dbl>  <dbl>  <dbl> <chr>  <int>
+1  -0.0321 0.339 -0.0946   639 0.925   -0.698  0.634 All C…     3
+2  -0.975  0.310 -3.15     639 0.00170 -1.58  -0.368 Bioge…     3
+3   0.604  0.362  1.67     639 0.0952  -0.106  1.31  Carbo…     3
 
 NOTE: Data frame has 3 rows and 9 columns. 
 
-NOTE: Log Print Time:  2025-12-03 15:49:17.264079 
-NOTE: Elapsed Time: 15.040253162384 secs 
+NOTE: Log Print Time:  2025-12-09 14:02:15.853048 
+NOTE: Elapsed Time: 16.2487330436707 secs 
 
 ========================================================================= 
-Log End Time: 2025-12-03 15:49:17.630662 
-Log Elapsed Time: 0 00:01:56 
+Log End Time: 2025-12-09 14:02:16.22794 
+Log Elapsed Time: 0 00:01:57 
 ========================================================================= 

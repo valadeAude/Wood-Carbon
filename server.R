@@ -46,8 +46,7 @@ server <- function(input, output, session) {
 
 
   }, ignoreNULL = FALSE)
-    print(paste("check dim :data",dim(data)))
-    
+
 
   observeEvent(input$reset, {
     updateCheckboxGroupInput(session, "select_scale", selected = c("world"="w","regional" = "reg", "local" = "loc"))

@@ -762,7 +762,7 @@ boxplotCompartment<-function(t.u.d.m, compartment,variable,listCriteria){
         theme_bw()+
         ###   geom_signif( map_signif_level=TRUE, y_position = c(12, 17))+ !!! not working but add significance
         geom_boxplot(show.legend=FALSE)+
-        geom_hline(yintercept = 0,size=0.8,linestyle="dotted")+
+        geom_hline(yintercept = 0,linewidth=0.8)+
         geom_point()+
         ylab(variable)+
         stat_summary(
@@ -779,7 +779,7 @@ boxplotCompartment<-function(t.u.d.m, compartment,variable,listCriteria){
         coord_flip()+
         theme_bw()+
         geom_boxplot(show.legend=FALSE)+
-        geom_hline(yintercept = 0,size=0.8,linestyle="dotted")+
+        geom_hline(yintercept = 0,linewidth=0.8)+
         geom_point()+
         ylab(variable)+
         stat_summary(

@@ -285,7 +285,7 @@ ggplot(expt_frq_dyn[expt_frq_dyn$cat1=="Change in practices"&expt_frq_dyn$variab
   geom_line()+  
   theme_bw()+
   scale_linetype_manual(values=c("solid", "longdash","dotdash","twodash"))+
-  scale_colour_manual(values = c(mypal4(4), mypal3(4),mypal2(6),mypal(3))) +
+  scale_colour_manual(values = c(mypalDriv4(4), mypalDriv3(4),mypalDriv2(6),mypalDriv(3))) +
   facet_wrap(~modelAssumption)
 ggsave(paste0(offlineFiguresPath,"/figSX_barPlot_DriverEvolution.png"),dpi=300,width=15,height=7)
 

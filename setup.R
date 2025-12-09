@@ -237,10 +237,12 @@ save(refCProcess,
      data_bibliom,
      plotData.approachC,
      forestPlotData.approachC,
+     forestPlotData.assumptionC,
      #Do not run while debugging
      tTestPairsSignifAggVarMelt,
    #Stop Do not run while debugging
-     forestPlotData.approachC.dyn,
+   forestPlotData.approachC.dyn,
+   forestPlotData.assumptionC.dyn,
    plotData.driverC.wholeSector,
    plotData.driverC.AllCPools,
    forestPlotData.driverC.wholeSector,
