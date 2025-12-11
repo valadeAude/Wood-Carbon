@@ -217,6 +217,7 @@ forestPlotData.assumptionC.dyn<-knowDynamicsData(data_expt_assumption[data_expt_
 
 
 save(refCProcess,
+     refCProcessMean,
      countriesList,
      productsLabels,
      productsList,
